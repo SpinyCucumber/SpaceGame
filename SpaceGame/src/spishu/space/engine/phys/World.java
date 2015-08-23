@@ -57,6 +57,10 @@ public class World {;
 		entities.addAll(newEntities);
 	}
 
+	public void draw() {
+		for(Entity<?> entity : entities) entity.draw();
+	}
+
 	public World(Vec2 gravity) {
 		this.gravity = gravity;
 	}
