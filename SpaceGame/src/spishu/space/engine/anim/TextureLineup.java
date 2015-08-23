@@ -1,5 +1,6 @@
-package spishu.space.engine.texture;
+package spishu.space.engine.anim;
 
+import spishu.space.engine.gl.Texture;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
 

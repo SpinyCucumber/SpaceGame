@@ -1,4 +1,4 @@
-package spishu.space.engine.texture;
+package spishu.space.engine.gl;
 
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_RGBA;

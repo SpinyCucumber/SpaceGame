@@ -1,23 +1,12 @@
 package spishu.space.engine.math;
 
+import spishu.space.engine.phys.CollisionResult;
+
 
 /**A more complex geometrical class, usually used to detect collisions, but has many applications.
  * Utilizes the Vector2D class heavily.
  */
 public class Shape { //Ported from CodingClub
-	
-	//The wrapper class used to handle collisions, usually discarded immediately
-	public class CollisionResult {
-		
-		public Vec2 normal;
-		public float depth;
-		
-		private CollisionResult(Vec2 normal, float depth) {
-			this.normal = normal;
-			this.depth = depth;
-		}
-		
-	}
 
 	public Vec2[] vertices;
 	
