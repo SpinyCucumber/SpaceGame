@@ -21,7 +21,7 @@ public class World {;
 	public class Entity<T> {
 		
 		public Vec2 velocity, position;
-		public float mass, invMass;
+		public float mass, invMass, rotation;
 		public T bounds;
 		
 		public void remove() {
@@ -29,8 +29,8 @@ public class World {;
 		}
 		
 		protected void update(double delta) {
-			position = position.add(velocity);
-			velocity = velocity.add(gravity);
+			position = position.add(velocity.scale((float) delta));
+			velocity = velocity.add(gravity.scale((float) delta));
 		}
 		
 		protected void draw() {}
@@ -54,8 +54,8 @@ public class World {;
 	
 	public void update(double d) {
 		entities.removeAll(oldEntities);
-		for(Entity<?> entity : entities) entity.update(d);
 		entities.addAll(newEntities);
+		for(Entity<?> entity : entities) entity.update(d);
 	}
 
 	public void draw() {

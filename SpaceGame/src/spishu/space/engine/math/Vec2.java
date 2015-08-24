@@ -68,6 +68,10 @@ public class Vec2 {
 		GL11.glVertex2d(x, y);
 	}
 	
+	public void glTranslate() {
+		GL11.glTranslatef(x, y, 0);
+	}
+	
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

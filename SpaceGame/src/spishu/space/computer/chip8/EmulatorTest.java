@@ -1,34 +1,22 @@
-package spishu.space.main;
+package spishu.space.computer.chip8;
 
 import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-
-import java.io.File;
 
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
-import spishu.space.engine.computer.chip8.Chip;
-
-import spishu.space.engine.anim.Animation;
-import spishu.space.engine.anim.TextureLineup;
-import spishu.space.engine.computer.chip8.Chip;
-import spishu.space.engine.entity.SingleShapeEntity;
-import spishu.space.engine.gl.Framebuffer;
+import spishu.space.engine.gl.Framebuffer2;
 import spishu.space.engine.gl.GLWindow;
 import spishu.space.engine.gl.Texture;
-import spishu.space.engine.math.Rectangle;
-import spishu.space.engine.math.Shape;
-import spishu.space.engine.math.Vec2;
 import spishu.space.engine.phys.World;
 
-public class EmulatorTest { //It all starts here
+public class EmulatorTest {
 	
 	GLFWErrorCallback errorCallback;
-	boolean running;
 	double time, lastTime;
 	
 	GLWindow window;
@@ -50,10 +38,6 @@ public class EmulatorTest { //It all starts here
     		lastTime = time;
     	}
     }
-	
-	void setRunning(boolean running) {
-		this.running = running;
-	}
 
 	public void start() {
 		
@@ -68,57 +52,54 @@ public class EmulatorTest { //It all starts here
 	        
 	        initGraphics();        
 	        
-			Framebuffer fb = new Framebuffer(640, 320);
+			Framebuffer2 fb = new Framebuffer2(640, 320);
 			
 			chip.init();
-			
-			chip.loadProgram("C:/Users/Carl/Downloads/pong2.c8");
+			chip.loadProgram("res/prog/pong2.c8");
 	        	        
-	       while(!window.shouldClose()) {
+	        while(!window.shouldClose()) {
 		        
 				chip.run();
 	    	   
 				display = chip.display;
 				displen = display.length;
-		        
-				fb.bind();
 				
-	            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				
-				GL11.glPointSize(10f);
-	            
-				GL11.glBegin(GL_POINTS);
-				
-            
-		        for(int i = 0; i < displen; i++) {
-					if(display[i] == 0){
-						/**
-						int x = (i % 64);
-						int y = (int)Math.floor(i / 64);
-						batch.draw(b2, (x * 10), (y * 10), 10, 10);
-						
-						*/
+				fb.bind(); {
 					
-					} else{
-						int x = (i % 64);
-						int y = (int)Math.floor(i / 64);
+					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+					glBegin(GL_POINTS);
+	            
+			        for(int i = 0; i < displen; i++) {
+			        	
+						if(display[i] == 0){
+							/**
+							int x = (i % 64);
+							int y = (int)Math.floor(i / 64);
+							batch.draw(b2, (x * 10), (y * 10), 10, 10);
+							
+							*/
 						
-						GL11.glVertex2f(x, y);
+						} else {
+	
+							int x = (i % 64);
+							int y = (int)Math.floor(i / 64);
+							
+							GL11.glVertex2f(x, y);
+							
+						}
 						
-
 					}
-					}
-		        
-				GL11.glEnd();
-		        
-		        Framebuffer.unbind();
+			        
+					GL11.glEnd();
+				
+				} Framebuffer2.unbind();
+				
+		        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		        fb.bindColorTexture();
 		        window.fullscreenQuad();
-	        	
+		        Texture.unbind();
+		        
 	        	delta();
-       	
-	        	glLoadIdentity();
-	            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	        	window.setTitle("SWAG LEVEL: " + time);
 	            
 	            window.swapBuffers();
@@ -164,6 +145,7 @@ public class EmulatorTest { //It all starts here
 		glMatrixMode(GL_MODELVIEW);
 	    
 		glEnable(GL_TEXTURE_2D);
+		glPointSize(10f);
 		
 	}
 	

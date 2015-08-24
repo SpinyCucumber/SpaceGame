@@ -24,7 +24,6 @@ import spishu.space.engine.phys.World;
 public class GameObject { //It all starts here
 	
 	GLFWErrorCallback errorCallback;
-	boolean running;
 	double time, lastTime;
 	
 	GLWindow window;
@@ -42,10 +41,6 @@ public class GameObject { //It all starts here
     		lastTime = time;
     	}
     }
-	
-	void setRunning(boolean running) {
-		this.running = running;
-	}
 
 	public void start() {
 		
@@ -62,14 +57,13 @@ public class GameObject { //It all starts here
 	        world = new World(new Vec2(0, 0));
 	        
 	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));
-	        new SingleShapeEntity<Shape>(world, new Vec2(0, 0), window.getDimensions().invScale(2), 0,
+	        new SingleShapeEntity<Shape>(world, new Vec2(0.1f, 0), window.getDimensions().invScale(2), 0,
 	        		Rectangle.fromHalfDimension(new Vec2(0), new Vec2(100)), anim);
 			
 	        while(!window.shouldClose()) {
 	        	
 	        	world.update(delta());
-	        	
-	        	glLoadIdentity();
+
 	            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	        	window.setTitle("SWAG LEVEL: " + time);
 	            world.draw();

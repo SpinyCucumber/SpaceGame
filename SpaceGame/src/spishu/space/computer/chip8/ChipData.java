@@ -1,4 +1,4 @@
-package spishu.space.engine.computer.chip8;
+package spishu.space.computer.chip8;
 
 public class ChipData {
 
