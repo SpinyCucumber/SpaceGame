@@ -21,17 +21,18 @@ public class SingleShapeEntity<T extends Shape> extends Entity<T>{
 		Shape shape = bounds;
 		shape = shape.translate(shape.min().negate());
 		texcoordsShapes = shape.divDim(shape.max());
+		System.out.println(texcoordsShapes);
 	}
 	
 	@Override
 	public void draw(){
 		texture.bind();
-			GL11.glBegin(GL11.GL_POLYGON);
-			for(int i = 0; i < bounds.vertices.length; i++){
-				bounds.vertices[i].add(position).glVertex();
-				texcoordsShapes.vertices[i].glTexCoord();
-			}
-			GL11.glEnd();
+		GL11.glBegin(GL11.GL_POLYGON);
+		for(int i = 0; i < bounds.vertices.length; i++){
+			texcoordsShapes.vertices[i].glTexCoord();
+			bounds.vertices[i].add(position).glVertex();
+		}
+		GL11.glEnd();
 	}
 	
 	@Override

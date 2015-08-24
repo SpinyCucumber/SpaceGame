@@ -112,7 +112,7 @@ public class GameObject { //It all starts here
         
         glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0, window.width, window.height, 0, 1, -1);
+		glOrtho(0, window.getWidth(), window.getHeight(), 0, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
 	    
 		glEnable(GL_TEXTURE_2D);
