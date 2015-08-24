@@ -36,6 +36,14 @@ public class Shape { //Ported from CodingClub
 		return new Shape(newVertices);
 	}
 	
+	public Shape divDim(Vec2 dim) {
+		Vec2[] newVertices = new Vec2[vertices.length];
+		for(int i = 0; i < vertices.length; i++) {
+			newVertices[i] = vertices[i].divDim(dim);
+		}
+		return new Shape(newVertices);
+	}
+	
 	public Vec2 min() {
 		
 		float x = vertices[0].x, y = vertices[0].y;

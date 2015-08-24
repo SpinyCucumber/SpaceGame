@@ -2,6 +2,7 @@ package spishu.space.engine.gl;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import spishu.space.engine.math.Vec2;
 
 
 public class GLWindow {
@@ -22,7 +23,15 @@ public class GLWindow {
 	}
 	
 	public void destroy() {
-		
+		glfwDestroyWindow(handle);
+	}
+	
+	public void makeContext() {
+		glfwMakeContextCurrent(handle);
+	}
+	
+	public void setPosition(Vec2 pos) {
+		glfwSetWindowPos(handle, (int) pos.x, (int) pos.y);
 	}
 
 	public GLWindow(int width, int height) {
