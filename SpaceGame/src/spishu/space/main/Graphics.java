@@ -57,7 +57,7 @@ public class Graphics extends Thread {
     }
  
     private void init() {
- 
+    	
         // Configure our window
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);

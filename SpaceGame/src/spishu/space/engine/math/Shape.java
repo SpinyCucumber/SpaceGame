@@ -15,10 +15,12 @@ public class Shape { //Ported from CodingClub
 	}
 	
 	//Move the shape using a vector
-	public void translate(Vec2 d) {
+	public Shape translate(Vec2 d) {
+		Vec2[] newVertices = new Vec2[vertices.length];
 		for(int i = 0; i < vertices.length; i++) {
-			vertices[i] = vertices[i].add(d);
+			newVertices[i] = vertices[i].add(d);
 		}
+		return new Shape(newVertices);
 	}
 	
 	public Shape rotate(Vec2 center, float a) {
