@@ -28,7 +28,7 @@ public class World {;
 			oldEntities.add(this);
 		}
 		
-		protected void update() {
+		protected void update(double delta) {
 			position = position.add(velocity);
 			velocity = velocity.add(gravity);
 		}
@@ -52,8 +52,9 @@ public class World {;
 	
 	private Vec2 gravity;
 	
-	public void update(int delta) {
+	public void update(double d) {
 		entities.removeAll(oldEntities);
+		for(Entity<?> entity : entities) entity.update(d);
 		entities.addAll(newEntities);
 	}
 

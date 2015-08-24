@@ -12,8 +12,8 @@ public abstract class Animation { //Ported from CodingClub
 	public abstract void bind();
 	public abstract Animation clone();
 	
-	public void update(int delta) {
-		frame = (frame + speed * delta) % length;
+	public void update(double delta) {
+		frame = (frame + speed * (float) delta) % length;
 	}
 	
 	public Animation(float speed) {

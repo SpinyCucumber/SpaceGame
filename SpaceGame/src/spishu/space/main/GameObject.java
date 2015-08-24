@@ -58,7 +58,7 @@ public class GameObject { //It all starts here
 			
 	        while(running) {
 	        	
-	        	delta();
+	        	world.update(delta());
 	        	
 	        }
 	        

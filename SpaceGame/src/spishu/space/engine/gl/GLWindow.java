@@ -33,6 +33,14 @@ public class GLWindow {
 	public void setPosition(Vec2 pos) {
 		glfwSetWindowPos(handle, (int) pos.x, (int) pos.y);
 	}
+	
+	public void swapBuffers() {
+		glfwSwapBuffers(handle);
+	}
+	
+	public void setTitle(String title) {
+		glfwSetWindowTitle(handle, title);
+	}
 
 	public GLWindow(int width, int height) {
 		this.width = width;
