@@ -45,7 +45,7 @@ public class GLWindow {
 	}
 	
 	public boolean shouldClose() {
-		return glfwWindowShouldClose(handle) == GL11.GL_FALSE;
+		return glfwWindowShouldClose(handle) == GL11.GL_TRUE;
 	}
 	
 	public GLWindow(int width, int height) {

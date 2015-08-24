@@ -28,14 +28,14 @@ public class SingleShapeEntity<T extends Shape> extends Entity<T>{
 		texture.bind();
 			GL11.glBegin(GL11.GL_POLYGON);
 			for(int i = 0; i < bounds.vertices.length; i++){
-				bounds.vertices[i].glVertex();
+				bounds.vertices[i].add(position).glVertex();
 				texcoordsShapes.vertices[i].glTexCoord();
 			}
 			GL11.glEnd();
 	}
 	
 	@Override
-	public void update(double delta){
+	public void update(double delta) {
 		texture.update(delta);
 	}
 	
