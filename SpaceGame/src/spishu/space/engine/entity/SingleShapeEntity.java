@@ -18,10 +18,10 @@ public class SingleShapeEntity<T extends Shape> extends Entity<T>{
 			T bounds, Animation texture) {
 		world.super(velocity, position, mass, bounds);
 		this.texture = texture;
-			Shape shape = bounds;
-			shape = shape.translate(shape.min().negate());
-			texcoordsShapes = shape.divDim(shape.max());
-		}
+		Shape shape = bounds;
+		shape = shape.translate(shape.min().negate());
+		texcoordsShapes = shape.divDim(shape.max());
+	}
 	
 	@Override
 	public void draw(){
