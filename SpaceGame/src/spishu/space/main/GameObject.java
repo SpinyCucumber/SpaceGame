@@ -51,7 +51,7 @@ public class GameObject { //It all starts here
 	        
 	        world = new World(new Vec2(0, 0));
 	        
-	        graphics = new Graphics(this, 1000, 700);
+	        graphics = new Graphics(this);
 			graphics.start();
 	        
 			running = true;

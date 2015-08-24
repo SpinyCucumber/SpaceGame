@@ -2,26 +2,17 @@ package spishu.space.main;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryUtil.NULL;
-
-import java.nio.ByteBuffer;
-
-import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GLContext;
+
+import spishu.space.engine.gl.GLWindow;
 
 public class Graphics extends Thread {
 	
-	GameObject gameInstance;
+	GameObject gameInstance;    
+    GLWindow window;
     
-    private int width, height;
-    
-    // The window handle, might make wrapper
-    long window;
-    
-    public Graphics(GameObject gameInstance, int width, int height) {
+    public Graphics(GameObject gameInstance) {
 		this.gameInstance = gameInstance;
-		this.width = width;
-		this.height = height;
 	}
     
     @Override
@@ -29,20 +20,20 @@ public class Graphics extends Thread {
         	
         init();
         
-        while (glfwWindowShouldClose(window) == GL_FALSE) {
+        while (window.shouldClose()) {
         	
         	glLoadIdentity();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        	glfwSetWindowTitle(window, "SWAG LEVEL: " + gameInstance.time);
+        	window.setTitle("SWAG LEVEL: " + gameInstance.time);
             gameInstance.world.draw();
             
-            glfwSwapBuffers(window);
+            window.swapBuffers();
         	
         	glfwPollEvents();
             
         }
         
-        glfwDestroyWindow(window);
+        window.destroy();
         gameInstance.running = false;
         
     }
@@ -54,18 +45,10 @@ public class Graphics extends Thread {
         glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
  
         // Create the window
-        window = glfwCreateWindow(width, height, "", NULL, NULL);
-        if ( window == NULL )
-            throw new RuntimeException("Failed to create the GLFW window");
+        window = new GLWindow(1000, 700);
+        window.setPosition(GLWindow.getScreenDimensions().sub(window.getDimensions()).invScale(2));
 
-        ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        glfwSetWindowPos(
-            window,
-            (GLFWvidmode.width(vidmode) - width) / 2,
-            (GLFWvidmode.height(vidmode) - height) / 2
-        );
-
-        glfwMakeContextCurrent(window);
+        window.makeContext();
         // Enable v-sync
         glfwSwapInterval(1);
         
@@ -74,7 +57,7 @@ public class Graphics extends Thread {
         
         glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0, width, height, 0, 1, -1);
+		glOrtho(0, window.width, window.height, 0, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
         
     }

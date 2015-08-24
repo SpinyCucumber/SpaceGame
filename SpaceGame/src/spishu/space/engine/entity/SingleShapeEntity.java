@@ -3,7 +3,6 @@ package spishu.space.engine.entity;
 import org.lwjgl.opengl.GL11;
 
 import spishu.space.engine.anim.Animation;
-import spishu.space.engine.gl.Texture;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
 import spishu.space.engine.phys.World;
