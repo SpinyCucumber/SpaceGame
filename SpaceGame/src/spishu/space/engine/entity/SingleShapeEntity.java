@@ -30,7 +30,7 @@ public class SingleShapeEntity<T extends Shape> extends Entity<T>{
 			GL11.glBegin(GL11.GL_POLYGON);
 			for(int i = 0; i < bounds.vertices.length; i++){
 				bounds.vertices[i].glVertex();
-				texcoordsShapes.vertices[i].glTexcoord();
+				texcoordsShapes.vertices[i].glTexCoord();
 			}
 			GL11.glEnd();
 	}

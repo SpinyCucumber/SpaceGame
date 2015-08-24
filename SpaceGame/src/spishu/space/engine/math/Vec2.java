@@ -126,5 +126,10 @@ public class Vec2 {
 	public String toString() {
 		return "{" + x + ", " + y + "}";
 	}
+
+	public void glTexCoord() {
+		GL11.glTexCoord2f(x, y);
+		
+	}
 	
 }
