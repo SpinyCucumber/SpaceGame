@@ -28,10 +28,6 @@ public class GLWindow {
 	public int getHeight() {
 		return height;
 	}
-
-	public long getHandle() {
-		return handle;
-	}
 	
 	public void destroy() {
 		glfwDestroyWindow(handle);
