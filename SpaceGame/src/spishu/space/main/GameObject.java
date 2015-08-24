@@ -6,10 +6,18 @@ import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 
+import java.io.File;
+
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
 
+import spishu.space.engine.anim.Animation;
+import spishu.space.engine.anim.TextureLineup;
+import spishu.space.engine.entity.SingleShapeEntity;
+import spishu.space.engine.gl.Texture;
+import spishu.space.engine.math.Rectangle;
+import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
 import spishu.space.engine.phys.World;
 
@@ -50,6 +58,9 @@ public class GameObject { //It all starts here
 	            throw new IllegalStateException("Unable to initialize GLFW");
 	        
 	        world = new World(new Vec2(0, 0));
+	        
+	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));
+	        SingleShapeEntity shapeent = new SingleShapeEntity<Shape>(world, new Vec2(0, 0), graphics.window.getDimensions().invScale(2), 0, Rectangle.fromHalfDimension(new Vec2(0), new Vec2(2)), anim);
 	        
 	        graphics = new Graphics(this);
 			graphics.start();
