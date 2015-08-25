@@ -6,7 +6,7 @@ public final class Colliders {
 	
 	public interface Collider {
 		
-		CollisionResult collide(Entity<?> ent1, Entity<?> ent2);
+		CollisionResult collide(Entity ent1, Entity ent2);
 		
 	}
 		

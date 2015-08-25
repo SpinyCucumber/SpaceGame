@@ -52,11 +52,11 @@ public class EmulatorTest {
 	        
 	        initGraphics();
 	        
-			Framebuffer2 fb = new Framebuffer2(640, 320);
+			Framebuffer2 fb = new Framebuffer2(100, 70);
 			
 			chip.init();
 			chip.loadProgram("res/prog/pong2.c8");
-	        	        
+			
 	        while(!window.shouldClose()) {
 		        
 				chip.run();
@@ -68,7 +68,7 @@ public class EmulatorTest {
 					
 					glMatrixMode(GL_PROJECTION);
 			        glLoadIdentity();
-					glOrtho(0, fb.getWidth(), 0, fb.getHeight(), 1, -1);
+			        glOrtho(0, fb.getWidth(), 0, fb.getHeight(), 1, -1);
 					glMatrixMode(GL_MODELVIEW);
 					
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -76,7 +76,7 @@ public class EmulatorTest {
 	            
 			        for(int i = 0; i < displen; i++) {
 			        	
-						if(display[i] == 0){
+						if(display[i] == 0) {
 							/**
 							int x = (i % 64);
 							int y = (int)Math.floor(i / 64);
@@ -103,6 +103,8 @@ public class EmulatorTest {
 		        glLoadIdentity();
 				glOrtho(0, window.getWidth(), window.getHeight(), 0, 1, -1);
 				glMatrixMode(GL_MODELVIEW);
+				
+				glViewport(0, 0, window.getWidth(), window.getHeight());
 				
 		        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		        fb.bindColorTexture();
@@ -150,7 +152,7 @@ public class EmulatorTest {
         GLContext.createFromCurrent();
 	    
 		glEnable(GL_TEXTURE_2D);
-		glPointSize(10f);
+		glPointSize(1);
 		
 	}
 	

@@ -58,7 +58,7 @@ public class GameObject { //It all starts here
 	        
 	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));
 	        new SingleShapeEntity<Shape>(world, new Vec2(0.1f, 0), window.getDimensions().invScale(2), 0,
-	        		Rectangle.fromHalfDimension(new Vec2(0), new Vec2(100)), anim);
+	        		0, 0.1f, Rectangle.fromHalfDimension(new Vec2(0), new Vec2(100)), anim);
 			
 	        while(!window.shouldClose()) {
 	        	

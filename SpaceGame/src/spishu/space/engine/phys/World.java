@@ -18,11 +18,10 @@ public class World {;
 		return colliders;
 	}
 
-	public class Entity<T> {
+	public class Entity {
 		
 		public Vec2 velocity, position;
-		public float mass, invMass, rotation;
-		public T bounds;
+		public float mass, invMass, rotation, angVelocity;
 		
 		public void remove() {
 			oldEntities.add(this);
@@ -31,35 +30,37 @@ public class World {;
 		protected void update(double delta) {
 			position = position.add(velocity.scale((float) delta));
 			velocity = velocity.add(gravity.scale((float) delta));
+			rotation += angVelocity;
 		}
 		
 		protected void draw() {}
 		
-		public Entity(Vec2 velocity, Vec2 position, float mass, T bounds) {
+		public Entity(Vec2 velocity, Vec2 position, float mass, float rotation, float angVelocity) {
 			this.velocity = velocity;
 			this.position = position;
 			this.mass = mass;
+			this.rotation = rotation;
+			this.angVelocity = angVelocity;
 			invMass = mass == 0 ? 0 : 1 / mass;
-			this.bounds = bounds;
 			newEntities.add(this);
 		}
 		
 	}
 	
-	private List<Entity<?>> entities = new ArrayList<Entity<?>>();
-	private Deque<Entity<?>> newEntities = new ArrayDeque<Entity<?>>(),
-			oldEntities = new ArrayDeque<Entity<?>>();
+	private List<Entity> entities = new ArrayList<Entity>();
+	private Deque<Entity> newEntities = new ArrayDeque<Entity>(),
+			oldEntities = new ArrayDeque<Entity>();
 	
 	private Vec2 gravity;
 	
 	public void update(double d) {
 		entities.removeAll(oldEntities);
 		entities.addAll(newEntities);
-		for(Entity<?> entity : entities) entity.update(d);
+		for(Entity entity : entities) entity.update(d);
 	}
 
 	public void draw() {
-		for(Entity<?> entity : entities) entity.draw();
+		for(Entity entity : entities) entity.draw();
 	}
 
 	public World(Vec2 gravity) {
