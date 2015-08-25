@@ -50,7 +50,7 @@ public class EmulatorTest {
 	        if ( glfwInit() != GL11.GL_TRUE )
 	            throw new IllegalStateException("Unable to initialize GLFW");
 	        
-	        initGraphics();        
+	        initGraphics();
 	        
 			Framebuffer2 fb = new Framebuffer2(640, 320);
 			
@@ -65,6 +65,11 @@ public class EmulatorTest {
 				displen = display.length;
 				
 				fb.bind(); {
+					
+					glMatrixMode(GL_PROJECTION);
+			        glLoadIdentity();
+					glOrtho(0, fb.getWidth(), 0, fb.getHeight(), 1, -1);
+					glMatrixMode(GL_MODELVIEW);
 					
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 					glBegin(GL_POINTS);
@@ -93,6 +98,11 @@ public class EmulatorTest {
 					GL11.glEnd();
 				
 				} Framebuffer2.unbind();
+				
+				glMatrixMode(GL_PROJECTION);
+		        glLoadIdentity();
+				glOrtho(0, window.getWidth(), window.getHeight(), 0, 1, -1);
+				glMatrixMode(GL_MODELVIEW);
 				
 		        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		        fb.bindColorTexture();
@@ -138,11 +148,6 @@ public class EmulatorTest {
         
         //Do opengl stuff (create glcontext from thread)
         GLContext.createFromCurrent();
-        
-        glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glOrtho(0, window.getWidth(), window.getHeight(), 0, 1, -1);
-		glMatrixMode(GL_MODELVIEW);
 	    
 		glEnable(GL_TEXTURE_2D);
 		glPointSize(10f);
