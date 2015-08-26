@@ -64,12 +64,17 @@ public class Vec2 {
 		return true;
 	}
 	
-	public void glVertex() {
-		GL11.glVertex2d(x, y);
+	public void glTexCoord() {
+		GL11.glTexCoord2f(x, y);
+		
 	}
 	
 	public void glTranslate() {
 		GL11.glTranslatef(x, y, 0);
+	}
+	
+	public void glVertex() {
+		GL11.glVertex2d(x, y);
 	}
 	
 	public int hashCode() {
@@ -102,7 +107,7 @@ public class Vec2 {
 	public Vec2 negate() {
 		return new Vec2(-x, -y);
 	}
-	
+
 	public Vec2 normalize() {
 		return invScale(length());
 	}
@@ -110,11 +115,11 @@ public class Vec2 {
 	public float overlap1D(Vec2 o) {
 		return Math.min(y, o.y) - Math.max(x, o.x);
 	}
-
+	
 	public Vec2 perp() {
 		return new Vec2(-y, x);
 	}
-	
+
 	public Vec2 scale(float s) {
 		return new Vec2(x * s, y * s);
 	}
@@ -129,11 +134,6 @@ public class Vec2 {
 
 	public String toString() {
 		return "{" + x + ", " + y + "}";
-	}
-
-	public void glTexCoord() {
-		GL11.glTexCoord2f(x, y);
-		
 	}
 	
 }

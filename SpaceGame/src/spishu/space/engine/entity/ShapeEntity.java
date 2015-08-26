@@ -9,18 +9,18 @@ import spishu.space.engine.math.Vec2;
 import spishu.space.engine.phys.World;
 import spishu.space.engine.phys.World.Entity;
 
-public class SingleShapeEntity<T extends Shape> extends Entity { //Simple implementation of entity
+public class ShapeEntity<T extends Shape> extends Entity { //Simple implementation of entity
 
 	private Animation texture;
 	private DisplayList list;
 	private T bounds;
 	
-	public SingleShapeEntity(World world, Vec2 velocity, Vec2 position, float mass, float rotation, float angVelocity,
-			T bounds, Animation texture) {
-		world.super(velocity, position, mass, rotation, angVelocity);
+	public ShapeEntity(World world, Vec2 velocity, Vec2 position, float mass, float rotation, float angVelocity,
+			float restitution, T bounds, Animation texture) {
+		world.super(velocity, position, mass, rotation, angVelocity, restitution);
 		this.texture = texture;
 		this.bounds = bounds;
-		Shape texcoordsShapes = bounds.translate(bounds.min().negate()).divDim(bounds.max());
+		Shape origin = bounds.translate(bounds.min().negate()), texcoordsShapes = origin.divDim(origin.max());
 		list = new DisplayList();
 		GL11.glBegin(GL11.GL_POLYGON);
 		for(int i = 0; i < bounds.vertices.length; i++){

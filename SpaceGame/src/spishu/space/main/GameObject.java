@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GLContext;
 
 import spishu.space.engine.anim.Animation;
 import spishu.space.engine.anim.TextureLineup;
-import spishu.space.engine.entity.SingleShapeEntity;
+import spishu.space.engine.entity.ShapeEntity;
 import spishu.space.engine.gl.GLWindow;
 import spishu.space.engine.gl.Texture;
 import spishu.space.engine.math.Rectangle;
@@ -57,13 +57,14 @@ public class GameObject { //It all starts here
 	        world = new World(new Vec2(0, 0));
 	        
 	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));
-	        new SingleShapeEntity<Shape>(world, new Vec2(0.1f, 0), window.getDimensions().invScale(2), 0,
-	        		0, 0.1f, Rectangle.fromHalfDimension(new Vec2(0), new Vec2(100)), anim);
+	        new ShapeEntity<Shape>(world, new Vec2(0.4f, 0), window.getDimensions().invScale(2), 0,
+	        		45, 0, 1, Rectangle.fromHalfDimension(new Vec2(0), new Vec2(100)), anim);
 			
 	        while(!window.shouldClose()) {
 	        	
-	        	world.update(delta());
-
+	        	double delta = delta();
+	        	world.update(delta);
+	        	
 	            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	        	window.setTitle("SWAG LEVEL: " + time);
 	            world.draw();
@@ -93,7 +94,7 @@ public class GameObject { //It all starts here
         // Configure our window
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
- 
+        
         // Create the window
         window = new GLWindow(1000, 700);
         window.setPosition(GLWindow.getScreenDimensions().sub(window.getDimensions()).invScale(2));
