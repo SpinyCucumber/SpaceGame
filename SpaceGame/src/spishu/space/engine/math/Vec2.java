@@ -132,8 +132,9 @@ public class Vec2 {
 		return new Vec2(x - o.x, y - o.y);
 	}
 
+	@Override
 	public String toString() {
-		return "{" + x + ", " + y + "}";
+		return "Vec2 [x=" + x + ", y=" + y + "]";
 	}
 	
 }

@@ -1,20 +1,25 @@
 package spishu.space.engine.math;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import spishu.space.engine.phys.CollisionResult;
 
 
 /**A more complex geometrical class, usually used to detect collisions, but has many applications.
- * Utilizes the Vector2D class heavily.
+ * Utilizes the Vector2D class heavily. Ported from the CodingClub project.
  */
-public class Shape { //Ported from CodingClub
+public class Shape {
 
 	public Vec2[] vertices;
 	
 	public Shape(Vec2...vertices) {
 		this.vertices = vertices;
 	}
-	
-	//Move the shape using a vector
+
 	public Shape translate(Vec2 d) {
 		Vec2[] newVertices = new Vec2[vertices.length];
 		for(int i = 0; i < vertices.length; i++) {
@@ -23,15 +28,12 @@ public class Shape { //Ported from CodingClub
 		return new Shape(newVertices);
 	}
 	
-	public Shape rotate(Vec2 center, float a) {
+	public Shape rotate(float a) {
 		Vec2[] newVertices = new Vec2[vertices.length];
 		Matrix2 rot = Matrix2.fromAngle(a);
 		//Iterate over vertices
 		for(int i = 0; i < vertices.length; i++) {
-			//Translate vertex to origin
-			Vec2 p = vertices[i].sub(center);
-			Vec2 r = p.multiply(rot);
-			newVertices[i] = center.add(r);
+			newVertices[i] = vertices[i].multiply(rot);
 		}
 		return new Shape(newVertices);
 	}
@@ -72,20 +74,18 @@ public class Shape { //Ported from CodingClub
 		return min().midpoint(max());
 	}
 	
-	//Get the axes for testing by normalizing the vectors perpendicular the the edges
-	public Vec2[] axes() {
-		Vec2[] axes = new Vec2[vertices.length];
+	/**Get the axes for testing by normalizing the vectors perpendicular the the edges*/
+	public Collection<Vec2> axes() {
+		Collection<Vec2> axes = new HashSet<Vec2>();
 		for(int i = 0; i < vertices.length; i++) {
 			Vec2 p1 = vertices[i];
-			Vec2 p2 = vertices[i + 1 == vertices.length ? 0 : i + 1];
-			Vec2 edge = p1.sub(p2);
-			Vec2 normal = edge.perp();
-			axes[i] = normal.normalize();
+			Vec2 p2 = vertices[(i + 1) % vertices.length];
+			axes.add(p2.sub(p1).normalize().perp());
 		}
 		return axes;
 	}
 	
-	//Project the shape onto a 1-dimensional surface, like creating a shadow
+	/**Project the shape onto a 1-dimensional surface, like creating a shadow.*/
 	public Vec2 project(Vec2 axis) {
 		float min = axis.dot(vertices[0]), max = min;
 		for(int i = 1; i < vertices.length; i++) {
@@ -97,20 +97,24 @@ public class Shape { //Ported from CodingClub
 		return projection;
 	}
 
-	//Test for collisions using the Seperating-Axis Theorem. The theorem states that if all
-	//of the overlaps of the shadows of the shapes when projected onto their individual
-	//axes do not overlap, then the shapes are not colliding. This algorithm works well
-	//because it test collisions between any kind of shape, as long as the shape is not convex
+	/** Test for collisions using the Seperating-Axis Theorem. The theorem states that if all
+	of the overlaps of the shadows of the shapes when projected onto their individual
+	axes do not overlap, then the shapes are not colliding. This algorithm works well
+	because it test collisions between any kind of shape, as long as the shape is convex.*/
 	public CollisionResult checkCollision(Shape b) {
 		
-		float depth = 1000;
+		Set<Vec2> axes = new HashSet<Vec2>();
+		axes.addAll(this.axes());
+		axes.addAll(b.axes());
+		Iterator<Vec2> iterator = axes.iterator();
 		
-		Vec2 normal = null;
-		Vec2[] axes1 = axes(), axes2 = b.axes();
+		Vec2 normal = iterator.next();
+		float depth = project(normal).overlap1D(b.project(normal));
+		if(depth < 0) return null;
 		
-		for(Vec2 axis : axes1) {
+		while(iterator.hasNext()) {
 			
-			Vec2 p1 = project(axis), p2 = b.project(axis);
+			Vec2 axis = iterator.next(), p1 = project(axis), p2 = b.project(axis);
 			float ol = p1.overlap1D(p2);
 			
 			if (ol < 0) return null;
@@ -120,33 +124,22 @@ public class Shape { //Ported from CodingClub
 			}
 			
 		}
-		
-		for(Vec2 axis : axes2) {
-			
-			Vec2 p1 = project(axis), p2 = b.project(axis);
-			float ol = p1.overlap1D(p2);
-			
-			if (ol < 0) return null;
-			if(ol < depth) {
-				depth = ol;
-				normal = axis;
-			}
-			
-		}
-		
 		Vec2 d = center().sub(b.center());
 		if(normal.dot(d) > 0) normal = normal.negate();
 
 		return new CollisionResult(normal, depth);
+		
 	}
-
+	
 	@Override
 	public String toString() {
-		String s = "{";
-		for(Vec2 v : vertices) {
-			s += v.toString() + " ";
-		}
-		return s + "}";
+		return "Shape [vertices=" + Arrays.toString(vertices) + "]";
+	}
+
+	@SuppressWarnings("unused")
+	public static void main(String[] args) {
+		Shape s = Rectangle.fromDimensions(new Vec2(100, 100));
+		Shape r = s.rotate((float) Math.toRadians(45));
 	}
 	
 }

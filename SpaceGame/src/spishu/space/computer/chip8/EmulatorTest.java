@@ -1,8 +1,29 @@
 package spishu.space.computer.chip8;
 
 import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
+import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
+import static org.lwjgl.glfw.GLFW.glfwInit;
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
+import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
+import static org.lwjgl.glfw.GLFW.glfwTerminate;
+import static org.lwjgl.glfw.GLFW.glfwWindowHint;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_POINTS;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glOrtho;
+import static org.lwjgl.opengl.GL11.glPointSize;
+import static org.lwjgl.opengl.GL11.glViewport;
 
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -12,32 +33,16 @@ import org.lwjgl.opengl.GLContext;
 import spishu.space.engine.gl.Framebuffer2;
 import spishu.space.engine.gl.GLWindow;
 import spishu.space.engine.gl.Texture;
-import spishu.space.engine.phys.World;
 
 public class EmulatorTest {
 	
 	GLFWErrorCallback errorCallback;
-	double time, lastTime;
 	
 	GLWindow window;
-	World world;
 	
 	Chip chip = new Chip();
 	private byte[] display;
 	private int displen;
-	
-	public double getTime() {
-    	return glfwGetTime();
-    }
-    
-    public double delta() {
-	    time = getTime();
-	    try {
-	    	return time - lastTime;
-	    } finally {
-    		lastTime = time;
-    	}
-    }
 
 	public void start() {
 		
@@ -110,9 +115,6 @@ public class EmulatorTest {
 		        fb.bindColorTexture();
 		        window.fullscreenQuad();
 		        Texture.unbind();
-		        
-	        	delta();
-	        	window.setTitle("SWAG LEVEL: " + time);
 	            
 	            window.swapBuffers();
 	        	
@@ -143,7 +145,7 @@ public class EmulatorTest {
         // Create the window
         window = new GLWindow(1000, 700);
         window.setPosition(GLWindow.getScreenDimensions().sub(window.getDimensions()).invScale(2));
-
+        window.setTitle("Chip8 Emulator");
         window.makeContext();
         // Enable v-sync
         glfwSwapInterval(1);

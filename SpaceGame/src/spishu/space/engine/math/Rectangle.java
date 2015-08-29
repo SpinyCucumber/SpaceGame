@@ -1,9 +1,12 @@
 package spishu.space.engine.math;
 
+import java.util.ArrayDeque;
+import java.util.Collection;
+
 
 /**
  * Extension of the Shape2D class designed to speed up processing by using a minimal amount of
- * axes. Also contains an convenience constructor which takes the center and the dimensions
+ * axes. Also contains a constructor which takes the dimensions
  */
 public class Rectangle extends Shape {
 
@@ -12,21 +15,27 @@ public class Rectangle extends Shape {
 	}
 	
 	@Override
-	public Vec2[] axes() {
-		Vec2[] axes = new Vec2[2];
-		for(int i = 0; i < 2; i++) {
-			Vec2 p1 = vertices[i];
-			Vec2 p2 = vertices[i == 2 ? 0 : i + 1];
-			Vec2 edge = p1.sub(p2);
-			Vec2 normal = edge.perp();
-			axes[i] = normal.normalize();
-		}
+	public Collection<Vec2> axes() {
+		Collection<Vec2> axes = new ArrayDeque<Vec2>();
+		Vec2 n = vertices[1].sub(vertices[0]).normalize();
+		axes.add(n);
+		axes.add(n.perp());
 		return axes;
 	}
 	
-	public static Rectangle fromHalfDimension(Vec2 c, Vec2 hd) {
-		Vec2 p = new Vec2(-hd.x, hd.y);
-		return new Rectangle(c.sub(hd), c.sub(p), c.add(hd), c.add(p));
+	@Override
+	public Shape rotate(float angle) {
+		return new Rectangle(super.rotate(angle).vertices);
+	}
+	
+	@Override
+	public Shape translate(Vec2 d) {
+		return new Rectangle(super.translate(d).vertices);
+	}
+	
+	public static Rectangle fromDimensions(Vec2 d) {
+		Vec2 hd = d.invScale(2), p = new Vec2(-hd.x, hd.y);
+		return new Rectangle(hd.negate(), p.negate(), hd, p);
 	}
 	
 	public static Rectangle fromCorners(Vec2 c1, Vec2 c2) {

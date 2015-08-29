@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import spishu.space.engine.entity.ShapeEntity;
+import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
 
 public class World {;
@@ -17,9 +19,20 @@ public class World {;
 		return colliders;
 	}
 	
-	public interface Collider {
+	static {
 		
-		CollisionResult collide(Entity ent1, Entity ent2);
+		colliders.add(new Collider() {
+
+			@Override
+			public CollisionResult collide(Entity ent1, Entity ent2) {
+				ShapeEntity<?> e1 = (ShapeEntity<?>) ent1;
+				ShapeEntity<?> e2 = (ShapeEntity<?>) ent2;
+				Shape s1 = e1.getBounds().rotate((float) Math.toRadians(e1.rotation)).translate(e1.position);
+				Shape s2 = e2.getBounds().rotate((float) Math.toRadians(e2.rotation)).translate(e2.position);
+				return s1.checkCollision(s2);
+			}
+			
+		});
 		
 	}
 	
@@ -34,8 +47,7 @@ public class World {;
 		
 		protected void update(double delta) {
 			position = position.add(velocity.scale((float) delta));
-			Vec2 temp = velocity.add(gravity.scale((float) delta));
-			velocity = temp;
+			velocity = velocity.add(gravity.scale((float) delta));
 			rotation += angVelocity;
 		}
 		
@@ -63,6 +75,8 @@ public class World {;
 	public void update(double delta) {
 		entities.removeAll(oldEntities);
 		entities.addAll(newEntities);
+		oldEntities.clear();
+		newEntities.clear();
 		for(int i1 = 0; i1 < entities.size(); i1++) { //Iterate over all pairs of entities
 			Entity e1 = entities.get(i1);
 			e1.update(delta); //Call entity's update method
