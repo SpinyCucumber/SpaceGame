@@ -38,10 +38,11 @@ public class ShapeEntity<T extends Shape> extends Entity { //Simple implementati
 	@Override
 	public void draw(){
 		texture.bind();
+		GL11.glPushMatrix();
 		position.glTranslate();
 		GL11.glRotatef(rotation, 0, 0, 1);
 		list.call();
-		GL11.glLoadIdentity();
+		GL11.glPopMatrix();
 	}
 	
 	@Override
