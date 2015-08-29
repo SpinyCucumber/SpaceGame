@@ -52,7 +52,7 @@ public class EmulatorTest {
 	        
 	        initGraphics();
 	        
-			Framebuffer2 fb = new Framebuffer2(100, 70);
+			Framebuffer2 fb = new Framebuffer2(64, 32);
 			
 			chip.init();
 			chip.loadProgram("res/prog/pong2.c8");
@@ -87,7 +87,7 @@ public class EmulatorTest {
 						} else {
 	
 							int x = (i % 64);
-							int y = (int)Math.floor(i / 64);
+							int y = (int)Math.floor(i / 64) + 1;
 							
 							GL11.glVertex2f(x, y);
 							
