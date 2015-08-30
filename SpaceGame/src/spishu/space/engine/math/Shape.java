@@ -1,9 +1,11 @@
 package spishu.space.engine.math;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.lwjgl.opengl.GL11;
@@ -76,11 +78,16 @@ public class Shape {
 		
 	}
 	
+	/**
+	 * Finds center of shape by taking the midpoint of the upper left bounds and lower right bounds.
+	 */
 	public Vec2 center() {
 		return min().midpoint(max());
 	}
 	
-	/**Get the axes for testing by normalizing the vectors perpendicular the the edges*/
+	/**
+	 * Get the axes for testing by normalizing the vectors perpendicular the the edges.
+	 */
 	public Collection<Vec2> axes() {
 		Collection<Vec2> axes = new HashSet<Vec2>();
 		for(int i = 0; i < vertices.length; i++) {
@@ -106,7 +113,9 @@ public class Shape {
 	/** Test for collisions using the Seperating-Axis Theorem. The theorem states that if all
 	of the overlaps of the shadows of the shapes when projected onto their individual
 	axes do not overlap, then the shapes are not colliding. This algorithm works well
-	because it test collisions between any kind of shape, as long as the shape is convex.*/
+	because it test collisions between any kind of shape, as long as the shape is convex.
+	* @param b Shape 2
+	*/
 	public CollisionResult checkCollision(Shape b) {
 		
 		Set<Vec2> axes = new HashSet<Vec2>();
@@ -135,6 +144,11 @@ public class Shape {
 
 		return new CollisionResult(normal, depth);
 		
+	}
+	
+	public List<Shape> decompose() {
+		List<Shape> shapes = new ArrayList<Shape>();
+		return shapes;
 	}
 	
 	/**

@@ -74,12 +74,12 @@ public class GameObject { //It all starts here
 	        
 	        initGraphics();
 	        
-	        world = new World(new Vec2(0, 0), 0.05f);
-	        camera = new Camera(new Vec2(0, 0), 1, 200, 0.99f, window);
+	        world = new World(new Vec2(0, 0), 0.6f);
+	        camera = new Camera(new Vec2(0, 0), 1, 400, 0.99f, window);
 	        
 	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));
 	        
-	        new ShapeEntity<Shape>(world, new Vec2(100f, 0), new Vec2(-300, 0),
+	        new ShapeEntity<Shape>(world, new Vec2(200f, 0), new Vec2(-300, 0),
 	        		1, 45, 0, 1, Rectangle.fromDimensions(new Vec2(200)), anim);
 	        new ShapeEntity<Shape>(world, new Vec2(0, 0), new Vec2(300, 0),
 	        		1, 0, 0, 1, Rectangle.fromDimensions(new Vec2(100)), anim);

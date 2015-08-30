@@ -2,7 +2,15 @@ package spishu.space.engine.math;
 
 import org.lwjgl.opengl.GL11;
 
+/**
+ * 2-Dimensional vector.
+ * 
+ * @author SpinyCucumber
+ *
+ */
 public class Vec2 {
+	
+	public static final Vec2 ZERO = new Vec2(0);
 	
 	public static Vec2 fromAngle(float angle) {
 		return new Vec2((float) Math.sin(angle), (float) Math.cos(angle));

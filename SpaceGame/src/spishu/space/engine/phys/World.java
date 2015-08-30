@@ -14,6 +14,7 @@ import spishu.space.engine.math.Vec2;
 /**
  * A container that lets entities interact with eachother.
  * Also has gravity and sort-of air-resistance.
+ * Uses a static list of 'colliders' to detect collisions.
  * 
  * @author SpinyCucumber
  *
@@ -64,11 +65,11 @@ public class World {;
 			position = position.add(velocity.scale((float) delta));
 			
 			//Apply gravity
-			velocity = velocity.add(gravity);
+			velocity = velocity.add(gravity.scale(mass));
 			
 			//Modify speed
-			float speed = velocity.length();
-			if(speed != 0) {
+			if(!velocity.equals(Vec2.ZERO)) {
+				float speed = velocity.length();
 				Vec2 dir = velocity.invScale(speed);
 				speed = Math.max(0, speed - slowdown);
 				velocity = dir.scale(speed);
@@ -78,8 +79,8 @@ public class World {;
 			rotation += angVelocity;
 			
 			//Modify angular speed
-			float speedAng = Math.abs(angVelocity);
-			if(speedAng != 0) {
+			if(angVelocity != 0) {
+				float speedAng = Math.abs(angVelocity);
 				int dirAng = (int) (angVelocity / speedAng);
 				speedAng = Math.max(0, speedAng - angSlowdown);
 				angVelocity = dirAng * speedAng;
