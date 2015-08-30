@@ -32,6 +32,7 @@ import org.lwjgl.opengl.GLContext;
 import spishu.space.engine.anim.Animation;
 import spishu.space.engine.anim.TextureLineup;
 import spishu.space.engine.entity.ShapeEntity;
+import spishu.space.engine.gl.Camera;
 import spishu.space.engine.gl.GLWindow;
 import spishu.space.engine.gl.Texture;
 import spishu.space.engine.math.Rectangle;
@@ -45,6 +46,7 @@ public class GameObject { //It all starts here
 	double time, lastTime;
 	
 	GLWindow window;
+	Camera camera;
 	World world;
 	
 	public double getTime() {
@@ -72,19 +74,24 @@ public class GameObject { //It all starts here
 	        
 	        initGraphics();
 	        
-	        world = new World(new Vec2(0, 0), 0.2f);
+	        world = new World(new Vec2(0, 0), 0.05f);
+	        camera = new Camera(new Vec2(0, 0), 1, 200, 0.99f, window);
 	        
 	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));
 	        
-	        new ShapeEntity<Shape>(world, new Vec2(50f, 0), window.getDimensions().invScale(2), 0.1f,
-	        		45, 0, 1, Rectangle.fromDimensions(new Vec2(200)), anim);
-	        new ShapeEntity<Shape>(world, new Vec2(0, 0), window.getDimensions().invScale(2).add(new Vec2(300, 0)), 1,
-	        		0, 0, 1, Rectangle.fromDimensions(new Vec2(100)), anim);
+	        new ShapeEntity<Shape>(world, new Vec2(100f, 0), new Vec2(-300, 0),
+	        		1, 45, 0, 1, Rectangle.fromDimensions(new Vec2(200)), anim);
+	        new ShapeEntity<Shape>(world, new Vec2(0, 0), new Vec2(300, 0),
+	        		1, 0, 0, 1, Rectangle.fromDimensions(new Vec2(100)), anim);
 			
 	        while(!window.shouldClose()) {
 	        	
 	        	double delta = delta();
 	        	world.update(delta);
+	        	camera.update(delta);
+	        	
+	        	glLoadIdentity();
+	        	camera.transform();
 	        	
 	            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	        	window.setTitle("SWAG LEVEL: " + time);
@@ -129,7 +136,8 @@ public class GameObject { //It all starts here
         
         glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0, window.getWidth(), window.getHeight(), 0, 1, -1);
+		Vec2 br = window.getDimensions().invScale(2), tl = br.negate();
+		glOrtho(tl.x, br.x, br.y, tl.y, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
 	    
 		glEnable(GL_TEXTURE_2D);

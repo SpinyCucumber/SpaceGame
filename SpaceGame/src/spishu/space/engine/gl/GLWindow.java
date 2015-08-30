@@ -53,6 +53,10 @@ public class GLWindow {
 		return glfwWindowShouldClose(handle) == GL11.GL_TRUE;
 	}
 	
+	public boolean isKeyPressed(int key) {
+		return glfwGetKey(handle, key) == GL11.GL_TRUE;
+	}
+	
 	public void fullscreenQuad() {
 		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0);

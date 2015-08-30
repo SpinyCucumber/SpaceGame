@@ -15,6 +15,18 @@ public class ShapeEntity<T extends Shape> extends Entity { //Simple implementati
 	private DisplayList list;
 	private T bounds;
 	
+	/**
+	 * Creates ShapeEntity and adds it to world. Must call world.update() to register.
+	 * @param world World to add to
+	 * @param velocity
+	 * @param position
+	 * @param mass
+	 * @param rotation
+	 * @param angVelocity
+	 * @param restitution
+	 * @param bounds
+	 * @param texture
+	 */
 	public ShapeEntity(World world, Vec2 velocity, Vec2 position, float mass, float rotation, float angVelocity,
 			float restitution, T bounds, Animation texture) {
 		world.super(velocity, position, mass, rotation, angVelocity, restitution);
