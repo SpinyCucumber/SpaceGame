@@ -46,9 +46,31 @@ public class World {;
 		}
 		
 		protected void update(double delta) {
+			//Move
 			position = position.add(velocity.scale((float) delta));
-			velocity = velocity.add(gravity.scale((float) delta));
+			
+			//Apply gravity
+			velocity = velocity.add(gravity);
+			
+			//Modify speed
+			float speed = velocity.length();
+			if(speed != 0) {
+				Vec2 dir = velocity.invScale(speed);
+				speed = Math.max(0, speed - slowdown);
+				velocity = dir.scale(speed);
+			}
+			
+			//Rotate
 			rotation += angVelocity;
+			
+			//Modify angular speed
+			float speedAng = Math.abs(angVelocity);
+			if(speedAng != 0) {
+				int dirAng = (int) (angVelocity / speedAng);
+				speedAng = Math.max(0, speedAng - angSlowdown);
+				angVelocity = dirAng * speedAng;
+			}
+			
 		}
 		
 		protected void draw() {}
@@ -71,6 +93,7 @@ public class World {;
 			oldEntities = new ArrayDeque<Entity>();
 	
 	private Vec2 gravity;
+	private float slowdown, angSlowdown;
 	
 	public void update(double delta) {
 		entities.removeAll(oldEntities);
@@ -100,10 +123,12 @@ public class World {;
 		for(Entity entity : entities) entity.draw();
 	}
 
-	public World(Vec2 gravity) {
+	public World(Vec2 gravity, float slowdown) {
 		this.gravity = gravity;
+		this.slowdown = slowdown;
+		this.angSlowdown = slowdown;
 	}
-	
+
 	public static void resolveCollision(CollisionResult result, Entity e1, Entity e2) {
 		
 		/*

@@ -72,13 +72,13 @@ public class GameObject { //It all starts here
 	        
 	        initGraphics();
 	        
-	        world = new World(new Vec2(0, 0));
+	        world = new World(new Vec2(0, 0), 0.2f);
 	        
 	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));
 	        
 	        new ShapeEntity<Shape>(world, new Vec2(50f, 0), window.getDimensions().invScale(2), 0.1f,
 	        		45, 0, 1, Rectangle.fromDimensions(new Vec2(200)), anim);
-	        new ShapeEntity<Shape>(world, new Vec2(0, 0), window.getDimensions().invScale(2).add(new Vec2(400, 0)), 1,
+	        new ShapeEntity<Shape>(world, new Vec2(0, 0), window.getDimensions().invScale(2).add(new Vec2(300, 0)), 1,
 	        		0, 0, 1, Rectangle.fromDimensions(new Vec2(100)), anim);
 			
 	        while(!window.shouldClose()) {
