@@ -140,6 +140,13 @@ public class World {;
 	public void draw() {
 		for(Entity entity : entities) entity.draw();
 	}
+	
+	/**
+	 * Calls entities' remove method.
+	 */
+	public void delete() {
+		for(Entity entity : entities) entity.remove();
+	}
 
 	public World(Vec2 gravity, float slowdown) {
 		this.gravity = gravity;

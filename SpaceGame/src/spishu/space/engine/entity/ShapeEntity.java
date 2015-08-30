@@ -77,6 +77,12 @@ public class ShapeEntity<T extends Shape> extends Entity {
 	public Matrix2 getAABB() {
 		return aabb;
 	}
+	
+	@Override
+	public void remove() {
+		super.remove();
+		list.delete();
+	}
 
 	@Override
 	public void draw(){

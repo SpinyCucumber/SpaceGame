@@ -75,7 +75,7 @@ public class GameObject { //It all starts here
 	        initGraphics();
 	        
 	        world = new World(new Vec2(0, 0), 0.6f);
-	        camera = new Camera(new Vec2(0, 0), 1, 400, 0.99f, window);
+	        camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
 	        
 	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));
 	        
@@ -109,6 +109,7 @@ public class GameObject { //It all starts here
 			
 		} finally {
 			
+			world.delete();
 			window.destroy();
 			glfwTerminate();
 			errorCallback.release();
