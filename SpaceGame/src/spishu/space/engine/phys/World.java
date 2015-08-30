@@ -1,6 +1,7 @@
 package spishu.space.engine.phys;
 
 import java.util.ArrayDeque;
+
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashSet;
@@ -10,7 +11,13 @@ import java.util.Set;
 import spishu.space.engine.entity.ShapeEntity;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
-
+/**
+ * A container that lets entities interact with eachother.
+ * Also has gravity and sort-of air-resistance.
+ * 
+ * @author SpinyCucumber
+ *
+ */
 public class World {;
 	
 	private static Set<Collider> colliders = new HashSet<Collider>();
@@ -27,6 +34,7 @@ public class World {;
 			public CollisionResult collide(Entity ent1, Entity ent2) {
 				ShapeEntity<?> e1 = (ShapeEntity<?>) ent1;
 				ShapeEntity<?> e2 = (ShapeEntity<?>) ent2;
+				if(!e1.getAABB().translateAABB(e1.position).overlapAABB(e2.getAABB().translateAABB(e2.position))) return null;
 				Shape s1 = e1.getBounds().rotate((float) Math.toRadians(e1.rotation)).translate(e1.position);
 				Shape s2 = e2.getBounds().rotate((float) Math.toRadians(e2.rotation)).translate(e2.position);
 				return s1.checkCollision(s2);
@@ -36,6 +44,12 @@ public class World {;
 		
 	}
 	
+	/**
+	 * The base entity class. Has velocity, position, mass, rotation, and restitution.
+	 * 
+	 * @author SpinyCucumber
+	 *
+	 */
 	public class Entity {
 		
 		public Vec2 velocity, position;
@@ -96,10 +110,12 @@ public class World {;
 	private float slowdown, angSlowdown;
 	
 	public void update(double delta) {
+		
 		entities.removeAll(oldEntities);
 		entities.addAll(newEntities);
 		oldEntities.clear();
 		newEntities.clear();
+		
 		for(int i1 = 0; i1 < entities.size(); i1++) { //Iterate over all pairs of entities
 			Entity e1 = entities.get(i1);
 			e1.update(delta); //Call entity's update method
@@ -117,6 +133,7 @@ public class World {;
 				}
 			}
 		}
+		
 	}
 
 	public void draw() {
@@ -127,14 +144,16 @@ public class World {;
 		this.gravity = gravity;
 		this.slowdown = slowdown;
 		this.angSlowdown = slowdown;
-	}
-
+	}	
+	
+	/**
+	 * Newton's equations implemented to the best of my ability.
+	 * 
+	 * @param result The collision normal and depth
+	 * @param e1 Entity 1
+	 * @param e2 Entity 2
+	 */
 	public static void resolveCollision(CollisionResult result, Entity e1, Entity e2) {
-		
-		/*
-		 * Sir Newton's equations. Lots of comments
-		 * Apply an impulse to each entity, moving them away from eachother along the collision normal.
-		 */
 		
 		float rv = e2.velocity.sub(e1.velocity).dot(result.normal); //The difference in velocities, along the normal.
 		

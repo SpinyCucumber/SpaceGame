@@ -6,11 +6,17 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.lwjgl.opengl.GL11;
+
 import spishu.space.engine.phys.CollisionResult;
 
 
-/**A more complex geometrical class, usually used to detect collisions, but has many applications.
+/**
+ * A more complex geometrical class, usually used to detect collisions, but has many applications.
  * Utilizes the Vector2D class heavily. Ported from the CodingClub project.
+ * 
+ * @author SpinyCucumber
+ * 
  */
 public class Shape {
 
@@ -129,6 +135,16 @@ public class Shape {
 
 		return new CollisionResult(normal, depth);
 		
+	}
+	
+	/**
+	 * Draws the shape using GL_LINE_LOOP.
+	 * @see GL11
+	 */
+	public void glLineLoop() {
+		GL11.glBegin(GL11.GL_LINE_LOOP);
+		for(Vec2 vertex : vertices) vertex.glVertex();
+		GL11.glEnd();
 	}
 	
 	@Override

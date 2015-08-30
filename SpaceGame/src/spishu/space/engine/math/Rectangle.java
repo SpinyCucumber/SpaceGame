@@ -6,7 +6,9 @@ import java.util.Collection;
 
 /**
  * Extension of the Shape2D class designed to speed up processing by using a minimal amount of
- * axes. Also contains a constructor which takes the dimensions
+ * axes. Also contains a constructor which takes the dimensions.
+ * 
+ * @author SpinyCucumber
  */
 public class Rectangle extends Shape {
 
@@ -40,6 +42,10 @@ public class Rectangle extends Shape {
 	
 	public static Rectangle fromCorners(Vec2 c1, Vec2 c2) {
 		return new Rectangle(c1, new Vec2(c2.x, c1.y), c2, new Vec2(c1.x, c2.y));
+	}
+	
+	public static Rectangle fromAABB(Matrix2 AABB) {
+		return fromCorners(AABB.x, AABB.x.add(AABB.y));
 	}
 
 }
