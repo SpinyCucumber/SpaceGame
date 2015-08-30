@@ -12,8 +12,8 @@ public class Camera {
 	private GLWindow window;
 	
 	public void transform() {
-		position.negate().glTranslate();
 		GL11.glScalef(zoom, zoom, 0);
+		position.negate().glTranslate();
 	}
 	
 	public void update(double delta) {
@@ -21,7 +21,7 @@ public class Camera {
 		if(window.isKeyPressed(GLFW_KEY_DOWN)) position.y += moveSpeed * delta;
 		if(window.isKeyPressed(GLFW_KEY_LEFT)) position.x -= moveSpeed * delta;
 		if(window.isKeyPressed(GLFW_KEY_RIGHT)) position.x += moveSpeed * delta;
-		if(window.isKeyPressed(GLFW_KEY_KP_0)) zoom /= zoomSpeed;
+		if(window.isKeyPressed(GLFW_KEY_RIGHT_SHIFT)) zoom /= zoomSpeed;
 		if(window.isKeyPressed(GLFW_KEY_RIGHT_CONTROL)) zoom *= zoomSpeed;
 	}
 
