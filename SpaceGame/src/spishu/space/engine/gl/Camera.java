@@ -21,8 +21,8 @@ public class Camera {
 		if(window.isKeyPressed(GLFW_KEY_DOWN)) position.y += moveSpeed * delta;
 		if(window.isKeyPressed(GLFW_KEY_LEFT)) position.x -= moveSpeed * delta;
 		if(window.isKeyPressed(GLFW_KEY_RIGHT)) position.x += moveSpeed * delta;
-		if(window.isKeyPressed(GLFW_KEY_RIGHT_SHIFT)) zoom /= zoomSpeed;
-		if(window.isKeyPressed(GLFW_KEY_RIGHT_CONTROL)) zoom *= zoomSpeed;
+		if(window.isKeyPressed(GLFW_KEY_LEFT_SHIFT)) zoom /= zoomSpeed;
+		if(window.isKeyPressed(GLFW_KEY_LEFT_CONTROL)) zoom *= zoomSpeed;
 	}
 
 	public Camera(Vec2 position, float zoom, float moveSpeed, float zoomSpeed,

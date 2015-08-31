@@ -85,6 +85,14 @@ public class Shape {
 		return min().midpoint(max());
 	}
 	
+	public Vec2[] edges() {
+		Vec2[] edges = new Vec2[vertices.length];
+		for(int i = 0; i < vertices.length; i++) {
+			
+		}
+		return edges;
+	}
+	
 	/**
 	 * Get the axes for testing by normalizing the vectors perpendicular the the edges.
 	 */

@@ -43,7 +43,7 @@ import spishu.space.engine.phys.World;
 public class GameObject { //It all starts here
 	
 	GLFWErrorCallback errorCallback;
-	double time, lastTime;
+	double time, lastTime, timeScale = 0.2;
 	
 	GLWindow window;
 	Camera camera;
@@ -72,19 +72,19 @@ public class GameObject { //It all starts here
 	        
 	        initGraphics();
 	        
-	        world = new World(new Vec2(0, 0), 10.0f);
+	        world = new World(new Vec2(0, 0), 20.0f);
 	        camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
 	        
 	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));
 	        
-	        new ShapeEntity<Shape>(world, new Vec2(200f, 0), new Vec2(-300, 0),
-	        		1, 45, 0, 1, Rectangle.fromDimensions(new Vec2(200)), anim);
-	        new ShapeEntity<Shape>(world, new Vec2(0, 0), new Vec2(300, 0),
+	        new ShapeEntity<Shape>(world, new Vec2(200f, 0), new Vec2(-400, 0),
+	        		1, 30, 0, 1, Rectangle.fromDimensions(new Vec2(200)), anim);
+	        new ShapeEntity<Shape>(world, new Vec2(0, 0), new Vec2(0, 0),
 	        		1, 0, 0, 1, Rectangle.fromDimensions(new Vec2(100)), anim);
 			
 	        while(!window.shouldClose()) {
 	        	
-	        	double delta = delta();
+	        	double delta = delta() * timeScale;
 	        	world.update(delta);
 	        	camera.update(delta);
 	        	
