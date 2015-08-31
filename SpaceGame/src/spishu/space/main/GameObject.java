@@ -55,11 +55,9 @@ public class GameObject { //It all starts here
     
     public double delta() {
 	    time = getTime();
-	    try {
-	    	return time - lastTime;
-	    } finally {
-    		lastTime = time;
-    	}
+	    double delta = time - lastTime;
+    	lastTime = time;
+    	return delta;
     }
 
 	public void start() {
