@@ -72,7 +72,7 @@ public class GameObject { //It all starts here
 	        
 	        initGraphics();
 	        
-	        world = new World(new Vec2(0, 0), 0.6f);
+	        world = new World(new Vec2(0, 0), 10.0f);
 	        camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
 	        
 	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));

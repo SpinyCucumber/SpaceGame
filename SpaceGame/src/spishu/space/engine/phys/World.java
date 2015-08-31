@@ -71,7 +71,7 @@ public class World {;
 			if(!velocity.equals(Vec2.ZERO)) {
 				float speed = velocity.length();
 				Vec2 dir = velocity.invScale(speed);
-				speed = Math.max(0, speed - slowdown);
+				speed = Math.max(0, speed - slowdown * (float) delta);
 				velocity = dir.scale(speed);
 			}
 			
@@ -82,7 +82,7 @@ public class World {;
 			if(angVelocity != 0) {
 				float speedAng = Math.abs(angVelocity);
 				int dirAng = (int) (angVelocity / speedAng);
-				speedAng = Math.max(0, speedAng - angSlowdown);
+				speedAng = Math.max(0, speedAng - angSlowdown * (float) delta);
 				angVelocity = dirAng * speedAng;
 			}
 			
