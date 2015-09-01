@@ -27,7 +27,6 @@ import org.lwjgl.opengl.GLContext;
 
 import spishu.space.engine.anim.Animation;
 import spishu.space.engine.anim.TextureLineup;
-import spishu.space.engine.entity.ShapeEntity;
 import spishu.space.engine.gl.Camera;
 import spishu.space.engine.gl.Framebuffer;
 import spishu.space.engine.gl.GLSLProgram;

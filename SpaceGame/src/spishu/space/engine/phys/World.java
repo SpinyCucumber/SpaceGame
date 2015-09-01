@@ -1,16 +1,15 @@
 package spishu.space.engine.phys;
 
 import java.util.ArrayDeque;
-
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import spishu.space.engine.entity.ShapeEntity;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
+import spishu.space.main.ShapeEntity;
 /**
  * A container that lets entities interact with eachother.
  * Also has gravity and sort-of air-resistance.

@@ -1,4 +1,4 @@
-package spishu.space.engine.entity;
+package spishu.space.main;
 
 public class ShipTile {
 
