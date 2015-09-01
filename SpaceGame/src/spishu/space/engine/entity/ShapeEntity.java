@@ -6,7 +6,6 @@ import spishu.space.engine.anim.Animation;
 import spishu.space.engine.gl.DisplayList;
 import spishu.space.engine.gl.Texture;
 import spishu.space.engine.math.AABB;
-import spishu.space.engine.math.Rectangle;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
 import spishu.space.engine.phys.World;
@@ -90,7 +89,7 @@ public class ShapeEntity<T extends Shape> extends Entity {
 		GL11.glPushMatrix();
 		
 		position.glTranslate();
-		Rectangle.fromAABB(aabb).glLineLoop(); //For debug purposes. Will probably be controlled through some static field.
+		//Rectangle.fromAABB(aabb).glLineLoop(); //For debug purposes. Will probably be controlled through some static field.
 		texture.bind();
 		GL11.glRotatef(rotation, 0, 0, 1);
 		list.call();

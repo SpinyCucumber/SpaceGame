@@ -30,6 +30,7 @@ import spishu.space.engine.anim.TextureLineup;
 import spishu.space.engine.entity.ShapeEntity;
 import spishu.space.engine.gl.Camera;
 import spishu.space.engine.gl.Framebuffer;
+import spishu.space.engine.gl.GLSLProgram;
 import spishu.space.engine.gl.GLWindow;
 import spishu.space.engine.gl.Texture;
 import spishu.space.engine.math.AABB;
@@ -45,6 +46,7 @@ public class GameObject {
 	
 	GLWindow window;
 	Framebuffer mainFBO;
+	GLSLProgram fboShader, primShader;
 	Camera camera;
 	World world;
 	
@@ -72,12 +74,13 @@ public class GameObject {
 	        initGraphics();
 	        
 	        mainFBO = new Framebuffer(window.getWidth(), window.getWidth());
+	        primShader = GLSLProgram.fromVertexFragmentPair("res/shader/prim.vs", "res/shader/prim.fs");
+	        fboShader = GLSLProgram.fromVertexFragmentPair("res/shader/fbo.vs", "res/shader/fbo.fs");
 	        world = new World(new Vec2(0, 0), 20.0f);
 	        camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
 	        
 	        Vec2 d = window.getDimensions().invScale(2);
-	        d.y *= -1;
-	        AABB worldOrtho = new AABB(d.negate(), d.scale(2)), screenOrtho = new AABB(Vec2.ZERO, window.getDimensions());
+	        AABB worldOrtho = new AABB(new Vec2(-d.x, d.y), new Vec2(d.x, -d.y).scale(2)), screenOrtho = new AABB(Vec2.ZERO, window.getDimensions());
 	        
 	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));
 	        
@@ -95,6 +98,7 @@ public class GameObject {
 	        	mainFBO.bind(); {
 	        		
 	        		worldOrtho.glOrtho();
+	        		primShader.use();
 		        	camera.transform();
 		        	
 		            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -106,6 +110,7 @@ public class GameObject {
 	        	screenOrtho.glViewport();
 	        	screenOrtho.glOrtho();
 	        	
+	        	fboShader.use();
 	        	mainFBO.bindColorTexture();
 	        	Rectangle.fromAABB(screenOrtho).texturedQuad();
 	        	Texture.unbind();
