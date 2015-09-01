@@ -35,7 +35,7 @@ public class World {;
 			public CollisionResult collide(Entity ent1, Entity ent2) {
 				ShapeEntity<?> e1 = (ShapeEntity<?>) ent1;
 				ShapeEntity<?> e2 = (ShapeEntity<?>) ent2;
-				if(!e1.getAABB().translateAABB(e1.position).overlapAABB(e2.getAABB().translateAABB(e2.position))) return null;
+				if(!e1.getAABB().translate(e1.position).overlap(e2.getAABB().translate(e2.position))) return null;
 				Shape s1 = e1.getBounds().rotate((float) Math.toRadians(e1.rotation)).translate(e1.position);
 				Shape s2 = e2.getBounds().rotate((float) Math.toRadians(e2.rotation)).translate(e2.position);
 				return s1.checkCollision(s2);

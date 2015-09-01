@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import spishu.space.engine.anim.Animation;
 import spishu.space.engine.gl.DisplayList;
 import spishu.space.engine.gl.Texture;
-import spishu.space.engine.math.Matrix2;
+import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
@@ -25,7 +25,7 @@ public class ShapeEntity<T extends Shape> extends Entity {
 	private Animation texture;
 	private DisplayList list;
 	private T bounds;
-	private Matrix2 aabb;
+	private AABB aabb;
 	
 	/**
 	 * Creates ShapeEntity and adds it to world. Must call world.update() to register.
@@ -53,7 +53,7 @@ public class ShapeEntity<T extends Shape> extends Entity {
 			if(length > apoth) apoth = length;
 		}
 		Vec2 v = new Vec2(apoth);
-		aabb = new Matrix2(v.negate(), v.scale(2));
+		aabb = new AABB(v.negate(), v);
 		
 		//Generate texcoord shape by scaling bounds down.
 		Shape origin = bounds.translate(bounds.min().negate()), texcoordsShapes = origin.divDim(origin.max());
@@ -74,7 +74,7 @@ public class ShapeEntity<T extends Shape> extends Entity {
 		return bounds;
 	}
 
-	public Matrix2 getAABB() {
+	public AABB getAABB() {
 		return aabb;
 	}
 	

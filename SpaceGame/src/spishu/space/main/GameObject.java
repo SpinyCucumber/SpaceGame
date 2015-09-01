@@ -12,15 +12,11 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
-import static org.lwjgl.opengl.GL11.GL_PROJECTION;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glOrtho;
 
 import java.io.File;
 
@@ -33,19 +29,22 @@ import spishu.space.engine.anim.Animation;
 import spishu.space.engine.anim.TextureLineup;
 import spishu.space.engine.entity.ShapeEntity;
 import spishu.space.engine.gl.Camera;
+import spishu.space.engine.gl.Framebuffer;
 import spishu.space.engine.gl.GLWindow;
 import spishu.space.engine.gl.Texture;
+import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
 import spishu.space.engine.phys.World;
 
-public class GameObject { //It all starts here
+public class GameObject {
 	
 	GLFWErrorCallback errorCallback;
 	double time, lastTime, timeScale = 0.2;
 	
 	GLWindow window;
+	Framebuffer mainFBO;
 	Camera camera;
 	World world;
 	
@@ -72,8 +71,13 @@ public class GameObject { //It all starts here
 	        
 	        initGraphics();
 	        
+	        mainFBO = new Framebuffer(window.getWidth(), window.getWidth());
 	        world = new World(new Vec2(0, 0), 20.0f);
 	        camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
+	        
+	        Vec2 d = window.getDimensions().invScale(2);
+	        d.y *= -1;
+	        AABB worldOrtho = new AABB(d.negate(), d.scale(2)), screenOrtho = new AABB(Vec2.ZERO, window.getDimensions());
 	        
 	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));
 	        
@@ -88,13 +92,25 @@ public class GameObject { //It all starts here
 	        	world.update(delta);
 	        	camera.update(delta);
 	        	
-	        	glLoadIdentity();
-	        	camera.transform();
+	        	mainFBO.bind(); {
+	        		
+	        		worldOrtho.glOrtho();
+		        	camera.transform();
+		        	
+		            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		            world.draw();
+		            
+	        	} Framebuffer.unbind();
 	        	
-	            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	        	glLoadIdentity();
+	        	screenOrtho.glViewport();
+	        	screenOrtho.glOrtho();
+	        	
+	        	mainFBO.bindColorTexture();
+	        	Rectangle.fromAABB(screenOrtho).texturedQuad();
+	        	Texture.unbind();
+	        	
 	        	window.setTitle("SWAG LEVEL: " + time);
-	            world.draw();
-	            
 	            window.swapBuffers();
 	        	
 	        	glfwPollEvents();
@@ -132,12 +148,6 @@ public class GameObject { //It all starts here
         
         //Do opengl stuff (create glcontext from thread)
         GLContext.createFromCurrent();
-        
-        glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		Vec2 br = window.getDimensions().invScale(2), tl = br.negate();
-		glOrtho(tl.x, br.x, br.y, tl.y, 1, -1);
-		glMatrixMode(GL_MODELVIEW);
 	    
 		glEnable(GL_TEXTURE_2D);
 		

@@ -3,6 +3,8 @@ package spishu.space.engine.math;
 import java.util.ArrayDeque;
 import java.util.Collection;
 
+import org.lwjgl.opengl.GL11;
+
 
 /**
  * Extension of the Shape2D class designed to speed up processing by using a minimal amount of
@@ -35,17 +37,27 @@ public class Rectangle extends Shape {
 		return new Rectangle(super.translate(d).vertices);
 	}
 	
+	public void texturedQuad() {
+		GL11.glBegin(GL11.GL_QUADS);
+		GL11.glTexCoord2f(0, 0);
+		vertices[0].glVertex();
+		GL11.glTexCoord2f(1, 0);
+		vertices[1].glVertex();
+		GL11.glTexCoord2f(1, 1);
+		vertices[2].glVertex();
+		GL11.glTexCoord2f(0, 1);
+		vertices[3].glVertex();
+		GL11.glEnd();
+	}
+	
 	public static Rectangle fromDimensions(Vec2 d) {
 		Vec2 hd = d.invScale(2), p = new Vec2(-hd.x, hd.y);
 		return new Rectangle(hd.negate(), p.negate(), hd, p);
 	}
 	
-	public static Rectangle fromCorners(Vec2 c1, Vec2 c2) {
-		return new Rectangle(c1, new Vec2(c2.x, c1.y), c2, new Vec2(c1.x, c2.y));
-	}
-	
-	public static Rectangle fromAABB(Matrix2 AABB) {
-		return fromCorners(AABB.x, AABB.x.add(AABB.y));
+	public static Rectangle fromAABB(AABB aabb) {
+		return new Rectangle(aabb.corner1, new Vec2(aabb.corner2.x, aabb.corner1.y),
+				aabb.corner2, new Vec2(aabb.corner1.x, aabb.corner2.y));
 	}
 
 }

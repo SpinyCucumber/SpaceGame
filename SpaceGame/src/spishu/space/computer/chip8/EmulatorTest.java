@@ -11,28 +11,25 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.GL_POINTS;
-import static org.lwjgl.opengl.GL11.GL_PROJECTION;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glPointSize;
-import static org.lwjgl.opengl.GL11.glViewport;
 
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
-import spishu.space.engine.gl.Framebuffer2;
+import spishu.space.engine.gl.Framebuffer;
 import spishu.space.engine.gl.GLWindow;
 import spishu.space.engine.gl.Texture;
+import spishu.space.engine.math.AABB;
+import spishu.space.engine.math.Rectangle;
+import spishu.space.engine.math.Vec2;
 
 public class EmulatorTest {
 	
@@ -57,7 +54,10 @@ public class EmulatorTest {
 	        
 	        initGraphics();
 	        
-			Framebuffer2 fb = new Framebuffer2(64, 32);
+			Framebuffer fbo = new Framebuffer(64, 32);
+			AABB fbOrtho = new AABB(new Vec2(0, 32), new Vec2(64, 0)),
+					screenOrtho = new AABB(Vec2.ZERO, window.getDimensions());
+			System.out.println(fbOrtho + System.lineSeparator() + screenOrtho);
 			
 			chip.init();
 			chip.loadProgram("res/prog/pong2.c8");
@@ -69,12 +69,9 @@ public class EmulatorTest {
 				display = chip.display;
 				displen = display.length;
 				
-				fb.bind(); {
+				fbo.bind(); {
 					
-					glMatrixMode(GL_PROJECTION);
-			        glLoadIdentity();
-			        glOrtho(0, fb.getWidth(), 0, fb.getHeight(), 1, -1);
-					glMatrixMode(GL_MODELVIEW);
+					fbOrtho.glOrtho();
 					
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 					glBegin(GL_POINTS);
@@ -102,18 +99,13 @@ public class EmulatorTest {
 			        
 					GL11.glEnd();
 				
-				} Framebuffer2.unbind();
+				} Framebuffer.unbind();
 				
-				glMatrixMode(GL_PROJECTION);
-		        glLoadIdentity();
-				glOrtho(0, window.getWidth(), window.getHeight(), 0, 1, -1);
-				glMatrixMode(GL_MODELVIEW);
-				
-				glViewport(0, 0, window.getWidth(), window.getHeight());
-				
-		        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		        fb.bindColorTexture();
-		        window.fullscreenQuad();
+				screenOrtho.glViewport();
+				screenOrtho.glOrtho();
+		        
+		        fbo.bindColorTexture();
+		        Rectangle.fromAABB(screenOrtho).texturedQuad();
 		        Texture.unbind();
 	            
 	            window.swapBuffers();

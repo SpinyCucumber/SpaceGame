@@ -1,7 +1,15 @@
 package spishu.space.engine.gl;
 
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
+import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
+import static org.lwjgl.glfw.GLFW.glfwGetKey;
+import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
+import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
+import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowTitle;
+import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
+import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.ByteBuffer;
@@ -55,19 +63,6 @@ public class GLWindow {
 	
 	public boolean isKeyPressed(int key) {
 		return glfwGetKey(handle, key) == GL11.GL_TRUE;
-	}
-	
-	public void fullscreenQuad() {
-		glBegin(GL_QUADS);
-		glTexCoord2f(0, 0);
-		glVertex2f(0, 0);
-		glTexCoord2f(1, 0);
-		glVertex2f(width, 0);
-		glTexCoord2f(1, 1);
-		glVertex2f(width, height);
-		glTexCoord2f(0, 1);
-		glVertex2f(0, height);
-		glEnd();
 	}
 	
 	public GLWindow(int width, int height) {
