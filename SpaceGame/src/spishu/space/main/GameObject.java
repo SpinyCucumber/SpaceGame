@@ -75,7 +75,7 @@ public class GameObject {
 	        mainFBO = new Framebuffer(window.getWidth(), window.getWidth());
 	        primShader = GLSLProgram.fromVertexFragmentPair("res/shader/prim.vs", "res/shader/prim.fs");
 	        fboShader = GLSLProgram.fromVertexFragmentPair("res/shader/fbo.vs", "res/shader/fbo.fs");
-	        world = new World(new Vec2(0, 0), 20.0f);
+	        world = new World(new Vec2(0, 0), 50.0f, 10);
 	        camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
 	        
 	        Vec2 d = window.getDimensions().invScale(2);

@@ -1,5 +1,5 @@
-const vec2 vec = vec2(0.003);
-const float blurMin = 0.0;
+const vec2 vec = vec2(0.002);
+const float blurMin = 0.1;
 const mat3 edge = mat3(0.0, 1.0, 0.0,
 						1.0, -4.0, 1.0,
 						0.0, 1.0, 0.0),

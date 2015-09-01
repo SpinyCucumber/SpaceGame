@@ -147,10 +147,10 @@ public class World {;
 		for(Entity entity : entities) entity.remove();
 	}
 
-	public World(Vec2 gravity, float slowdown) {
+	public World(Vec2 gravity, float slowdown, float angSlowdown) {
 		this.gravity = gravity;
 		this.slowdown = slowdown;
-		this.angSlowdown = slowdown;
+		this.angSlowdown = angSlowdown;
 	}	
 	
 	/**
