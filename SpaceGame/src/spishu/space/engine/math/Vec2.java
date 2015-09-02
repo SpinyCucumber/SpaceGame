@@ -16,6 +16,10 @@ public class Vec2 {
 		return new Vec2((float) Math.sin(angle), (float) Math.cos(angle));
 	}
 	
+	public static Vec2 randomUnit() {
+		return fromAngle((float) (Math.random() * Math.PI * 2));
+	}
+	
 	public float x, y;
 	
 	public Vec2() {}

@@ -100,7 +100,7 @@ public class EmulatorTest {
 					GL11.glEnd();
 				
 				} Framebuffer.unbind();
-				
+
 				screenOrtho.glViewport();
 				screenOrtho.glOrtho();
 		        

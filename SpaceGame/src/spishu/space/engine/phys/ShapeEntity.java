@@ -1,4 +1,4 @@
-package spishu.space.main;
+package spishu.space.engine.phys;
 
 import org.lwjgl.opengl.GL11;
 
@@ -8,7 +8,6 @@ import spishu.space.engine.gl.Texture;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
-import spishu.space.engine.phys.World;
 import spishu.space.engine.phys.World.Entity;
 
 /**

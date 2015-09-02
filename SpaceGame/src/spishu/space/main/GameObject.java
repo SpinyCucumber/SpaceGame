@@ -36,6 +36,7 @@ import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
+import spishu.space.engine.phys.ShapeEntity;
 import spishu.space.engine.phys.World;
 
 public class GameObject {
@@ -79,7 +80,7 @@ public class GameObject {
 	        camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
 	        
 	        Vec2 d = window.getDimensions().invScale(2);
-	        AABB worldOrtho = new AABB(new Vec2(-d.x, d.y), new Vec2(d.x, -d.y).scale(2)), screenOrtho = new AABB(Vec2.ZERO, window.getDimensions());
+	        AABB worldOrtho = new AABB(new Vec2(-d.x, d.y), new Vec2(d.x, -d.y)), screenOrtho = new AABB(Vec2.ZERO, window.getDimensions());
 	        
 	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));
 	        

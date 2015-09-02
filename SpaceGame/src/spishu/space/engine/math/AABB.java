@@ -31,7 +31,7 @@ public class AABB {
 	public void glOrtho() {
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(corner1.x, corner1.x + corner2.x, corner1.y, corner1.y + corner2.y, -1, 1);
+		GL11.glOrtho(corner1.x, corner2.x, corner1.y, corner2.y, -1, 1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	}
 	

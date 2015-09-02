@@ -1,0 +1,7 @@
+Modular Computer Designer
+	With components such as:
+		-Processor
+		-RAM
+		-ROM (or something like it)
+		-Display
+	All components will have I/O ports to connect them.
