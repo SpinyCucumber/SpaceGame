@@ -4,14 +4,20 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Random;
 
-public class Chip {
+import spishu.space.computer.Designer;
 
+public class Chip {
+	
 	/**
-	 * 4kB of 8-bit memory<br/>
+	 * <del>4kB of 8-bit memory<br/></del>
+	 * For the purposes of the game, the ram will be expandable.
+	 * Under normal circumstances, however, we WOULD only have 4kB</br>
 	 * At position 0x50: The "bios" fontset
-	 * At position 0x200: The start of every program
+	 * At position 0x200: The start of every program</br>
 	 */
 	private char[] memory;
 	/**
@@ -63,7 +69,32 @@ public class Chip {
 	 * Reset the Chip 8 memory and pointers
 	 */
 	public void init() {
-		memory = new char[4096];
+		//Special WIP initialization for game purposes
+		memory = new char[Designer.ramSize];
+		
+		if(memory.length < 4096){
+			System.out.println("BEWARE!!! Less ram then normal is in use... THIS MOST LIKELY WILL FAIL!!!");
+		}else if(memory.length == 4096){
+			System.out.println("The system is running with 4kB of ram, this should work completely fine.");
+		}else if(memory.length > 4096){
+			System.out.println("There is more than 4kB of ram in use. Everything *should* work, but we will have more ram to work with! :D");
+		}
+		
+		System.out.println("RAM given to the " + Designer.currentProcessor + " processor: " + Designer.ramSize + " bytes of ram!");
+		
+		//TODO: Is there a better way to do this? Preferably without major code rewriting.
+		if(Designer.emuOut == false){
+			PrintStream dummyStream    = new PrintStream(new OutputStream() {
+			    public void write(int b) {
+			        //NO-OP
+			    }
+			});
+
+			System.setOut(dummyStream);
+		}
+		
+		//End of the custom game init.
+		
 		V = new char[16];
 		I = 0x0;
 		pc = 0x200;

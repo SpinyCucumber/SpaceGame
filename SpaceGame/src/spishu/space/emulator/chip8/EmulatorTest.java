@@ -89,7 +89,7 @@ public class EmulatorTest {
 						} else {
 	
 							int x = (i % 64);
-							int y = (int)Math.floor(i / 64) + 1;
+							int y = (int)Math.floor(i / 64);
 							
 							GL11.glVertex2f(x, y);
 							
