@@ -72,6 +72,7 @@ public class GameObject {
 	            throw new IllegalStateException("Unable to initialize GLFW");
 	        
 	        initGraphics();
+	        Resources.load();
 	        
 	        mainFBO = new Framebuffer(window.getWidth(), window.getWidth());
 	        primShader = GLSLProgram.fromVertexFragmentPair("res/shader/prim.vs", "res/shader/prim.fs");
@@ -88,7 +89,7 @@ public class GameObject {
 	        		1, 30, 0, 1, Rectangle.fromDimensions(new Vec2(200)), anim);
 	        new ShapeEntity<Shape>(world, new Vec2(0, 0), new Vec2(0, 0),
 	        		1, 0, 0, 1, Rectangle.fromDimensions(new Vec2(100)), anim);
-			
+	        
 	        while(!window.shouldClose()) {
 	        	
 	        	double delta = delta() * timeScale;
@@ -122,16 +123,14 @@ public class GameObject {
 	        	
 	        }
 	        
-		} catch(Exception e) {
-
-			e.printStackTrace();
-			
-		} finally {
-			
-			world.delete();
+	        world.delete();
 			window.destroy();
 			glfwTerminate();
 			errorCallback.release();
+	        
+		} catch(Exception e) {
+
+			e.printStackTrace();
 			
 		}
 		
