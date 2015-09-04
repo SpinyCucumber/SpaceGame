@@ -57,6 +57,7 @@ public class Resources {
 		resources = new HashMap<String, Object>();
 		loaders = new ArrayDeque<ResourceLoader>();
 		
+		//Default loaders. Might add a control for them.
 		loaders.add(new ResourceLoader("png", "jpg") {
 
 			@Override
@@ -100,9 +101,10 @@ public class Resources {
 	 * @throws URISyntaxException
 	 */
 	public static void load() throws IOException, URISyntaxException {
-		String srcLoc = Resources.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		if(srcLoc.endsWith(EXT_DELIM + "jar")) {
-			ZipFile zip = new ZipFile(srcLoc);
+		File src = new File(Resources.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+		if(src.isDirectory()) loadRecursive(src, src.toPath());
+		else {
+			ZipFile zip = new ZipFile(src);
 			Enumeration<? extends ZipEntry> entries = zip.entries();
 			while(entries.hasMoreElements()) {
 				ZipEntry entry = entries.nextElement();
@@ -111,9 +113,6 @@ public class Resources {
 					if(loader.extensions.contains(ext)) resources.put(name, loader.loadResource(zip.getInputStream(entry)));
 			}
 			zip.close();
-		} else {
-			File dir = new File(srcLoc);
-			loadRecursive(dir, dir.toPath());
 		}
 	}
 
