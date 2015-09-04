@@ -51,7 +51,7 @@ public class Texture {
 		int width = image.getWidth(), height = image.getHeight();
 		
 		int[] pixels = new int[width * height];
-        image.getRGB(0, 0, height, height, pixels, 0, width);
+        image.getRGB(0, 0, width, height, pixels, 0, width);
 
         ByteBuffer buffer = BufferUtils.createByteBuffer(pixels.length * BYTES_PER_PIXEL);
         for(int y = 0; y < height; y++){

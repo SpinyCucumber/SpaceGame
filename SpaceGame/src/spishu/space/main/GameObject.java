@@ -75,15 +75,17 @@ public class GameObject {
 	        Resources.load();
 	        
 	        mainFBO = new Framebuffer(window.getWidth(), window.getWidth());
-	        primShader = GLSLProgram.fromVertexFragmentPair("res/shader/prim.vs", "res/shader/prim.fs");
-	        fboShader = GLSLProgram.fromVertexFragmentPair("res/shader/fbo.vs", "res/shader/fbo.fs");
+	        primShader = new GLSLProgram((Integer) Resources.getResource("shader" + File.separator + "prim.vs"),
+	        		(Integer) Resources.getResource("shader" + File.separator + "prim.fs"));
+	        fboShader = new GLSLProgram((Integer) Resources.getResource("shader" + File.separator + "fbo.vs"),
+	        		(Integer) Resources.getResource("shader" + File.separator + "fbo.fs"));
 	        world = new World(new Vec2(0, 0), 50.0f, 10);
 	        camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
 	        
 	        Vec2 d = window.getDimensions().invScale(2);
 	        AABB worldOrtho = new AABB(new Vec2(-d.x, d.y), new Vec2(d.x, -d.y)), screenOrtho = new AABB(Vec2.ZERO, window.getDimensions());
-	        
-	        Animation anim = new TextureLineup(0, Texture.fromFile(new File("res/texture/ComputerCraft.png")));
+
+	        Animation anim = new TextureLineup(0, (Texture) Resources.getResource("texture" + File.separator + "ComputerCraft.png"));
 	        
 	        new ShapeEntity<Shape>(world, new Vec2(200f, 0), new Vec2(-400, 0),
 	        		1, 30, 0, 1, Rectangle.fromDimensions(new Vec2(200)), anim);

@@ -17,9 +17,9 @@ import static org.lwjgl.opengl.GL20.glUniform1f;
 import static org.lwjgl.opengl.GL20.glUniform2f;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,19 +30,18 @@ import spishu.space.engine.math.Vec2;
 public class GLSLProgram {
 	
 	public static GLSLProgram fromVertexFragmentPair(String vertexLocation, String fragmentLocation) throws IOException {
-		return new GLSLProgram(loadShader(GL_VERTEX_SHADER, vertexLocation), loadShader(GL_FRAGMENT_SHADER, fragmentLocation));
+		return new GLSLProgram(loadShader(new FileInputStream(vertexLocation), GL_VERTEX_SHADER),
+				loadShader(new FileInputStream(fragmentLocation), GL_FRAGMENT_SHADER));
 	}
 	
-	public static int loadShader(int type, String location) throws IOException {
+	public static int loadShader(InputStream in, int type) throws IOException {
+		byte[] bytes = new byte[in.available()];
+		in.read(bytes);
+		String src = new String(bytes);
 		int id = glCreateShader(type);
-		StringBuilder shaderSource = new StringBuilder();
-		BufferedReader reader = new BufferedReader(new FileReader(location));
-        String line;
-        while ((line = reader.readLine()) != null) shaderSource.append(line).append('\n');
-        reader.close();
-        glShaderSource(id, shaderSource);
+        glShaderSource(id, src);
         glCompileShader(id);
-        if(glGetShaderi(id, GL_COMPILE_STATUS) == GL11.GL_FALSE) throw new IOException(location + " " + glGetShaderInfoLog(id, 1024));
+        if(glGetShaderi(id, GL_COMPILE_STATUS) == GL11.GL_FALSE) throw new IOException(glGetShaderInfoLog(id, 1024));
         return id;
 	}
 	

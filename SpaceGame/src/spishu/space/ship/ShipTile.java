@@ -2,6 +2,12 @@ package spishu.space.ship;
 
 import spishu.space.engine.gl.Texture;
 
+/**
+ * An individual tile of a ship.
+ * @author SpinyCucumber
+ *
+ */
+@SuppressWarnings("unused")
 public class ShipTile {
 	
 	private Texture texture;
@@ -9,10 +15,6 @@ public class ShipTile {
 	
 	public ShipTile(String name, String texturePath) {
 		this.name = name;
-	}
-
-	public static void main(String[] args) {
-		ShipTile tile1 = new ShipTile("test", "res/texture/test.png");
 	}
 
 }

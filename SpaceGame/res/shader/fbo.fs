@@ -24,11 +24,13 @@ vec3 convul(vec2 texCoord, mat3 kernel) {
 }
 
 void main() {
+	vec4 color = texture2D(texture, texCoord);
+	if(color.a == 0.0) return;
     vec3 colorDif = convul(texCoord, edge);
     float dif = dot(colorDif, vec3(1.0)) / 3.0;
     if(dif > blurMin) {
     	gl_FragColor = vec4(convul(texCoord, blur), 1.0);
     } else {
-    	gl_FragColor = texture2D(texture, texCoord);
+    	gl_FragColor = color;
     }
 }
