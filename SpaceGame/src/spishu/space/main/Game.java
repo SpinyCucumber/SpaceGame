@@ -44,7 +44,18 @@ import spishu.space.engine.gl.Texture;
  * @author SpinyCucumber
  *
  */
-public class Game {
+public final class Game {
+	
+	public static final ResourceLoader TEXTURE_LOADER = new ResourceLoader("png", "jpg") {
+
+		@Override
+		public Object loadResource(InputStream in) throws IOException {
+			return Texture.fromBufferedImage(ImageIO.read(in));
+		}
+		
+	};
+	
+	
 	
 	/**
 	 * Implementation of ResourceSource designed to recursively load from a directory.
@@ -159,6 +170,17 @@ public class Game {
 		return resources.get(name);
 	}
 	
+	/**
+	 * @return Object representing code source
+	 */
+	public static ResourceSource getSource() {
+		return source;
+	}
+
+	public static Deque<ResourceLoader> getLoaders() {
+		return loaders;
+	}
+
 	public static Deque<ResourceLoader> getResourceLoaders() {
 		return loaders;
 	}

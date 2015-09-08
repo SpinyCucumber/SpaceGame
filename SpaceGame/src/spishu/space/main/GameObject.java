@@ -145,7 +145,8 @@ public class GameObject {
 	        
 		} catch(Exception e) {
 
-			Game.getLogger().log(Level.SEVERE, "An Exception! Joshua probably did this...", e);
+			Game.getLogger().log(Level.SEVERE, "Joshua crashed your program!");
+			e.printStackTrace();
 			
 		}
 		
