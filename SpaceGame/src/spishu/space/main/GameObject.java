@@ -82,11 +82,11 @@ public class GameObject {
 	            throw new IllegalStateException("Unable to initialize GLFW");
 	        
 	        initGraphics();
+	        Game.useDefaultLoaders();
 	        Game.loadResources();
 	        
 	        mainFBO = new Framebuffer(window.getWidth(), window.getWidth());
-	        primShader = (GLSLProgram) Game.getResource("shader\\prim.glsl");
-	        fboShader = (GLSLProgram) Game.getResource("shader\\fbo.glsl");
+	        final GLSLProgram primShader = (GLSLProgram) Game.getResource("shader\\prim.glsl"), fboShader = (GLSLProgram) Game.getResource("shader\\fbo.glsl");
 	        world = new World(new Vec2(0, 0), 50.0f, 10);
 	        camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
 	        
@@ -103,7 +103,7 @@ public class GameObject {
 	        new ShapeEntity<Shape>(world, new Vec2(0, 0), new Vec2(0, 0),
 	        		1, 0, 0, 1, Rectangle.fromDimensions(new Vec2(100)), anim);
 	        
-	        while(!window.shouldClose()) {
+	        while(!window.shouldClose()) { //Main game loop. Will probably seperate into graphics class.
 	        	
 	        	double delta = delta() * timeScale;
 	        	world.update(delta);

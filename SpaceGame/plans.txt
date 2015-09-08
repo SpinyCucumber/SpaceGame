@@ -5,3 +5,5 @@ Modular Computer Designer
 		-ROM (or something like it)
 		-Display
 	All components will have I/O ports to connect them.
+	
+Config file, most likely in yml format, to disable shaders and etc.

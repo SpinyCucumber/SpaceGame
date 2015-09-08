@@ -46,17 +46,6 @@ import spishu.space.engine.gl.Texture;
  */
 public final class Game {
 	
-	public static final ResourceLoader TEXTURE_LOADER = new ResourceLoader("png", "jpg") {
-
-		@Override
-		public Object loadResource(InputStream in) throws IOException {
-			return Texture.fromBufferedImage(ImageIO.read(in));
-		}
-		
-	};
-	
-	
-	
 	/**
 	 * Implementation of ResourceSource designed to recursively load from a directory.
 	 * @author SpinyCucumber
@@ -126,6 +115,7 @@ public final class Game {
 		InputStream getStream(String resource) throws IOException;
 		
 	}
+	
 	/**
 	 * Implementation of ResourceSource designed to load from zip archives.
 	 * @author SpinyCucumber
@@ -158,10 +148,17 @@ public final class Game {
 		}
 		
 	}
+	
+	public static void addLoader(ResourceLoader loader) {
+		loaders.add(loader);
+	}
+	
+	public static Deque<ResourceLoader> getLoaders() {
+		return loaders;
+	}
 	public static Logger getLogger() {
 		return logger;
 	}
-	
 	/**
 	 * @param name
 	 * @return Specified resource, or null if does not exist
@@ -169,20 +166,11 @@ public final class Game {
 	public static Object getResource(String name) {
 		return resources.get(name);
 	}
-	
 	/**
 	 * @return Object representing code source
 	 */
 	public static ResourceSource getSource() {
 		return source;
-	}
-
-	public static Deque<ResourceLoader> getLoaders() {
-		return loaders;
-	}
-
-	public static Deque<ResourceLoader> getResourceLoaders() {
-		return loaders;
 	}
 	
 	/**
@@ -192,6 +180,7 @@ public final class Game {
 	 */
 	public static void loadResources() throws IOException {
 		logger.info("Loading resources...");
+		logger.info(String.format("Using %d resource loaders", loaders.size()));
 		Collection<String> entries = source.getEntries();
 		logger.info(String.format("Found %d possible resources", entries.size()));
 		for(String entry : entries) {
@@ -203,8 +192,68 @@ public final class Game {
 					resources.put(entry, cache);
 				}
 		}
-		logger.info(String.format("Loaded %d resources", resources.size()));
+		logger.info(String.format("Loaded %d total resources", resources.size()));
 	}
+	
+	/**
+	 * Use resource loaders defined in Game class.
+	 */
+	public static void useDefaultLoaders() {
+		logger.info("Using default loaders");
+		Collections.addAll(loaders, new ResourceLoader[]{TEXTURE_LOADER, BYTE_LOADER, GLSL_LOADER});
+	}
+	
+	//Resource loaders
+	public static final ResourceLoader TEXTURE_LOADER = new ResourceLoader("png", "jpg") {
+
+		@Override
+		public Object loadResource(InputStream in) throws IOException {
+			return Texture.fromBufferedImage(ImageIO.read(in));
+		}
+		
+	}, BYTE_LOADER = new ResourceLoader("c8") {
+
+		@Override
+		public Object loadResource(InputStream in) throws IOException {
+			byte[] bytes = new byte[in.available()];
+			in.read(bytes);
+			return ByteBuffer.wrap(bytes);
+		}
+		
+	}, GLSL_LOADER = new ResourceLoader("glsl") {
+		
+		@Override
+		public Object loadResource(InputStream in) throws IOException {
+			try {
+				
+				Element root = xmlBuilder.build(in).getRootElement();
+				List<Element> shaderElems = root.getChildren();
+				int[] shaders = new int[shaderElems.size()];
+				
+				for(int i = 0; i < shaderElems.size(); i++) {
+					
+					Element shaderElem = shaderElems.get(i);
+					
+					InputStream stream = source.getStream(shaderElem.getAttributeValue("location"));
+					byte[] bytes = new byte[stream.available()];
+					stream.read(bytes);
+					String src = new String(bytes);
+					
+					int type = shaderTypes.get(shaderElem.getAttributeValue("type"));
+					shaders[i] = GLSLProgram.buildShader(src, type);
+					
+				}
+				return new GLSLProgram(shaders);
+			} catch (JDOMException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+	};
+
+	private static final Map<String, Integer> shaderTypes;
+	
+	private static final SAXBuilder xmlBuilder;
 
 	private static final String EXT_DELIM = Pattern.quote(".");
 	
@@ -237,6 +286,11 @@ public final class Game {
 		logger.addHandler(handler);
 		logger.info(String.format("Logger has handlers: %s", Arrays.toString(logger.getHandlers())));
 		
+		shaderTypes = new HashMap<String, Integer>();
+		shaderTypes.put("vertex", GL20.GL_VERTEX_SHADER);
+		shaderTypes.put("fragment", GL20.GL_FRAGMENT_SHADER);
+		xmlBuilder = new SAXBuilder();
+		
 		try {
 			File src = new File(Game.class.getProtectionDomain().getCodeSource().getLocation().toURI());
 			if(src.isDirectory()) source = new DirectorySource(src);
@@ -245,63 +299,6 @@ public final class Game {
 		} catch (URISyntaxException | IOException e) {
 			e.printStackTrace();
 		}
-		
-		//Default loaders. Might add a control for them.
-		loaders.add(new ResourceLoader("png", "jpg") {
-
-			@Override
-			public Object loadResource(InputStream in) throws IOException {
-				return Texture.fromBufferedImage(ImageIO.read(in));
-			}
-			
-		});
-		loaders.add(new ResourceLoader("c8") {
-
-			@Override
-			public Object loadResource(InputStream in) throws IOException {
-				byte[] bytes = new byte[in.available()];
-				in.read(bytes);
-				return ByteBuffer.wrap(bytes);
-			}
-			
-		});
-		
-		final SAXBuilder jdomBuilder = new SAXBuilder();
-		final Map<String, Integer> types = new HashMap<String, Integer>();
-		types.put("vertex", GL20.GL_VERTEX_SHADER);
-		types.put("fragment", GL20.GL_FRAGMENT_SHADER);
-		loaders.add(new ResourceLoader("glsl") {
-			
-			@Override
-			public Object loadResource(InputStream in) throws IOException {
-				try {
-					
-					Element root = jdomBuilder.build(in).getRootElement();
-					List<Element> shaderElems = root.getChildren();
-					int[] shaders = new int[shaderElems.size()];
-					
-					for(int i = 0; i < shaderElems.size(); i++) {
-						
-						Element shaderElem = shaderElems.get(i);
-						
-						InputStream stream = source.getStream(shaderElem.getAttributeValue("location"));
-						byte[] bytes = new byte[stream.available()];
-						stream.read(bytes);
-						String src = new String(bytes);
-						
-						int type = types.get(shaderElem.getAttributeValue("type"));
-						shaders[i] = GLSLProgram.buildShader(src, type);
-						
-					}
-					return new GLSLProgram(shaders);
-				} catch (JDOMException e) {
-					throw new RuntimeException(e);
-				}
-			}
-			
-		});
-		
-		logger.info(String.format("Registered %d resource loaders", loaders.size()));
 		
 	}
 	
