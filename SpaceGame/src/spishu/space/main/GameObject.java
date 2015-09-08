@@ -19,6 +19,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 
 import java.io.File;
+import java.util.logging.Level;
 
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -73,7 +74,8 @@ public class GameObject {
 		
 		try {
 			
-			Game.getLogger().info(String.format("Er, hello, LWJGL %s...", Sys.getVersion()));
+			Game.getLogger().info("Starting GameObject");
+			Game.getLogger().info(String.format("LWJGL Version %s", Sys.getVersion()));
 			
 			glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
 	        if ( glfwInit() != GL11.GL_TRUE )
@@ -134,6 +136,8 @@ public class GameObject {
 	        	
 	        }
 	        
+	        Game.getLogger().info("Exiting");
+	        
 	        world.delete();
 			window.destroy();
 			glfwTerminate();
@@ -141,7 +145,7 @@ public class GameObject {
 	        
 		} catch(Exception e) {
 
-			e.printStackTrace();
+			Game.getLogger().log(Level.SEVERE, "An Exception! Joshua probably did this...", e);
 			
 		}
 		

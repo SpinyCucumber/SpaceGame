@@ -100,7 +100,7 @@ public class Game {
 			this.extensions = new HashSet<String>();
 			Collections.addAll(this.extensions, extensions);
 		}
-		
+
 		public abstract Object loadResource(InputStream in) throws IOException;
 		
 	}
@@ -169,6 +169,7 @@ public class Game {
 	 * @throws URISyntaxException
 	 */
 	public static void loadResources() throws IOException {
+		logger.info("Loading resources...");
 		Collection<String> entries = source.getEntries();
 		logger.info(String.format("Found %d possible resources", entries.size()));
 		for(String entry : entries) {
@@ -195,7 +196,7 @@ public class Game {
 	
 	static {
 		
-		logger = Logger.getLogger("Hi.");
+		logger = Logger.getLogger("SpaceGame");
 		resources = new HashMap<String, Object>();
 		loaders = new ArrayDeque<ResourceLoader>();
 
@@ -277,6 +278,8 @@ public class Game {
 			}
 			
 		});
+		
+		logger.info(String.format("Registered %d resource loaders", loaders.size()));
 		
 	}
 	
