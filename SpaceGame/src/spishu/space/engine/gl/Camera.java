@@ -33,5 +33,11 @@ public class Camera {
 		this.zoomSpeed = zoomSpeed;
 		this.window = window;
 	}
+
+	@Override
+	public String toString() {
+		return "Camera [position=" + position + ", zoom=" + zoom
+				+ ", moveSpeed=" + moveSpeed + ", zoomSpeed=" + zoomSpeed + "]";
+	}
 	
 }

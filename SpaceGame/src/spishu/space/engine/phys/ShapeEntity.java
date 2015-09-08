@@ -83,6 +83,18 @@ public class ShapeEntity<T extends Shape> extends Entity {
 	}
 
 	@Override
+	public String toString() {
+		return "ShapeEntity [texture=" + texture + ", list=" + list
+				+ ", bounds=" + bounds + ", velocity=" + velocity
+				+ ", position=" + position + ", mass=" + mass + ", rotation="
+				+ rotation + ", angVelocity=" + angVelocity + ", restitution="
+				+ restitution + "]";
+	}
+
+	@Override
+	/**
+	 * Binds texture, translates, and calls list.
+	 */
 	public void draw(){
 		
 		GL11.glPushMatrix();

@@ -2,7 +2,13 @@ package spishu.space.engine.gl;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class DisplayList {  //Simple wrapper class
+/**
+ * Simple class representing an opengl displaylist object.
+ * Used to speed up rendering.
+ * @author SpinyCucumber
+ *
+ */
+public class DisplayList {
 	
 	int id;
 	

@@ -46,6 +46,12 @@ public class Texture {
         
 	}
 	
+	@Override
+	public String toString() {
+		return "Texture [id=" + id + ", width=" + width + ", height=" + height
+				+ "]";
+	}
+
 	public static Texture fromBufferedImage(BufferedImage image) {
 		
 		int width = image.getWidth(), height = image.getHeight();

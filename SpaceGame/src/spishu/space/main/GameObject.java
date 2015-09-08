@@ -39,6 +39,11 @@ import spishu.space.engine.math.Vec2;
 import spishu.space.engine.phys.ShapeEntity;
 import spishu.space.engine.phys.World;
 
+/**
+ * Main game class, representing an instance of the game.
+ * @author SpinyCucumber
+ *
+ */
 public class GameObject {
 	
 	GLFWErrorCallback errorCallback;
@@ -54,6 +59,9 @@ public class GameObject {
     	return glfwGetTime();
     }
     
+	/**
+	 * @return Time in seconds between current frame and last frame.
+	 */
     public double delta() {
 	    time = getTime();
 	    double delta = time - lastTime;
@@ -65,27 +73,28 @@ public class GameObject {
 		
 		try {
 			
-			System.out.println("Hello LWJGL " + Sys.getVersion() + "!");
+			Game.getLogger().info(String.format("Er, hello, LWJGL %s...", Sys.getVersion()));
 			
 			glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
 	        if ( glfwInit() != GL11.GL_TRUE )
 	            throw new IllegalStateException("Unable to initialize GLFW");
 	        
 	        initGraphics();
-	        Resources.load();
+	        Game.loadResources();
 	        
 	        mainFBO = new Framebuffer(window.getWidth(), window.getWidth());
-	        primShader = new GLSLProgram((Integer) Resources.getResource("shader" + File.separator + "prim.vs"),
-	        		(Integer) Resources.getResource("shader" + File.separator + "prim.fs"));
-	        fboShader = new GLSLProgram((Integer) Resources.getResource("shader" + File.separator + "fbo.vs"),
-	        		(Integer) Resources.getResource("shader" + File.separator + "fbo.fs"));
+	        primShader = (GLSLProgram) Game.getResource("shader\\prim.glsl");
+	        fboShader = (GLSLProgram) Game.getResource("shader\\fbo.glsl");
 	        world = new World(new Vec2(0, 0), 50.0f, 10);
 	        camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
+	        
+	        Game.getLogger().info(String.format("Initialized world %s", world));
+	        Game.getLogger().info(String.format("Initialized camera %s", camera));
 	        
 	        Vec2 d = window.getDimensions().invScale(2);
 	        AABB worldOrtho = new AABB(new Vec2(-d.x, d.y), new Vec2(d.x, -d.y)), screenOrtho = new AABB(Vec2.ZERO, window.getDimensions());
 
-	        Animation anim = new TextureLineup(0, (Texture) Resources.getResource("texture" + File.separator + "ComputerCraft.png"));
+	        Animation anim = new TextureLineup(0, (Texture) Game.getResource("texture" + File.separator + "ComputerCraft.png"));
 	        
 	        new ShapeEntity<Shape>(world, new Vec2(200f, 0), new Vec2(-400, 0),
 	        		1, 30, 0, 1, Rectangle.fromDimensions(new Vec2(200)), anim);

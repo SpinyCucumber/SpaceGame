@@ -88,6 +88,14 @@ public class World {;
 		
 		protected void draw() {}
 		
+		@Override
+		public String toString() {
+			return "Entity [velocity=" + velocity + ", position=" + position
+					+ ", mass=" + mass + ", rotation=" + rotation
+					+ ", angVelocity=" + angVelocity + ", restitution="
+					+ restitution + "]";
+		}
+
 		public Entity(Vec2 velocity, Vec2 position, float mass, float rotation, float angVelocity, float restitution) {
 			this.velocity = velocity;
 			this.position = position;
@@ -145,13 +153,26 @@ public class World {;
 	public void delete() {
 		for(Entity entity : entities) entity.remove();
 	}
-
+	
+	/**
+	 * 
+	 * @param gravity Vector added to entities each frame
+	 * @param slowdown Amount subtracted from entities' speed each frame
+	 * @param angSlowdown Slowdown of angular speed
+	 */
 	public World(Vec2 gravity, float slowdown, float angSlowdown) {
 		this.gravity = gravity;
 		this.slowdown = slowdown;
 		this.angSlowdown = angSlowdown;
 	}	
-	
+
+	@Override
+	public String toString() {
+		return "World [entities=" + entities + ", gravity=" + gravity
+				+ ", slowdown=" + slowdown + ", angSlowdown=" + angSlowdown
+				+ "]";
+	}
+
 	/**
 	 * Newton's equations implemented to the best of my ability.
 	 * 

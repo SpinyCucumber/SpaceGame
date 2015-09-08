@@ -19,7 +19,11 @@ import org.lwjgl.opengl.GL11;
 
 import spishu.space.engine.math.Vec2;
 
-
+/**
+ * A class representing a glfw window object.
+ * @author SpinyCucumber
+ *
+ */
 public class GLWindow {
 	
 	private int width, height;

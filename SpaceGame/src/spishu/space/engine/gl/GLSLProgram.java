@@ -1,8 +1,6 @@
 package spishu.space.engine.gl;
 
 import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
-import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
-import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL20.glAttachShader;
 import static org.lwjgl.opengl.GL20.glCompileShader;
 import static org.lwjgl.opengl.GL20.glCreateProgram;
@@ -17,9 +15,7 @@ import static org.lwjgl.opengl.GL20.glUniform1f;
 import static org.lwjgl.opengl.GL20.glUniform2f;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,24 +23,28 @@ import org.lwjgl.opengl.GL11;
 
 import spishu.space.engine.math.Vec2;
 
+/**
+ * A class representing a single GLSL program.
+ * @author SpinyCucumber
+ *
+ */
 public class GLSLProgram {
 	
-	public static GLSLProgram fromVertexFragmentPair(String vertexLocation, String fragmentLocation) throws IOException {
-		return new GLSLProgram(loadShader(new FileInputStream(vertexLocation), GL_VERTEX_SHADER),
-				loadShader(new FileInputStream(fragmentLocation), GL_FRAGMENT_SHADER));
-	}
-	
-	public static int loadShader(InputStream in, int type) throws IOException {
-		byte[] bytes = new byte[in.available()];
-		in.read(bytes);
-		String src = new String(bytes);
+	/**
+	 * Generate shader with specified type.
+	 * @param src Shader source code
+	 * @param type Shader type. Common ones are GL_VERTEX_SHADER and GL_FRAGMENT_SHADER
+	 * @return Shader id
+	 * @throws IOException
+	 */
+	public static int buildShader(String src, int type) throws IOException {
 		int id = glCreateShader(type);
         glShaderSource(id, src);
         glCompileShader(id);
         if(glGetShaderi(id, GL_COMPILE_STATUS) == GL11.GL_FALSE) throw new IOException(glGetShaderInfoLog(id, 1024));
         return id;
 	}
-	
+
 	public static void useNoProgram() {
 		glUseProgram(0);
 	}
@@ -53,6 +53,10 @@ public class GLSLProgram {
 	
 	int id;
 	
+	/**
+	 * Generate program from specified shader ids.
+	 * @param shaders
+	 */
 	public GLSLProgram(int...shaders) {
 		id = glCreateProgram();
 		for(int shader : shaders) glAttachShader(id, shader);
@@ -86,6 +90,11 @@ public class GLSLProgram {
 	
 	public void use() {
 		glUseProgram(id);
+	}
+
+	@Override
+	public String toString() {
+		return "GLSLProgram [uniforms=" + uniforms + ", id=" + id + "]";
 	}
 	
 }
