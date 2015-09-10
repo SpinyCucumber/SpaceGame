@@ -26,7 +26,6 @@ import org.lwjgl.opengl.GLContext;
 
 import spishu.space.engine.gl.Framebuffer;
 import spishu.space.engine.gl.GLWindow;
-import spishu.space.engine.gl.Texture;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
 import spishu.space.engine.math.Vec2;
@@ -106,7 +105,7 @@ public class EmulatorTest {
 		        
 		        fbo.bindColorTexture();
 		        Rectangle.fromAABB(screenOrtho).texturedQuad();
-		        Texture.unbind();
+		        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	            
 	            window.swapBuffers();
 	        	

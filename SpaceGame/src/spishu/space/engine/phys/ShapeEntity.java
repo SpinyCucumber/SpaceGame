@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 import spishu.space.engine.anim.Animation;
 import spishu.space.engine.gl.DisplayList;
-import spishu.space.engine.gl.Texture;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
@@ -106,7 +105,7 @@ public class ShapeEntity<T extends Shape> extends Entity {
 		list.call();
 		
 		GL11.glPopMatrix();
-		Texture.unbind();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		
 	}
 	

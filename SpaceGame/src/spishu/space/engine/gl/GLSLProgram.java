@@ -55,11 +55,11 @@ public class GLSLProgram {
 	
 	/**
 	 * Generate program from specified shader ids.
-	 * @param shaders
+	 * @param integer
 	 */
-	public GLSLProgram(int...shaders) {
+	public GLSLProgram(Integer...integer) {
 		id = glCreateProgram();
-		for(int shader : shaders) glAttachShader(id, shader);
+		for(int shader : integer) glAttachShader(id, shader);
 		glLinkProgram(id);
 	}
 	
