@@ -1,5 +1,6 @@
 package spishu.space.main;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -39,7 +40,7 @@ public abstract class ResourceLoader {
 				Element root = xmlBuilder.build(in).getRootElement();
 				List<Texture> textures = new ArrayList<Texture>();
 				for(Element textureElem : root.getChildren()) {
-					String location = textureElem.getAttributeValue("location");
+					String location = String.format(textureElem.getAttributeValue("location"), File.separator);
 					textures.add(Texture.fromBufferedImage(ImageIO.read(Game.getSource().getStream(location))));
 				}
 				return new TextureLineup(Float.parseFloat(root.getAttributeValue("speed")),
@@ -79,7 +80,7 @@ public abstract class ResourceLoader {
 				
 				for(Element shaderElem : root.getChildren()) {
 					
-					InputStream stream = Game.getSource().getStream(shaderElem.getAttributeValue("location"));
+					InputStream stream = Game.getSource().getStream(String.format(shaderElem.getAttributeValue("location"), File.separator));
 					byte[] bytes = new byte[stream.available()];
 					stream.read(bytes);
 					String src = new String(bytes);

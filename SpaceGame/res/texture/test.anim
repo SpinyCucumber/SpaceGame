@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <animation speed="0.1">
-	<texture location="texture\ComputerCraft.png"/>
+	<texture location="texture%sComputerCraft.png"/>
 </animation>

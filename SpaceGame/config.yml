@@ -1,1 +1,4 @@
-hi: Nope
+windowWidth: 700
+windowHeight: 500
+vsync: true
+useShaders: false

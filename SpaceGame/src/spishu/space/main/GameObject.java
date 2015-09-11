@@ -36,8 +36,8 @@ public class GameObject {
 	double time, lastTime, timeScale = 0.5;
 	
 	GLWindow window;
-	Camera camera;
 	World world;
+	Map<String, Object> config;
 	
 	public double getTime() {
     	return GLFW.glfwGetTime();
@@ -56,6 +56,7 @@ public class GameObject {
     /**
      * Begins running the game.
      */
+	@SuppressWarnings("unchecked")
 	public void start() {
 		
 		try {
@@ -64,10 +65,8 @@ public class GameObject {
 			Game.getLogger().info(String.format("LWJGL Version %s", Sys.getVersion()));
 			
 			//Load config
-			@SuppressWarnings("unchecked")
-			final Map<String, Object> config = (Map<String, Object>) new Yaml().load(new FileInputStream("config.yml"));
+			config = (Map<String, Object>) new Yaml().load(new FileInputStream("config.yml"));
 			Game.getLogger().info(String.format("Loaded config %s", config));
-			
 			
 			//Initiate graphics
 			GLFW.glfwSetErrorCallback(errorCallback = Callbacks.errorCallbackPrint(System.err));
@@ -81,9 +80,10 @@ public class GameObject {
 	        
 	        //Generate graphical objects
 	        final Framebuffer mainFBO = new Framebuffer(window.getWidth(), window.getWidth());
-	        final GLSLProgram primShader = (GLSLProgram) Game.getResource("shader\\prim.glsl"), fboShader = (GLSLProgram) Game.getResource("shader\\fbo.glsl");
+	        final GLSLProgram primShader = (GLSLProgram) Game.getResource("shader%sprim.glsl"), fboShader = (GLSLProgram) Game.getResource("shader%sfbo.glsl");
+	        final Camera camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
+	        final boolean useShaders = (Boolean) config.get("useShaders");
 	        world = new World(new Vec2(0, 0), 50.0f, 10);
-	        camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
 	        
 	        Game.getLogger().info(String.format("Initialized world %s", world));
 	        Game.getLogger().info(String.format("Initialized camera %s", camera));
@@ -93,7 +93,7 @@ public class GameObject {
 	        AABB worldOrtho = new AABB(new Vec2(-d.x, d.y), new Vec2(d.x, -d.y)), screenOrtho = new AABB(Vec2.ZERO, window.getDimensions());
 	        
 	        //Add entities
-	        Animation anim = (Animation) Game.getResource("texture\\test.anim");
+	        Animation anim = (Animation) Game.getResource("texture%stest.anim");
 	        new ShapeEntity<Shape>(world, new Vec2(200f, 0), new Vec2(-400, 0),
 	        		1, 30, 0, 1, Rectangle.fromDimensions(new Vec2(200)), anim);
 	        new ShapeEntity<Shape>(world, new Vec2(0, 0), new Vec2(0, 0),
@@ -108,7 +108,7 @@ public class GameObject {
 	        	mainFBO.bind(); {
 	        		
 	        		worldOrtho.glOrtho();
-	        		primShader.use();
+	        		if(useShaders) primShader.use();
 		        	camera.transform();
 		        	
 		            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -120,7 +120,7 @@ public class GameObject {
 	        	screenOrtho.glViewport();
 	        	screenOrtho.glOrtho();
 	        	
-	        	fboShader.use();
+	        	if(useShaders) fboShader.use();
 	        	mainFBO.bindColorTexture();
 	        	Rectangle.fromAABB(screenOrtho).texturedQuad();
 	        	GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
@@ -148,19 +148,19 @@ public class GameObject {
 		
 	}
 	
-	 private void initGraphics() {
+	private void initGraphics() {
 	    	
         // Configure our window
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GL11.GL_TRUE);
         
         // Create the window
-        window = new GLWindow(1000, 700);
+        window = new GLWindow((Integer) config.get("windowWidth"), (Integer) config.get("windowHeight"));
         window.setPosition(GLWindow.getScreenDimensions().sub(window.getDimensions()).invScale(2));
 
         window.makeContext();
         // Enable v-sync
-        GLFW.glfwSwapInterval(1);
+        if((Boolean) config.get("vsync")) GLFW.glfwSwapInterval(1);
         
         //Do opengl stuff (create glcontext from thread)
         GLContext.createFromCurrent();
