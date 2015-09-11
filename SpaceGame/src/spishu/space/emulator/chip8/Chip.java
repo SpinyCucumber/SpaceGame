@@ -602,7 +602,7 @@ public class Chip {
 	 */
 	public void loadBuffer(ByteBuffer buffer) {
 		while(buffer.hasRemaining()) {
-			memory[buffer.position()] = (char) (buffer.get() & 0xFF);
+			memory[0x200 + buffer.position()] = (char) (buffer.get() & 0xFF);
 		}
 	}
 

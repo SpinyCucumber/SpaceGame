@@ -63,7 +63,7 @@ public class EmulatorTest {
 			System.out.println(fbOrtho + System.lineSeparator() + screenOrtho);
 			
 			chip.init();
-			chip.loadBuffer((ByteBuffer) Game.getResource("prog\\pong2.c8"));
+			chip.loadBuffer((ByteBuffer) Game.getResource("prog%spong2.c8"));
 			
 	        while(!window.shouldClose()) {
 		        
