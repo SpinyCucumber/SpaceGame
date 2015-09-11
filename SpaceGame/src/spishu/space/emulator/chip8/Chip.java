@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.ByteBuffer;
 import java.util.Random;
 
 import spishu.space.computer.Designer;
@@ -323,7 +324,7 @@ public class Chip {
 						}
 
 					default:
-						System.err.println("Unsupported Opcode!");
+						System.err.println("Unsupported Opcode!" + opcode);
 						System.exit(0);
 						break;
 				}
@@ -527,7 +528,7 @@ public class Chip {
 						}
 
 					default:
-						System.err.println("Unsupported Opcode!");
+						System.err.println("Unsupported Opcode!" + opcode);
 						System.exit(0);
 				}
 				break;
@@ -592,6 +593,16 @@ public class Chip {
 			if(input != null) {
 				try { input.close(); } catch (IOException ex) {}
 			}
+		}
+	}
+	
+	/**
+	 * Best method 10/10
+	 * @param buffer
+	 */
+	public void loadBuffer(ByteBuffer buffer) {
+		while(buffer.hasRemaining()) {
+			memory[buffer.position()] = (char) (buffer.get() & 0xFF);
 		}
 	}
 

@@ -1,9 +1,16 @@
 package spishu.space.engine.anim;
 
+import java.util.Arrays;
+
 import spishu.space.engine.gl.Texture;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
 
+/**
+ * Implementation of animation that uses an array textures.
+ * @author SpinyCucumber
+ *
+ */
 public class TextureLineup extends Animation {
 	
 	private Texture[] textures;
@@ -35,4 +42,9 @@ public class TextureLineup extends Animation {
 		return new TextureLineup(speed, textures.clone());
 	}
 
+	@Override
+	public String toString() {
+		return "TextureLineup [textures=" + Arrays.toString(textures) + "]";
+	}
+	
 }

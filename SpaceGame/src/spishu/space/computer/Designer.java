@@ -8,7 +8,7 @@ package spishu.space.computer;
 //TODO: Make this actually graphical instead of a variable collection.
 public class Designer {
 
-	public static int ramSize = 0;
+	public static int ramSize = 4096;
 	
 	/**
 	 * This is currently useless except for printing the current name.

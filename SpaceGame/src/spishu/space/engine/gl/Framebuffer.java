@@ -85,7 +85,7 @@ public class Framebuffer {
         
         bind();
         glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, colorBufferId, 0);   
-        unbind();
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
         
         int framebuffer = glCheckFramebufferStatusEXT( GL_FRAMEBUFFER_EXT ); 
         switch ( framebuffer ) {
@@ -117,10 +117,6 @@ public class Framebuffer {
 	
 	public void delete() {
 		glDeleteFramebuffersEXT(id);
-	}
-	
-	public static void unbind() {
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	}
 	
 }

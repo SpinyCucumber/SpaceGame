@@ -56,7 +56,8 @@ public abstract class ResourceLoader {
 		public Object loadResource(InputStream in) throws IOException {
 			byte[] bytes = new byte[in.available()];
 			in.read(bytes);
-			return ByteBuffer.wrap(bytes);
+			ByteBuffer buffer = ByteBuffer.wrap(bytes);
+			return buffer;
 		}
 		
 	}, GLSL_LOADER = new ResourceLoader("glsl") {

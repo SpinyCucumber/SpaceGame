@@ -19,8 +19,10 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glPointSize;
 
-import org.lwjgl.Sys;
+import java.nio.ByteBuffer;
+
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
@@ -29,6 +31,8 @@ import spishu.space.engine.gl.GLWindow;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
 import spishu.space.engine.math.Vec2;
+import spishu.space.main.Game;
+import spishu.space.main.ResourceLoader;
 
 public class EmulatorTest {
 	
@@ -45,12 +49,12 @@ public class EmulatorTest {
 	
 		try {
 			
-			System.out.println("Hello LWJGL " + Sys.getVersion() + "!");
-			
 			glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
 	        if ( glfwInit() != GL11.GL_TRUE )
 	            throw new IllegalStateException("Unable to initialize GLFW");
 	        
+	        Game.addLoader(ResourceLoader.BYTE_LOADER);
+	        Game.loadResources();
 	        initGraphics();
 	        
 			Framebuffer fbo = new Framebuffer(64, 32);
@@ -59,7 +63,7 @@ public class EmulatorTest {
 			System.out.println(fbOrtho + System.lineSeparator() + screenOrtho);
 			
 			chip.init();
-			chip.loadProgram("res/prog/pong2.c8");
+			chip.loadBuffer((ByteBuffer) Game.getResource("prog\\pong2.c8"));
 			
 	        while(!window.shouldClose()) {
 		        
@@ -98,7 +102,7 @@ public class EmulatorTest {
 			        
 					GL11.glEnd();
 				
-				} Framebuffer.unbind();
+				} EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
 
 				screenOrtho.glViewport();
 				screenOrtho.glOrtho();

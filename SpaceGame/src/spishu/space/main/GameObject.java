@@ -1,13 +1,17 @@
 package spishu.space.main;
 
+import java.io.FileInputStream;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
+import org.yaml.snakeyaml.Yaml;
 
 import spishu.space.engine.anim.Animation;
 import spishu.space.engine.gl.Camera;
@@ -59,14 +63,23 @@ public class GameObject {
 			Game.getLogger().info("Starting GameObject");
 			Game.getLogger().info(String.format("LWJGL Version %s", Sys.getVersion()));
 			
+			//Load config
+			@SuppressWarnings("unchecked")
+			final Map<String, Object> config = (Map<String, Object>) new Yaml().load(new FileInputStream("config.yml"));
+			Game.getLogger().info(String.format("Loaded config %s", config));
+			
+			
+			//Initiate graphics
 			GLFW.glfwSetErrorCallback(errorCallback = Callbacks.errorCallbackPrint(System.err));
 	        if ( GLFW.glfwInit() != GL11.GL_TRUE )
 	            throw new IllegalStateException("Unable to initialize GLFW");
-	        
 	        initGraphics();
+	        
+	        //Load resources
 	        Game.useDefaultLoaders();
 	        Game.loadResources();
 	        
+	        //Generate graphical objects
 	        final Framebuffer mainFBO = new Framebuffer(window.getWidth(), window.getWidth());
 	        final GLSLProgram primShader = (GLSLProgram) Game.getResource("shader\\prim.glsl"), fboShader = (GLSLProgram) Game.getResource("shader\\fbo.glsl");
 	        world = new World(new Vec2(0, 0), 50.0f, 10);
@@ -75,9 +88,11 @@ public class GameObject {
 	        Game.getLogger().info(String.format("Initialized world %s", world));
 	        Game.getLogger().info(String.format("Initialized camera %s", camera));
 	        
+	        //Get dimensions to be used in glOrtho
 	        Vec2 d = window.getDimensions().invScale(2);
 	        AABB worldOrtho = new AABB(new Vec2(-d.x, d.y), new Vec2(d.x, -d.y)), screenOrtho = new AABB(Vec2.ZERO, window.getDimensions());
-
+	        
+	        //Add entities
 	        Animation anim = (Animation) Game.getResource("texture\\test.anim");
 	        new ShapeEntity<Shape>(world, new Vec2(200f, 0), new Vec2(-400, 0),
 	        		1, 30, 0, 1, Rectangle.fromDimensions(new Vec2(200)), anim);
@@ -99,7 +114,7 @@ public class GameObject {
 		            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		            world.draw();
 		            
-	        	} Framebuffer.unbind();
+	        	} EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
 	        	
 	        	GL11.glLoadIdentity();
 	        	screenOrtho.glViewport();
