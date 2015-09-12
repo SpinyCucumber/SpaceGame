@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.ArrayDeque;
@@ -172,6 +174,29 @@ public final class Game {
 
 	private static final String EXT_DELIM = Pattern.quote(".");
 	
+	private static final Formatter loggerFormatter = new Formatter() {
+		
+		private long start;
+		
+		{
+			start = System.currentTimeMillis();
+		}
+		
+		@Override
+		public String format(LogRecord arg0) {
+			StringBuilder builder = new StringBuilder();
+			builder.append(String.format("%06d:%s - %s%n", arg0.getMillis() - start, arg0.getLevel(), arg0.getMessage()));
+			Throwable thrown = arg0.getThrown();
+			if(thrown != null) {
+				StringWriter str = new StringWriter();
+				thrown.printStackTrace(new PrintWriter(str));
+				builder.append(str.toString());
+			}
+			return builder.toString();
+		}
+		
+	};
+	
 	private static ResourceSource source;
 	
 	private static Logger logger;
@@ -187,15 +212,7 @@ public final class Game {
 		loaders = new ArrayDeque<ResourceLoader>();
 
 		logger.setUseParentHandlers(false);
-		final long start = System.currentTimeMillis();
-		Handler handler = new StreamHandler(System.out, new Formatter() {
-
-			@Override
-			public String format(LogRecord arg0) {
-				return String.format("%06d:%s - %s%n", arg0.getMillis() - start, arg0.getLevel(), arg0.getMessage());
-			}
-			
-		});
+		Handler handler = new StreamHandler(System.out, loggerFormatter);
 		logger.setLevel(Level.ALL);
 		handler.setLevel(Level.ALL);
 		logger.addHandler(handler);

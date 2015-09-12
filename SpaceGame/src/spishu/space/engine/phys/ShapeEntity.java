@@ -3,7 +3,6 @@ package spishu.space.engine.phys;
 import org.lwjgl.opengl.GL11;
 
 import spishu.space.engine.anim.Animation;
-import spishu.space.engine.gl.DisplayList;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
@@ -20,7 +19,7 @@ import spishu.space.engine.phys.World.Entity;
 public class ShapeEntity<T extends Shape> extends Entity {
 
 	private Animation texture;
-	private DisplayList list;
+	private int list;
 	private T bounds;
 	private AABB aabb;
 	
@@ -56,14 +55,15 @@ public class ShapeEntity<T extends Shape> extends Entity {
 		Shape origin = bounds.translate(bounds.min().negate()), texcoordsShapes = origin.divDim(origin.max());
 		
 		//Generate displaylist
-		list = new DisplayList();
+		list = GL11.glGenLists(1);
+		GL11.glNewList(list, GL11.GL_COMPILE);
 		GL11.glBegin(GL11.GL_POLYGON);
 		for(int i = 0; i < bounds.vertices.length; i++){
 			texcoordsShapes.vertices[i].glTexCoord();
 			bounds.vertices[i].glVertex();
 		}
 		GL11.glEnd();
-		DisplayList.end();
+		GL11.glEndList();
 		
 	}
 	
@@ -78,7 +78,7 @@ public class ShapeEntity<T extends Shape> extends Entity {
 	@Override
 	public void remove() {
 		super.remove();
-		list.delete();
+		GL11.glDeleteLists(list, 1);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class ShapeEntity<T extends Shape> extends Entity {
 		//Rectangle.fromAABB(aabb).glLineLoop(); //For debug purposes. Will probably be controlled through some static field.
 		texture.bind();
 		GL11.glRotatef(rotation, 0, 0, 1);
-		list.call();
+		GL11.glCallList(list);
 		
 		GL11.glPopMatrix();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);

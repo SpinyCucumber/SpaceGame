@@ -1,6 +1,7 @@
 package spishu.space.main;
 
 import java.io.FileInputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -17,6 +18,7 @@ import spishu.space.engine.anim.Animation;
 import spishu.space.engine.gl.Camera;
 import spishu.space.engine.gl.Framebuffer;
 import spishu.space.engine.gl.GLSLProgram;
+import spishu.space.engine.gl.GLTimer;
 import spishu.space.engine.gl.GLWindow;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
@@ -31,27 +33,11 @@ import spishu.space.engine.phys.World;
  *
  */
 public class GameObject {
-	
-	GLFWErrorCallback errorCallback;
-	double time, lastTime, timeScale = 0.5;
-	
+
+	GLTimer timer;
 	GLWindow window;
 	World world;
 	Map<String, Object> config;
-	
-	public double getTime() {
-    	return GLFW.glfwGetTime();
-    }
-    
-	/**
-	 * @return Time in seconds between current frame and last frame.
-	 */
-    public double delta() {
-	    time = getTime();
-	    double delta = time - lastTime;
-    	lastTime = time;
-    	return delta;
-    }
     
     /**
      * Begins running the game.
@@ -60,31 +46,38 @@ public class GameObject {
 	public void start() {
 		
 		try {
-			
-			Game.getLogger().info("Starting GameObject");
-			Game.getLogger().info(String.format("LWJGL Version %s", Sys.getVersion()));
+
+			Game.getLogger().info(String.format("LWJGL Version %s (﻿ ͡° ͜ʖ ͡°) ", Sys.getVersion()));
 			
 			//Load config
 			config = (Map<String, Object>) new Yaml().load(new FileInputStream("config.yml"));
 			Game.getLogger().info(String.format("Loaded config %s", config));
 			
-			//Initiate graphics
-			GLFW.glfwSetErrorCallback(errorCallback = Callbacks.errorCallbackPrint(System.err));
-	        if ( GLFW.glfwInit() != GL11.GL_TRUE )
-	            throw new IllegalStateException("Unable to initialize GLFW");
+			//Set error callback to logger
+			final GLFWErrorCallback errorCallback = new GLFWErrorCallback() {
+				public void invoke(int arg0, long arg1) {
+					String message = Callbacks.errorCallbackDescriptionString(arg1);
+					Game.getLogger().warning(String.format("GLFW error: %s", message));
+				}
+			};
+			GLFW.glfwSetErrorCallback(errorCallback);
+	       
 	        initGraphics();
 	        
 	        //Load resources
 	        Game.useDefaultLoaders();
 	        Game.loadResources();
 	        
-	        //Generate graphical objects
+	        //Generate objects
 	        final Framebuffer mainFBO = new Framebuffer(window.getWidth(), window.getWidth());
 	        final GLSLProgram primShader = (GLSLProgram) Game.getResource("shader%sprim.glsl"), fboShader = (GLSLProgram) Game.getResource("shader%sfbo.glsl");
 	        final Camera camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
 	        final boolean useShaders = (Boolean) config.get("useShaders");
+
+	        timer = new GLTimer((double) config.get("timeScale"));
 	        world = new World(new Vec2(0, 0), 50.0f, 10);
 	        
+	        Game.getLogger().info(String.format("Initialized timer %s", timer));
 	        Game.getLogger().info(String.format("Initialized world %s", world));
 	        Game.getLogger().info(String.format("Initialized camera %s", camera));
 	        
@@ -101,7 +94,7 @@ public class GameObject {
 	        
 	        while(!window.shouldClose()) { //Main game loop. Will probably seperate into graphics class.
 	        	
-	        	double delta = delta() * timeScale;
+	        	double delta = timer.update();
 	        	world.update(delta);
 	        	camera.update(delta);
 	        	
@@ -125,14 +118,16 @@ public class GameObject {
 	        	Rectangle.fromAABB(screenOrtho).texturedQuad();
 	        	GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	        	
-	        	window.setTitle("SWAG LEVEL: " + time);
+	        	window.setTitle("SWAG LEVEL: " + timer.getTime());
 	            window.swapBuffers();
 	        	
 	        	GLFW.glfwPollEvents();
-	        	
 	        }
 	        
-	        Game.getLogger().info("Exiting");
+	        Map<String, Object> exitStats = new HashMap<String, Object>();
+	        exitStats.put("frames", timer.getFrames());
+	        exitStats.put("avgFrameLength", timer.getTime() / timer.getFrames());
+	        Game.getLogger().info(String.format("Exiting %s", exitStats));
 	        
 	        world.delete();
 			window.destroy();
@@ -141,8 +136,7 @@ public class GameObject {
 	        
 		} catch(Exception e) {
 
-			Game.getLogger().log(Level.SEVERE, "Joshua crashed your program!");
-			e.printStackTrace();
+			Game.getLogger().log(Level.SEVERE, "Joshua crashed your program!", e);
 			
 		}
 		
@@ -150,6 +144,9 @@ public class GameObject {
 	
 	private void initGraphics() {
 	    	
+		if(GLFW.glfwInit() != GL11.GL_TRUE)
+			throw new IllegalStateException("Unable to initialize GLFW");
+		
         // Configure our window
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GL11.GL_TRUE);

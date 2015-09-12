@@ -9,6 +9,7 @@ import java.util.Set;
 
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
+import spishu.space.main.Game;
 /**
  * A container that lets entities interact with eachother.
  * Also has gravity and sort-of air-resistance.
@@ -116,10 +117,16 @@ public class World {;
 	private Vec2 gravity;
 	private float slowdown, angSlowdown;
 	
+	/**
+	 * Updates entities, applies physics, and removes old entities.
+	 * @param delta
+	 */
 	public void update(double delta) {
-		
+
+		for(Entity entity : newEntities) Game.getLogger().info(String.format("New entity: %s", entity));
 		entities.removeAll(oldEntities);
 		entities.addAll(newEntities);
+			
 		oldEntities.clear();
 		newEntities.clear();
 		
@@ -142,7 +149,10 @@ public class World {;
 		}
 		
 	}
-
+	
+	/**
+	 * Renders the world
+	 */
 	public void draw() {
 		for(Entity entity : entities) entity.draw();
 	}
@@ -168,9 +178,8 @@ public class World {;
 
 	@Override
 	public String toString() {
-		return "World [entities=" + entities + ", gravity=" + gravity
-				+ ", slowdown=" + slowdown + ", angSlowdown=" + angSlowdown
-				+ "]";
+		return "World [gravity=" + gravity + ", slowdown=" + slowdown
+				+ ", angSlowdown=" + angSlowdown + "]";
 	}
 
 	/**

@@ -9,3 +9,5 @@ Modular Computer Designer
 Config file, most likely in yml format, to disable shaders and etc.
 
 Seperate Graphics class to handle (guess what) graphics.
+
+Exit info
