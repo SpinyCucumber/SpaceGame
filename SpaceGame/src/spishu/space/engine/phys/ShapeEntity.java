@@ -20,7 +20,7 @@ public class ShapeEntity<T extends Shape> extends Entity {
 
 	private Animation texture;
 	private int list;
-	private T bounds;
+	protected T bounds;
 	private AABB aabb;
 	
 	/**
@@ -92,7 +92,7 @@ public class ShapeEntity<T extends Shape> extends Entity {
 
 	@Override
 	/**
-	 * Binds texture, translates, and calls list.
+	 * Binds texture, transforms matrix, and calls list.
 	 */
 	public void draw(){
 		

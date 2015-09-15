@@ -80,6 +80,7 @@ public class GameObject {
 	        Game.getLogger().info(String.format("Initialized timer %s", timer));
 	        Game.getLogger().info(String.format("Initialized world %s", world));
 	        Game.getLogger().info(String.format("Initialized camera %s", camera));
+	        Game.getLogger().info(String.format("Using %d collision detectors", World.getColliders().size()));
 	        
 	        //Get dimensions to be used in glOrtho
 	        Vec2 d = window.getDimensions().invScale(2);
@@ -114,7 +115,7 @@ public class GameObject {
 	        	screenOrtho.glOrtho();
 	        	
 	        	if(useShaders) fboShader.use();
-	        	mainFBO.bindColorTexture();
+	        	mainFBO.getColorTexture().bind();
 	        	Rectangle.fromAABB(screenOrtho).texturedQuad();
 	        	GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	        	

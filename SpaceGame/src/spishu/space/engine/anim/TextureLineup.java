@@ -21,7 +21,7 @@ public class TextureLineup extends Animation {
 		this.length = textures.length;
 	}
 
-	public Vec2 getTexCoord(Vec2 texCoord) {
+	public Vec2 getTexCoord(Vec2 texCoord, int frame) {
 		return texCoord;
 	}
 
@@ -34,7 +34,7 @@ public class TextureLineup extends Animation {
 		return new Shape(vertices).min();
 	}
 
-	public void bind() {
+	public void bind(int frame) {
 		textures[(int) Math.floor(frame)].bind();
 	}
 

@@ -1,4 +1,4 @@
-package spishu.space.emulator.chip8;
+package spishu.space.computer;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -8,8 +8,6 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.ByteBuffer;
 import java.util.Random;
-
-import spishu.space.computer.Designer;
 
 public class Chip {
 	

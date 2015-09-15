@@ -160,13 +160,17 @@ public class Shape {
 	}
 	
 	/**
-	 * Draws the shape using GL_LINE_LOOP.
+	 * Draws the shape using GL_LINE_LOOP. Convenience!
 	 * @see GL11
 	 */
-	public void glLineLoop() {
+	public void lineLoop() {
 		GL11.glBegin(GL11.GL_LINE_LOOP);
-		for(Vec2 vertex : vertices) vertex.glVertex();
+		drawVertices();
 		GL11.glEnd();
+	}
+	
+	public void drawVertices() {
+		for(Vec2 vertex : vertices) vertex.glVertex();
 	}
 	
 	@Override

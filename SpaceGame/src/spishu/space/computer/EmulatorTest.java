@@ -1,4 +1,4 @@
-package spishu.space.emulator.chip8;
+package spishu.space.computer;
 
 import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
 import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
@@ -107,7 +107,7 @@ public class EmulatorTest {
 				screenOrtho.glViewport();
 				screenOrtho.glOrtho();
 		        
-		        fbo.bindColorTexture();
+		        fbo.getColorTexture().bind();
 		        Rectangle.fromAABB(screenOrtho).texturedQuad();
 		        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	            

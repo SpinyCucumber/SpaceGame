@@ -15,7 +15,7 @@ public class TextureAtlas extends Animation {
 		length = (int) (dimensions.x * dimensions.y);
 	}
 
-	public Vec2 getTexCoord(Vec2 texCoord) {
+	public Vec2 getTexCoord(Vec2 texCoord, int frame) {
 		return texCoord.divDim(dimensions).add(point);
 	}
 
@@ -23,7 +23,7 @@ public class TextureAtlas extends Animation {
 		return new Vec2(texture.getWidth(), texture.getHeight()).divDim(dimensions);
 	}
 
-	public void bind() {
+	public void bind(int frame) {
 		texture.bind();
 	}
 	
