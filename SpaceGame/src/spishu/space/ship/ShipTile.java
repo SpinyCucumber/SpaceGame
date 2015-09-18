@@ -10,5 +10,9 @@ import spishu.space.engine.anim.Animation;
 public class ShipTile {
 	
 	Animation texture;
+
+	public ShipTile(Animation texture) {
+		this.texture = texture;
+	}
 	
 }

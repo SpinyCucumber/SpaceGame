@@ -99,4 +99,11 @@ public class Framebuffer {
 		glDeleteFramebuffersEXT(id);
 	}
 	
+	/**
+	 * For convenience. Unbind is rather long.
+	 */
+	public static void unbind() {
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	}
+	
 }

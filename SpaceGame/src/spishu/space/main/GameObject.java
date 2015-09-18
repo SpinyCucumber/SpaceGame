@@ -9,23 +9,23 @@ import org.lwjgl.Sys;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.yaml.snakeyaml.Yaml;
 
 import spishu.space.engine.anim.Animation;
-import spishu.space.engine.gl.Camera;
+import spishu.space.engine.gl.Camera2d;
 import spishu.space.engine.gl.Framebuffer;
 import spishu.space.engine.gl.GLSLProgram;
 import spishu.space.engine.gl.GLTimer;
 import spishu.space.engine.gl.GLWindow;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
-import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
-import spishu.space.engine.phys.ShapeEntity;
 import spishu.space.engine.phys.World;
+import spishu.space.ship.ShipData;
+import spishu.space.ship.ShipEntity;
+import spishu.space.ship.ShipTile;
 
 /**
  * Main game class, representing an instance of the game.
@@ -66,12 +66,13 @@ public class GameObject {
 	        
 	        //Load resources
 	        Game.useDefaultLoaders();
+	        Game.setSource(getClass());
 	        Game.loadResources();
 	        
 	        //Generate objects
 	        final Framebuffer mainFBO = new Framebuffer(window.getWidth(), window.getWidth());
 	        final GLSLProgram primShader = (GLSLProgram) Game.getResource("shader%sprim.glsl"), fboShader = (GLSLProgram) Game.getResource("shader%sfbo.glsl");
-	        final Camera camera = new Camera(new Vec2(0, 0), 1, 4000, 0.99f, window);
+	        final Camera2d camera = new Camera2d(new Vec2(0, 0), 1, 4000, 0.99f, window);
 	        final boolean useShaders = (Boolean) config.get("useShaders");
 
 	        timer = new GLTimer((double) config.get("timeScale"));
@@ -86,12 +87,11 @@ public class GameObject {
 	        Vec2 d = window.getDimensions().invScale(2);
 	        AABB worldOrtho = new AABB(new Vec2(-d.x, d.y), new Vec2(d.x, -d.y)), screenOrtho = new AABB(Vec2.ZERO, window.getDimensions());
 	        
-	        //Add entities
-	        Animation anim = (Animation) Game.getResource("texture%stest.anim");
-	        new ShapeEntity<Shape>(world, new Vec2(200f, 0), new Vec2(-400, 0),
-	        		1, 30, 0, 1, Rectangle.fromDimensions(new Vec2(200)), anim);
-	        new ShapeEntity<Shape>(world, new Vec2(0, 0), new Vec2(0, 0),
-	        		1, 0, 0, 1, Rectangle.fromDimensions(new Vec2(100)), anim);
+	        //Add entities. Testing ships.
+	        ShipTile tile = new ShipTile((Animation) Game.getResource("texture%stest.anim"));
+	        ShipData data = new ShipData(new ShipTile[][]{{tile, tile},{tile, tile}});
+	        data.renderToBuffer();
+	        new ShipEntity(data, world, new Vec2(0, 0), new Vec2(0, 0), 1, 0, 0, 1);
 	        
 	        while(!window.shouldClose()) { //Main game loop. Will probably seperate into graphics class.
 	        	
@@ -108,7 +108,7 @@ public class GameObject {
 		            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		            world.draw();
 		            
-	        	} EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
+	        	} Framebuffer.unbind();
 	        	
 	        	GL11.glLoadIdentity();
 	        	screenOrtho.glViewport();

@@ -5,7 +5,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import spishu.space.engine.math.Vec2;
 
-public class Camera {
+public class Camera2d {
 	
 	private Vec2 position;
 	private float zoom, moveSpeed, zoomSpeed;
@@ -25,7 +25,7 @@ public class Camera {
 		if(window.isKeyPressed(GLFW_KEY_LEFT_CONTROL)) zoom *= zoomSpeed;
 	}
 
-	public Camera(Vec2 position, float zoom, float moveSpeed, float zoomSpeed,
+	public Camera2d(Vec2 position, float zoom, float moveSpeed, float zoomSpeed,
 			GLWindow window) {
 		this.position = position;
 		this.zoom = zoom;

@@ -34,10 +34,21 @@ public class ShipEntity extends Entity {
 		GL11.glPopMatrix();
 	}
 	
+	/**
+	 * @param data ShipData to create ship from
+	 * @param world World to add to
+	 * @param velocity
+	 * @param position
+	 * @param mass
+	 * @param rotation
+	 * @param angVelocity
+	 * @param restitution
+	 */
 	public ShipEntity(ShipData data, World world, Vec2 velocity, Vec2 position, float mass,
 			float rotation, float angVelocity, float restitution) {
 		world.super(velocity, position, mass, rotation, angVelocity, restitution);
 		texture = data.fbo.getColorTexture();
+		bounds = Rectangle.fromDimensions(data.dimensions);
 	}
 
 }

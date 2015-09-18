@@ -6,6 +6,7 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
@@ -138,7 +139,7 @@ public class World {;
 	 */
 	public void update(double delta) {
 
-		for(Entity entity : newEntities) Game.getLogger().info(String.format("New entity: %s", entity));
+		for(Entity entity : newEntities) Game.getLogger().log(Level.FINE, String.format("New entity: %s", entity));
 		entities.removeAll(oldEntities);
 		entities.addAll(newEntities);
 			

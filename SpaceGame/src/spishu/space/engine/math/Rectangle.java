@@ -28,15 +28,18 @@ public class Rectangle extends Shape {
 	}
 	
 	@Override
-	public Shape rotate(float angle) {
+	public Rectangle rotate(float angle) {
 		return new Rectangle(super.rotate(angle).vertices);
 	}
 	
 	@Override
-	public Shape translate(Vec2 d) {
+	public Rectangle translate(Vec2 d) {
 		return new Rectangle(super.translate(d).vertices);
 	}
 	
+	/**
+	 * Calls texCoords and vertices.
+	 */
 	public void texturedQuad() {
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f(0, 0);

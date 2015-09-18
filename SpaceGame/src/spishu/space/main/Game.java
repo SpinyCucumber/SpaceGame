@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.security.CodeSource;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
@@ -154,6 +155,7 @@ public final class Game {
 		Collection<String> entries = source.getEntries();
 		logger.info(String.format("Found %d possible resources", entries.size()));
 		for(String entry : entries) {
+			logger.log(Level.FINER, String.format("Entry: %s", entry));
 			String ext = entry.split(EXT_DELIM)[1];
 			for(ResourceLoader loader : loaders)
 				if(loader.extensions.contains(ext)) {
@@ -197,6 +199,20 @@ public final class Game {
 		
 	};
 	
+	public static void setSource(File src) throws IOException {
+		if(src.isDirectory()) source = new DirectorySource(src);
+		else source = new ZipSource(src);
+		logger.info(String.format("Using %s as source", source));
+	}
+	
+	public static void setSource(CodeSource src) throws IOException, URISyntaxException {
+		setSource(new File(src.getLocation().toURI()));
+	}
+	
+	public static void setSource(Class<?> src) throws IOException, URISyntaxException {
+		setSource(src.getProtectionDomain().getCodeSource());
+	}
+	
 	private static ResourceSource source;
 	
 	private static Logger logger;
@@ -222,15 +238,6 @@ public final class Game {
 		defaultLoaders.add(ResourceLoader.ANIM_LOADER);
 		defaultLoaders.add(ResourceLoader.BYTE_LOADER);
 		defaultLoaders.add(ResourceLoader.GLSL_LOADER);
-		
-		try {
-			File src = new File(Game.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-			if(src.isDirectory()) source = new DirectorySource(src);
-			else source = new ZipSource(src);
-			logger.info(String.format("Using %s as source", source));
-		} catch (URISyntaxException | IOException e) {
-			e.printStackTrace();
-		}
 		
 	}
 	

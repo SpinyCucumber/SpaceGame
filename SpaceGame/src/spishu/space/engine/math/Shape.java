@@ -169,6 +169,10 @@ public class Shape {
 		GL11.glEnd();
 	}
 	
+	/**
+	 * Calls glVertex on each vertex.
+	 * drawTexCoords is redundant because you need to call a vertex in between texCoords.
+	 */
 	public void drawVertices() {
 		for(Vec2 vertex : vertices) vertex.glVertex();
 	}

@@ -2,6 +2,7 @@ package spishu.space.engine.gl;
 
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
+import static org.lwjgl.glfw.GLFW.glfwGetCursorPos;
 import static org.lwjgl.glfw.GLFW.glfwGetKey;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
@@ -13,7 +14,9 @@ import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GL11;
 
@@ -67,6 +70,16 @@ public class GLWindow {
 	
 	public boolean isKeyPressed(int key) {
 		return glfwGetKey(handle, key) == GL11.GL_TRUE;
+	}
+	
+	public Vec2 getMousePosition() {
+		DoubleBuffer x = BufferUtils.createDoubleBuffer(1),
+				y = BufferUtils.createDoubleBuffer(1);
+
+	    glfwGetCursorPos(handle, x, y);
+	    x.rewind();
+	    y.rewind();
+	    return new Vec2((float) x.get(), (float) y.get());
 	}
 	
 	public GLWindow(int width, int height) {

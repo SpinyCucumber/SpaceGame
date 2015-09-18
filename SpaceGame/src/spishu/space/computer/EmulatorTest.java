@@ -22,7 +22,6 @@ import static org.lwjgl.opengl.GL11.glPointSize;
 import java.nio.ByteBuffer;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
@@ -102,7 +101,7 @@ public class EmulatorTest {
 			        
 					GL11.glEnd();
 				
-				} EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
+				} Framebuffer.unbind();
 
 				screenOrtho.glViewport();
 				screenOrtho.glOrtho();

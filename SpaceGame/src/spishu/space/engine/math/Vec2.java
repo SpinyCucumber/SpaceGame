@@ -53,6 +53,10 @@ public class Vec2 {
 		return dot(o.perp());
 	}
 	
+	public Vec2 mulDim(Vec2 o) {
+		return new Vec2(x * o.x, y * o.y);
+	}
+	
 	public Vec2 divDim(Vec2 o) {
 		return new Vec2(x / o.x, y / o.y);
 	}
