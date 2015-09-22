@@ -5,14 +5,20 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import spishu.space.engine.math.Vec2;
 
+/**
+ * Simple scrolling camera.
+ * Using double values for speed, etc to increase precision (there will not be multiple cameras!)
+ * @author SpinyCucumber
+ *
+ */
 public class Camera2d {
 	
 	private Vec2 position;
-	private float zoom, moveSpeed, zoomSpeed;
+	private double zoom, moveSpeed, zoomSpeed;
 	private GLWindow window;
 	
 	public void transform() {
-		GL11.glScalef(zoom, zoom, 0);
+		GL11.glScaled(zoom, zoom, 0);
 		position.negate().glTranslate();
 	}
 	
@@ -25,7 +31,7 @@ public class Camera2d {
 		if(window.isKeyPressed(GLFW_KEY_LEFT_CONTROL)) zoom *= zoomSpeed;
 	}
 
-	public Camera2d(Vec2 position, float zoom, float moveSpeed, float zoomSpeed,
+	public Camera2d(Vec2 position, double zoom, double moveSpeed, double zoomSpeed,
 			GLWindow window) {
 		this.position = position;
 		this.zoom = zoom;

@@ -10,7 +10,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.security.CodeSource;
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.Enumeration;
@@ -229,10 +228,7 @@ public final class Game {
 
 		logger.setUseParentHandlers(false);
 		Handler handler = new StreamHandler(System.out, loggerFormatter);
-		logger.setLevel(Level.ALL);
-		handler.setLevel(Level.ALL);
 		logger.addHandler(handler);
-		logger.info(String.format("Logger has handlers: %s", Arrays.toString(logger.getHandlers())));
 		
 		defaultLoaders = new ArrayDeque<ResourceLoader>();
 		defaultLoaders.add(ResourceLoader.ANIM_LOADER);

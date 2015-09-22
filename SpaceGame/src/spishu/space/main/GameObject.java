@@ -46,12 +46,14 @@ public class GameObject {
 	public void start() {
 		
 		try {
-
-			Game.getLogger().info(String.format("LWJGL Version %s (﻿ ͡° ͜ʖ ͡°) ", Sys.getVersion()));
 			
-			//Load config
+			//Load config and log initialization specs
 			config = (Map<String, Object>) new Yaml().load(new FileInputStream("config.yml"));
+			
+			Game.getLogger().setLevel(Level.parse((String) config.get("logLevel")));
+			Game.getLogger().info(String.format("Logger level %s", Game.getLogger().getLevel()));
 			Game.getLogger().info(String.format("Loaded config %s", config));
+			Game.getLogger().info(String.format("LWJGL Version %s (﻿ ͡° ͜ʖ ͡°) ", Sys.getVersion()));
 			
 			//Set error callback to logger
 			final GLFWErrorCallback errorCallback = new GLFWErrorCallback() {
@@ -72,12 +74,13 @@ public class GameObject {
 	        //Generate objects
 	        final Framebuffer mainFBO = new Framebuffer(window.getWidth(), window.getWidth());
 	        final GLSLProgram primShader = (GLSLProgram) Game.getResource("shader%sprim.glsl"), fboShader = (GLSLProgram) Game.getResource("shader%sfbo.glsl");
-	        final Camera2d camera = new Camera2d(new Vec2(0, 0), 1, 4000, 0.99f, window);
+	        final Camera2d camera = new Camera2d(new Vec2(0, 0), 1, (double) config.get("cameraMoveSpeed"), (double) config.get("cameraZoomSpeed"), window);
 	        final boolean useShaders = (Boolean) config.get("useShaders");
 
 	        timer = new GLTimer((double) config.get("timeScale"));
 	        world = new World(new Vec2(0, 0), 50.0f, 10);
 	        
+	        //Log junk
 	        Game.getLogger().info(String.format("Initialized timer %s", timer));
 	        Game.getLogger().info(String.format("Initialized world %s", world));
 	        Game.getLogger().info(String.format("Initialized camera %s", camera));
@@ -95,10 +98,12 @@ public class GameObject {
 	        
 	        while(!window.shouldClose()) { //Main game loop. Will probably seperate into graphics class.
 	        	
+	        	//Update stuff
 	        	double delta = timer.update();
 	        	world.update(delta);
 	        	camera.update(delta);
 	        	
+	        	//Render to fbo
 	        	mainFBO.bind(); {
 	        		
 	        		worldOrtho.glOrtho();
@@ -114,6 +119,7 @@ public class GameObject {
 	        	screenOrtho.glViewport();
 	        	screenOrtho.glOrtho();
 	        	
+	        	//Render fbo to screen
 	        	if(useShaders) fboShader.use();
 	        	mainFBO.getColorTexture().bind();
 	        	Rectangle.fromAABB(screenOrtho).texturedQuad();
@@ -125,6 +131,7 @@ public class GameObject {
 	        	GLFW.glfwPollEvents();
 	        }
 	        
+	        //Provide statistics
 	        Map<String, Object> exitStats = new HashMap<String, Object>();
 	        exitStats.put("frames", timer.getFrames());
 	        exitStats.put("avgFrameLength", timer.getTime() / timer.getFrames());

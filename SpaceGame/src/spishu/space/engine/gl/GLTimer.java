@@ -3,7 +3,7 @@ package spishu.space.engine.gl;
 import org.lwjgl.glfw.GLFW;
 
 /**
- * Utility class for glfw timing methods.
+ * Utility class for glfw timing methods. Using double internally for precision.
  * @author SpinyCucumber
  *
  */

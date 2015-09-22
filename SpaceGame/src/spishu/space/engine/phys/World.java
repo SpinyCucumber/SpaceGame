@@ -62,7 +62,7 @@ public class World {;
 	
 	/**
 	 * The base entity class. Has velocity, position, mass, rotation, and restitution.
-	 * 
+	 * Floats are used because there may be a large amount of entities.
 	 * @author SpinyCucumber
 	 *
 	 */
@@ -103,6 +103,9 @@ public class World {;
 			
 		}
 		
+		/**
+		 * Called when world is drawn; by default does nothing.
+		 */
 		protected void draw() {}
 		
 		@Override
@@ -182,7 +185,7 @@ public class World {;
 	
 	/**
 	 * 
-	 * @param gravity Vector added to entities each frame
+	 * @param gravity Vector added to entities' velocities each frame
 	 * @param slowdown Amount subtracted from entities' speed each frame
 	 * @param angSlowdown Slowdown of angular speed
 	 */

@@ -1,17 +1,5 @@
 package spishu.space.engine.gl;
 
-import static org.lwjgl.opengl.GL11.GL_NEAREST;
-import static org.lwjgl.opengl.GL11.GL_RGBA;
-import static org.lwjgl.opengl.GL11.GL_RGBA8;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glGenTextures;
-import static org.lwjgl.opengl.GL11.glTexImage2D;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,9 +8,21 @@ import java.nio.ByteBuffer;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 
+/**
+ * Class representing an OpenGL texture object. Contains methods for loading from files and etc.
+ * Game class is meant for loading and handling of resources.
+ * @author SpinyCucumber
+ *
+ */
 public class Texture {
 	
+	/**
+	 * Creates opengl texture from java awt image.
+	 * @param image
+	 * @return
+	 */
 	public static Texture fromBufferedImage(BufferedImage image) {
 		
 		int width = image.getWidth(), height = image.getHeight();
@@ -47,6 +47,8 @@ public class Texture {
 		
 	}
 	
+	
+	
 	public static Texture fromFile(File file) throws IOException {
 		return fromBufferedImage(ImageIO.read(file));
 	}
@@ -59,25 +61,31 @@ public class Texture {
 		this(width, height, null);
 	}
 	
+	/**
+	 * Inititializes texture and sets data.
+	 * @param width
+	 * @param height
+	 * @param buffer
+	 */
 	public Texture(int width, int height, ByteBuffer buffer) {
 		
 		this.width = width;
 		this.height = height;
 
-        id = glGenTextures();
+        id = GL11.glGenTextures();
         bind();
 
         //Setup texture scaling filtering
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         
 	}
 	
 	public void bind() {
-		glBindTexture(GL_TEXTURE_2D, id);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
 	}
 	
 	public int getHeight() {
@@ -86,6 +94,13 @@ public class Texture {
 
 	public int getId() {
 		return id;
+	}
+	
+	/**
+	 * Calls opengl 
+	 */
+	public void destroy() {
+		GL11.glDeleteTextures(id);
 	}
 
 	public int getWidth() {
