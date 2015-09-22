@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
+import spishu.space.engine.game.Game;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
-import spishu.space.main.Game;
 import spishu.space.ship.ShipEntity;
 /**
  * A container that lets entities interact with eachother.

@@ -1,4 +1,4 @@
-package spishu.space.main;
+package spishu.space.engine.game;
 
 import java.io.File;
 import java.io.IOException;

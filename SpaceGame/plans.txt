@@ -6,8 +6,13 @@ Modular Computer Designer
 		-Display
 	All components will have I/O ports to connect them.
 	
-Config file, most likely in yml format, to disable shaders and etc.
+Config file, most likely in yml format, to disable shaders and etc. (done)
 
 Seperate Graphics class to handle (guess what) graphics.
 
-Exit info
+Exit info (done)
+
+Finish GameObject class
+Simplex method
+Finish shape decompisition method
+Sound support in engine

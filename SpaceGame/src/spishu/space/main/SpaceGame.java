@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GLContext;
 import org.yaml.snakeyaml.Yaml;
 
 import spishu.space.engine.anim.Animation;
+import spishu.space.engine.game.Game;
 import spishu.space.engine.gl.Camera2d;
 import spishu.space.engine.gl.Framebuffer;
 import spishu.space.engine.gl.GLSLProgram;
@@ -32,7 +33,7 @@ import spishu.space.ship.ShipTile;
  * @author SpinyCucumber
  *
  */
-public class GameObject {
+public class SpaceGame {
 
 	GLTimer timer;
 	GLWindow window;
@@ -176,7 +177,7 @@ public class GameObject {
 	
 	public static void main(String[] args) {
 		
-		new GameObject().start();
+		new SpaceGame().start();
 		
 	}
 

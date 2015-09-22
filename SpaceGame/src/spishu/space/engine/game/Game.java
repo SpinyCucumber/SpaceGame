@@ -1,4 +1,4 @@
-package spishu.space.main;
+package spishu.space.engine.game;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -171,6 +171,13 @@ public final class Game {
 	 */
 	public static void useDefaultLoaders() {
 		loaders.addAll(defaultLoaders);
+	}
+	
+	/**
+	 * Release resources and do any other saving, etc.
+	 */
+	public static void cleanUp() {
+		
 	}
 
 	private static final String EXT_DELIM = Pattern.quote(".");

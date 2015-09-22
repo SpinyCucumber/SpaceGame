@@ -25,13 +25,13 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
+import spishu.space.engine.game.Game;
+import spishu.space.engine.game.ResourceLoader;
 import spishu.space.engine.gl.Framebuffer;
 import spishu.space.engine.gl.GLWindow;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
 import spishu.space.engine.math.Vec2;
-import spishu.space.main.Game;
-import spishu.space.main.ResourceLoader;
 
 public class EmulatorTest {
 	
