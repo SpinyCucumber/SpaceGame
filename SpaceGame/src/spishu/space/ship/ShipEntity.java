@@ -51,4 +51,11 @@ public class ShipEntity extends Entity {
 		bounds = Rectangle.fromDimensions(data.dimensions);
 	}
 
+	@Override
+	public String toString() {
+		return "ShipEntity [texture=" + texture + ", bounds=" + bounds
+				+ ", velocity=" + velocity + ", position=" + position
+				+ ", mass=" + mass + "]";
+	}
+	
 }

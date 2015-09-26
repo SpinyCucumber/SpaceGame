@@ -94,5 +94,11 @@ public class GLWindow {
 		ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		return new Vec2(GLFWvidmode.width(vidmode), GLFWvidmode.height(vidmode));
 	}
+
+	@Override
+	public String toString() {
+		return "GLWindow [width=" + width + ", height=" + height + ", handle="
+				+ handle + "]";
+	}
 	
 }

@@ -141,7 +141,7 @@ public class World {;
 	 * @param delta
 	 */
 	public void update(double delta) {
-
+		
 		for(Entity entity : newEntities) Game.getLogger().log(Level.FINE, String.format("New entity: %s", entity));
 		entities.removeAll(oldEntities);
 		entities.addAll(newEntities);
@@ -162,6 +162,7 @@ public class World {;
 						continue; //This isnt the collider we're looking for
 					}
 					if(result == null) continue;
+					Game.getLogger().fine(String.format("Collision between entity %d and entity %d %s", e1, e2, result));
 					resolveCollision(result, e1, e2);
 				}
 			}
@@ -184,7 +185,6 @@ public class World {;
 	}
 	
 	/**
-	 * 
 	 * @param gravity Vector added to entities' velocities each frame
 	 * @param slowdown Amount subtracted from entities' speed each frame
 	 * @param angSlowdown Slowdown of angular speed

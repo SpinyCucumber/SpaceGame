@@ -1,6 +1,7 @@
 package spishu.space.engine.math;
 
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
@@ -61,6 +62,11 @@ public class Rectangle extends Shape {
 	public static Rectangle fromAABB(AABB aabb) {
 		return new Rectangle(aabb.corner1, new Vec2(aabb.corner2.x, aabb.corner1.y),
 				aabb.corner2, new Vec2(aabb.corner1.x, aabb.corner2.y));
+	}
+
+	@Override
+	public String toString() {
+		return "Rectangle [vertices=" + Arrays.toString(vertices) + "]";
 	}
 
 }
