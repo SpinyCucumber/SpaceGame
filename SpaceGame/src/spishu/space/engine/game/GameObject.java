@@ -62,7 +62,7 @@ public abstract class GameObject {
 			Game.info("Starting GameObject %s", this.getClass());
 			Game.info("Logger level %s", Game.getLogger().getLevel());
 			Game.info("Loaded config %s", config);
-			Game.info("LWJGL Version %s (﻿ ͡° ͜ʖ ͡°) ", Sys.getVersion());
+			Game.info("LWJGL Version %s (��� ���� ���� ����) ", Sys.getVersion());
 			
 			//Set glfw errorcallback to logger.
 			final GLFWErrorCallback errorCallback = new GLFWErrorCallback() {
@@ -103,6 +103,7 @@ public abstract class GameObject {
 		        Map<String, Object> exitStats = new HashMap<String, Object>();
 		        exitStats.put("frames", timer.getFrames());
 		        exitStats.put("avgFrameLength", timer.getTime() / timer.getFrames());
+		        exitStats.put("avgFPS", timer.getFrames() / timer.getTime());
 		        Game.info("Exiting %s", exitStats);
 		        
 		        onExit();
