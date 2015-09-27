@@ -23,8 +23,8 @@ public class Camera2d {
 	}
 	
 	public void update(double delta) {
-		if(window.isKeyPressed(GLFW_KEY_UP)) position.y -= moveSpeed * delta;
-		if(window.isKeyPressed(GLFW_KEY_DOWN)) position.y += moveSpeed * delta;
+		if(window.isKeyPressed(GLFW_KEY_UP)) position.y += moveSpeed * delta;
+		if(window.isKeyPressed(GLFW_KEY_DOWN)) position.y -= moveSpeed * delta;
 		if(window.isKeyPressed(GLFW_KEY_LEFT)) position.x -= moveSpeed * delta;
 		if(window.isKeyPressed(GLFW_KEY_RIGHT)) position.x += moveSpeed * delta;
 		if(window.isKeyPressed(GLFW_KEY_LEFT_SHIFT)) zoom /= zoomSpeed;

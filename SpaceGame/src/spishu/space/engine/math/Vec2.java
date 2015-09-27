@@ -94,6 +94,15 @@ public class Vec2 {
 	}
 	
 	/**
+	 * GL_POINTS
+	 */
+	public void glPoint() {
+		GL11.glBegin(GL11.GL_POINTS);
+		glVertex();
+		GL11.glEnd();
+	}
+	
+	/**
 	 * Convenient drawing method.
 	 */
 	public void lineTo(Vec2 o) {

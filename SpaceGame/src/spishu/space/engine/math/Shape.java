@@ -54,6 +54,27 @@ public class Shape {
 		return new Shape(newVertices);
 	}
 	
+	/**
+	 * Subdivides each edge into 2.
+	 * @return
+	 */
+	public Shape subdivide() {
+		Vec2[] newVertices = new Vec2[vertices.length*2];
+		for(int i = 0; i < vertices.length; i++) {
+			Vec2 p1 = vertices[i], p2 = vertices[(i + 1) % vertices.length],
+					edge = p2.sub(p1);
+			newVertices[2*i] = p1.add(edge.scale(1f/3));
+			newVertices[2*i+1] = p1.add(edge.scale(2f/3));
+		}
+		return new Shape(newVertices);
+	}
+	
+	public Shape subdivide(int iters) {
+		Shape shape = this;
+		for(int i = 0; i < iters; i++) shape = shape.subdivide();
+		return shape;
+	}
+	
 	public Vec2 min() {
 		
 		float x = vertices[0].x, y = vertices[0].y;
@@ -85,22 +106,13 @@ public class Shape {
 		return min().midpoint(max());
 	}
 	
-	public Vec2[] edges() {
-		Vec2[] edges = new Vec2[vertices.length];
-		for(int i = 0; i < vertices.length; i++) {
-			
-		}
-		return edges;
-	}
-	
 	/**
 	 * Get the axes for testing by normalizing the vectors perpendicular the the edges.
 	 */
 	public Collection<Vec2> axes() {
 		Collection<Vec2> axes = new HashSet<Vec2>();
 		for(int i = 0; i < vertices.length; i++) {
-			Vec2 p1 = vertices[i];
-			Vec2 p2 = vertices[(i + 1) % vertices.length];
+			Vec2 p1 = vertices[i], p2 = vertices[(i + 1) % vertices.length];
 			axes.add(p2.sub(p1).normalize().perp());
 		}
 		return axes;
