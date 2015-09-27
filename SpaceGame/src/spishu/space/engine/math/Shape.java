@@ -28,6 +28,11 @@ public class Shape {
 		this.vertices = vertices;
 	}
 
+	/**
+	 * Translate shape by moving all vertices. Faster than a matrix.
+	 * @param d Translation vector
+	 * @return Translated shape
+	 */
 	public Shape translate(Vec2 d) {
 		Vec2[] newVertices = new Vec2[vertices.length];
 		for(int i = 0; i < vertices.length; i++) {
@@ -36,16 +41,34 @@ public class Shape {
 		return new Shape(newVertices);
 	}
 	
-	public Shape rotate(float a) {
+	/**
+	 * Apply a 2x2 transformation matrix.
+	 * @param mat Matrix
+	 * @return Transformed shape
+	 */
+	public Shape transform(Matrix2 mat) {
 		Vec2[] newVertices = new Vec2[vertices.length];
-		Matrix2 rot = Matrix2.fromAngle(a);
 		//Iterate over vertices
 		for(int i = 0; i < vertices.length; i++) {
-			newVertices[i] = vertices[i].multiply(rot);
+			newVertices[i] = vertices[i].multiply(mat);
 		}
 		return new Shape(newVertices);
 	}
 	
+	/**
+	 * Generate rotation matrix and calls transform.
+	 * Translate shape first to obtain new pivot point.
+	 * @param a Rotation in radians.
+	 * @return Rotated shape.
+	 */
+	public Shape rotate(float a) {
+		return transform(Matrix2.fromVec(Vec2.fromAngle(a)));
+	}
+	
+	/**
+	 * Scales vertices element-wise.
+	 * Useful for shrinking or growing shapes to fit a specified space.
+	 */
 	public Shape divDim(Vec2 dim) {
 		Vec2[] newVertices = new Vec2[vertices.length];
 		for(int i = 0; i < vertices.length; i++) {
@@ -55,8 +78,10 @@ public class Shape {
 	}
 	
 	/**
-	 * Subdivides each edge into 2.
-	 * @return
+	 * Subdivides each edge into 2,
+	 * effectively generating a new shape with 2 times the number of vertices.
+	 * <p> "Simulates" detail.
+	 * @return Subdivided shape
 	 */
 	public Shape subdivide() {
 		Vec2[] newVertices = new Vec2[vertices.length*2];
@@ -69,12 +94,18 @@ public class Shape {
 		return new Shape(newVertices);
 	}
 	
+	/**
+	 * Iterative subdivision.
+	 */
 	public Shape subdivide(int iters) {
 		Shape shape = this;
 		for(int i = 0; i < iters; i++) shape = shape.subdivide();
 		return shape;
 	}
 	
+	/**
+	 * @return Top-left bounds in shape.
+	 */
 	public Vec2 min() {
 		
 		float x = vertices[0].x, y = vertices[0].y;
@@ -87,6 +118,9 @@ public class Shape {
 		
 	}
 	
+	/**
+	 * @return Bottom-right bounds in shape.
+	 */
 	public Vec2 max() {
 		
 		float x = vertices[0].x, y = vertices[0].y;
@@ -100,7 +134,9 @@ public class Shape {
 	}
 	
 	/**
-	 * Finds center of shape by taking the midpoint of the upper left bounds and lower right bounds.
+	 * Obtains the centroid (average of all vertices)
+	 * by taking the midpoint of the top-left bounds and bottom-right bounds.
+	 * @return Centroid
 	 */
 	public Vec2 center() {
 		return min().midpoint(max());
@@ -118,7 +154,10 @@ public class Shape {
 		return axes;
 	}
 	
-	/**Project the shape onto a 1-dimensional surface, like creating a shadow.*/
+	/**
+	 * Project the shape onto a 1-dimensional surface, like creating a shadow.
+	 * @return Range of projection, represented by a 2d vector.
+	 */
 	public Vec2 project(Vec2 axis) {
 		float min = axis.dot(vertices[0]), max = min;
 		for(int i = 1; i < vertices.length; i++) {
@@ -130,12 +169,12 @@ public class Shape {
 		return projection;
 	}
 
-	/** Test for collisions using the Seperating-Axis Theorem. The theorem states that if all
-	of the overlaps of the shadows of the shapes when projected onto their individual
-	axes do not overlap, then the shapes are not colliding. This algorithm works well
-	because it test collisions between any kind of shape, as long as the shape is convex.
-	* @param b Shape 2
-	*/
+	/**
+	 * Test for collisions using the Seperating-Axis Theorem. The theorem states that if all
+	 * of the overlaps of the shadows of the shapes when projected onto their individual
+	 * axes do not overlap, then the shapes are not colliding.
+	 * @param b Shape to test against
+	 */
 	public CollisionResult checkCollision(Shape b) {
 		
 		Set<Vec2> axes = new HashSet<Vec2>();
@@ -166,7 +205,11 @@ public class Shape {
 		
 	}
 	
-	public List<Shape> decompose() {
+	/**
+	 * Recursively decomposes shape into a set of convex shapes.
+	 * @return List of convex shapes
+	 */
+	public List<Shape> decompose() { //TODO
 		List<Shape> shapes = new ArrayList<Shape>();
 		return shapes;
 	}
@@ -196,8 +239,6 @@ public class Shape {
 	
 	/**
 	 * Draws vertices and texCoords in progression. Sizes must be same.
-	 * @param vertices
-	 * @param texCoords
 	 */
 	public static void draw(Shape vertices, Shape texCoords) {
 		if(vertices.vertices.length != texCoords.vertices.length)

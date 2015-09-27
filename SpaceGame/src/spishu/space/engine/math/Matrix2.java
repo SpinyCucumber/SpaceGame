@@ -15,9 +15,8 @@ public class Matrix2 {
 		this.y = y;
 	}
 	
-	public static Matrix2 fromAngle(float rad) {
-		float cos = (float) Math.cos(rad), sin = (float) Math.sin(rad);
-		return new Matrix2(new Vec2(cos, -sin), new Vec2(sin, cos));
+	public static Matrix2 fromVec(Vec2 vec) {
+		return new Matrix2(vec.perp(), vec);
 	}
 	
 	public Matrix2 transpose() {
