@@ -3,7 +3,7 @@ package spishu.space.engine.math;
 import org.lwjgl.opengl.GL11;
 
 /**
- * 2-Dimensional vector.
+ * 2-Dimensional vector. Tons of methods.
  * 
  * @author SpinyCucumber
  *
@@ -91,6 +91,16 @@ public class Vec2 {
 	
 	public void glVertex() {
 		GL11.glVertex2d(x, y);
+	}
+	
+	/**
+	 * Convenient drawing method.
+	 */
+	public void lineTo(Vec2 o) {
+		GL11.glBegin(GL11.GL_LINES);
+		glVertex();
+		o.glVertex();
+		GL11.glEnd();
 	}
 	
 	public int hashCode() {

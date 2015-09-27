@@ -181,6 +181,20 @@ public class Shape {
 	public String toString() {
 		return "Shape [vertices=" + Arrays.toString(vertices) + "]";
 	}
+	
+	/**
+	 * Draws vertices and texCoords in progression. Sizes must be same.
+	 * @param vertices
+	 * @param texCoords
+	 */
+	public static void draw(Shape vertices, Shape texCoords) {
+		if(vertices.vertices.length != texCoords.vertices.length)
+			throw new IllegalArgumentException("Number of vertices must be same.");
+		for(int i = 0; i < vertices.vertices.length; i++) {
+			texCoords.vertices[i].glTexCoord();
+			vertices.vertices[i].glVertex();
+		}
+	}
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
