@@ -135,7 +135,7 @@ public class Vec2 {
 		return add(o).invScale(2);
 	}
 	
-	public Vec2 multiply(Matrix2 m) {
+	public Vec2 mul(Matrix2 m) {
 		return new Vec2(dot(m.x), dot(m.y));
 	}
 	

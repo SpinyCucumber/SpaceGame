@@ -1,8 +1,6 @@
 package spishu.space.engine.math;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -22,10 +20,14 @@ import spishu.space.engine.phys.CollisionResult;
  */
 public class Shape {
 
-	public Vec2[] vertices;
+	protected List<Vec2> vertices; //Using list for flexibility.
 	
-	public Shape(Vec2...vertices) {
+	public Shape(List<Vec2> vertices) {
 		this.vertices = vertices;
+	}
+
+	public List<Vec2> getVertices() {
+		return vertices;
 	}
 
 	/**
@@ -33,11 +35,9 @@ public class Shape {
 	 * @param d Translation vector
 	 * @return Translated shape
 	 */
-	public Shape translate(Vec2 d) {
-		Vec2[] newVertices = new Vec2[vertices.length];
-		for(int i = 0; i < vertices.length; i++) {
-			newVertices[i] = vertices[i].add(d);
-		}
+	public Shape translate(Vec2 d) { //Most methods follow this format
+		List<Vec2> newVertices = new ArrayList<Vec2>();
+		for(Vec2 vertex : vertices) newVertices.add(vertex.add(d));
 		return new Shape(newVertices);
 	}
 	
@@ -47,11 +47,8 @@ public class Shape {
 	 * @return Transformed shape
 	 */
 	public Shape transform(Matrix2 mat) {
-		Vec2[] newVertices = new Vec2[vertices.length];
-		//Iterate over vertices
-		for(int i = 0; i < vertices.length; i++) {
-			newVertices[i] = vertices[i].multiply(mat);
-		}
+		List<Vec2> newVertices = new ArrayList<Vec2>();
+		for(Vec2 vertex : vertices) newVertices.add(vertex.mul(mat));
 		return new Shape(newVertices);
 	}
 	
@@ -70,10 +67,8 @@ public class Shape {
 	 * Useful for shrinking or growing shapes to fit a specified space.
 	 */
 	public Shape divDim(Vec2 dim) {
-		Vec2[] newVertices = new Vec2[vertices.length];
-		for(int i = 0; i < vertices.length; i++) {
-			newVertices[i] = vertices[i].divDim(dim);
-		}
+		List<Vec2> newVertices = new ArrayList<Vec2>();
+		for(Vec2 vertex : vertices) newVertices.add(vertex.divDim(dim));
 		return new Shape(newVertices);
 	}
 	
@@ -84,12 +79,11 @@ public class Shape {
 	 * @return Subdivided shape
 	 */
 	public Shape subdivide() {
-		Vec2[] newVertices = new Vec2[vertices.length*2];
-		for(int i = 0; i < vertices.length; i++) {
-			Vec2 p1 = vertices[i], p2 = vertices[(i + 1) % vertices.length],
-					edge = p2.sub(p1);
-			newVertices[2*i] = p1.add(edge.scale(1f/3));
-			newVertices[2*i+1] = p1.add(edge.scale(2f/3));
+		List<Vec2> edges = edges(), newVertices = new ArrayList<Vec2>();
+		for(int i = 0; i < vertices.size(); i++) {
+			Vec2 p = vertices.get(i), edge = edges.get(i);
+			newVertices.add(p.add(edge.scale(1f/3)));
+			newVertices.add(p.add(edge.scale(2f/3)));
 		}
 		return new Shape(newVertices);
 	}
@@ -108,9 +102,8 @@ public class Shape {
 	 */
 	public Vec2 min() {
 		
-		float x = vertices[0].x, y = vertices[0].y;
-		for(int i = 1; i < vertices.length; i++) {
-			Vec2 vertex = vertices[i];
+		float x = vertices.get(0).x, y = vertices.get(0).y;
+		for(Vec2 vertex : vertices) {
 			x = Math.min(x, vertex.x);
 			y = Math.min(y, vertex.y);
 		}
@@ -123,9 +116,8 @@ public class Shape {
 	 */
 	public Vec2 max() {
 		
-		float x = vertices[0].x, y = vertices[0].y;
-		for(int i = 1; i < vertices.length; i++) {
-			Vec2 vertex = vertices[i];
+		float x = vertices.get(0).x, y = vertices.get(0).y;
+		for(Vec2 vertex : vertices) {
 			x = Math.max(x, vertex.x);
 			y = Math.max(y, vertex.y);
 		}
@@ -143,15 +135,24 @@ public class Shape {
 	}
 	
 	/**
+	 * Returns edges, or difference between adjacent vertices.
+	 */
+	public List<Vec2> edges() {
+		List<Vec2> edges = new ArrayList<Vec2>();
+		for(int i = 0; i < vertices.size(); i++) {
+			Vec2 a = vertices.get(i), b = vertices.get(i+1 % vertices.size());
+			edges.add(b.sub(a));
+		}
+		return edges;
+	}
+	
+	/**
 	 * Get the axes for testing by normalizing the vectors perpendicular the the edges.
 	 */
-	public Collection<Vec2> axes() {
-		Collection<Vec2> axes = new HashSet<Vec2>();
-		for(int i = 0; i < vertices.length; i++) {
-			Vec2 p1 = vertices[i], p2 = vertices[(i + 1) % vertices.length];
-			axes.add(p2.sub(p1).normalize().perp());
-		}
-		return axes;
+	public List<Vec2> normals() {
+		List<Vec2> normals = new ArrayList<Vec2>();
+		for(Vec2 edge : edges()) normals.add(edge.normalize().perp());
+		return normals;
 	}
 	
 	/**
@@ -159,9 +160,9 @@ public class Shape {
 	 * @return Range of projection, represented by a 2d vector.
 	 */
 	public Vec2 project(Vec2 axis) {
-		float min = axis.dot(vertices[0]), max = min;
-		for(int i = 1; i < vertices.length; i++) {
-			float p = axis.dot(vertices[i]);
+		float min = axis.dot(vertices.get(0)), max = min;
+		for(int i = 1; i < vertices.size(); i++) {
+			float p = axis.dot(vertices.get(i));
 			if(p < min) min = p;
 			else if(p > max) max = p;
 		}
@@ -178,8 +179,8 @@ public class Shape {
 	public CollisionResult checkCollision(Shape b) {
 		
 		Set<Vec2> axes = new HashSet<Vec2>();
-		axes.addAll(this.axes());
-		axes.addAll(b.axes());
+		axes.addAll(this.normals());
+		axes.addAll(b.normals());
 		Iterator<Vec2> iterator = axes.iterator();
 		
 		Vec2 normal = iterator.next();
@@ -234,18 +235,18 @@ public class Shape {
 	
 	@Override
 	public String toString() {
-		return "Shape [vertices=" + Arrays.toString(vertices) + "]";
+		return "Shape [vertices=" + vertices + "]";
 	}
 	
 	/**
 	 * Draws vertices and texCoords in progression. Sizes must be same.
 	 */
 	public static void draw(Shape vertices, Shape texCoords) {
-		if(vertices.vertices.length != texCoords.vertices.length)
+		if(vertices.vertices.size() != texCoords.vertices.size())
 			throw new IllegalArgumentException("Number of vertices must be same.");
-		for(int i = 0; i < vertices.vertices.length; i++) {
-			texCoords.vertices[i].glTexCoord();
-			vertices.vertices[i].glVertex();
+		for(int i = 0; i < vertices.vertices.size(); i++) {
+			texCoords.vertices.get(i).glTexCoord();
+			vertices.vertices.get(i).glVertex();
 		}
 	}
 

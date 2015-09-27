@@ -43,25 +43,22 @@ public class ShapeEntity<T extends Shape> extends Entity {
 		this.bounds = bounds;
 		
 		//Generate AABB for all possible rotations
-		float apoth = bounds.vertices[0].length();
-		for(int i = 1; i < bounds.vertices.length; i++) {
-			float length = bounds.vertices[i].length();
+		float apoth = bounds.getVertices().get(0).length();
+		for(Vec2 vertex : bounds.getVertices()) {
+			float length = vertex.length();
 			if(length > apoth) apoth = length;
 		}
 		Vec2 v = new Vec2(apoth);
 		aabb = new AABB(v.negate(), v);
 		
 		//Generate texcoord shape by scaling bounds down.
-		Shape origin = bounds.translate(bounds.min().negate()), texcoordsShapes = origin.divDim(origin.max());
+		Shape origin = bounds.translate(bounds.min().negate()), texcoordShapes = origin.divDim(origin.max());
 		
 		//Generate displaylist
 		list = GL11.glGenLists(1);
 		GL11.glNewList(list, GL11.GL_COMPILE);
 		GL11.glBegin(GL11.GL_POLYGON);
-		for(int i = 0; i < bounds.vertices.length; i++){
-			texcoordsShapes.vertices[i].glTexCoord();
-			bounds.vertices[i].glVertex();
-		}
+		Shape.draw(origin, texcoordShapes);
 		GL11.glEnd();
 		GL11.glEndList();
 		

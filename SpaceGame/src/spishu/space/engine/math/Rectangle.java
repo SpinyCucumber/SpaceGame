@@ -1,8 +1,7 @@
 package spishu.space.engine.math;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
@@ -15,14 +14,14 @@ import org.lwjgl.opengl.GL11;
  */
 public class Rectangle extends Shape {
 
-	private Rectangle(Vec2...vec2s) {
-		super(vec2s);
+	private Rectangle(List<Vec2> vertices) {
+		super(vertices);
 	}
 	
 	@Override
-	public Collection<Vec2> axes() {
-		Collection<Vec2> axes = new ArrayDeque<Vec2>();
-		Vec2 n = vertices[1].sub(vertices[0]).normalize();
+	public List<Vec2> normals() {
+		List<Vec2> axes = new ArrayList<Vec2>();
+		Vec2 n = vertices.get(1).sub(vertices.get(0)).normalize();
 		axes.add(n);
 		axes.add(n.perp());
 		return axes;
@@ -44,29 +43,38 @@ public class Rectangle extends Shape {
 	public void texturedQuad() {
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f(0, 0);
-		vertices[0].glVertex();
+		vertices.get(0).glVertex();
 		GL11.glTexCoord2f(1, 0);
-		vertices[1].glVertex();
+		vertices.get(1).glVertex();
 		GL11.glTexCoord2f(1, 1);
-		vertices[2].glVertex();
+		vertices.get(2).glVertex();
 		GL11.glTexCoord2f(0, 1);
-		vertices[3].glVertex();
+		vertices.get(3).glVertex();
 		GL11.glEnd();
 	}
 	
 	public static Rectangle fromDimensions(Vec2 d) {
 		Vec2 hd = d.invScale(2), p = new Vec2(-hd.x, hd.y);
-		return new Rectangle(hd.negate(), p.negate(), hd, p);
+		List<Vec2> vertices = new ArrayList<Vec2>();
+		vertices.add(hd.negate());
+		vertices.add(p.negate());
+		vertices.add(hd);
+		vertices.add(p);
+		return new Rectangle(vertices);
 	}
 	
 	public static Rectangle fromAABB(AABB aabb) {
-		return new Rectangle(aabb.corner1, new Vec2(aabb.corner2.x, aabb.corner1.y),
-				aabb.corner2, new Vec2(aabb.corner1.x, aabb.corner2.y));
+		List<Vec2> vertices = new ArrayList<Vec2>();
+		vertices.add(aabb.corner1);
+		vertices.add(new Vec2(aabb.corner2.x, aabb.corner1.y));
+		vertices.add(aabb.corner2);
+		vertices.add(new Vec2(aabb.corner1.x, aabb.corner2.y));
+		return new Rectangle(vertices);
 	}
 
 	@Override
 	public String toString() {
-		return "Rectangle [vertices=" + Arrays.toString(vertices) + "]";
+		return "Rectangle [vertices=" + vertices + "]";
 	}
 
 }

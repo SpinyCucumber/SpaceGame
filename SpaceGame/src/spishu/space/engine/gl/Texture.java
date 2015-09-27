@@ -10,6 +10,8 @@ import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
+import spishu.space.engine.math.Vec2;
+
 /**
  * Class representing an OpenGL texture object. Contains methods for loading from files and etc.
  * Game class is meant for loading and handling of resources.
@@ -86,6 +88,10 @@ public class Texture {
 	
 	public void bind() {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+	}
+	
+	public Vec2 getDimensions() {
+		return new Vec2(width, height);
 	}
 	
 	public int getHeight() {

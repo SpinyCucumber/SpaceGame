@@ -1,13 +1,15 @@
 package spishu.space.engine.anim;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import spishu.space.engine.gl.Texture;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
 
 /**
- * Implementation of animation that uses an array textures.
+ * Implementation of animation that uses an array of textures.
  * @author SpinyCucumber
  *
  */
@@ -26,11 +28,8 @@ public class TextureLineup extends Animation {
 	}
 
 	public Vec2 getTextureDimensions() {
-		Vec2[] vertices = new Vec2[length];
-		for(int i = 0; i < length; i++) {
-			Texture texture = textures[i];
-			vertices[i] = new Vec2(texture.getWidth(), texture.getHeight());
-		}
+		List<Vec2> vertices = new ArrayList<Vec2>();
+		for(Texture texture : textures) vertices.add(texture.getDimensions());
 		return new Shape(vertices).min();
 	}
 

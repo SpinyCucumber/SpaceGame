@@ -6,9 +6,9 @@ public class AABB {
 	
 	public Vec2 corner1, corner2;
 	
-	public AABB(Vec2 pos, Vec2 dim) {
-		this.corner1 = pos;
-		this.corner2 = dim;
+	public AABB(Vec2 corner1, Vec2 corner2) {
+		this.corner1 = corner1;
+		this.corner2 = corner2;
 	}
 
 	public AABB translate(Vec2 t) {
