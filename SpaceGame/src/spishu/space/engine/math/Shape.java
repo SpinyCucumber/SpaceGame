@@ -140,7 +140,7 @@ public class Shape {
 	public List<Vec2> edges() {
 		List<Vec2> edges = new ArrayList<Vec2>();
 		for(int i = 0; i < vertices.size(); i++) {
-			Vec2 a = vertices.get(i), b = vertices.get(i+1 % vertices.size());
+			Vec2 a = vertices.get(i), b = vertices.get((i+1) % vertices.size());
 			edges.add(b.sub(a));
 		}
 		return edges;
