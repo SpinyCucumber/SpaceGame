@@ -126,9 +126,22 @@ public final class Game {
 	public static Deque<ResourceLoader> getLoaders() {
 		return loaders;
 	}
+	
 	public static Logger getLogger() {
 		return logger;
 	}
+	
+	/**
+	 * Formats string than passes to logger.
+	 */
+	public static void log(Level level, String message, Object...args) {
+		logger.log(level, String.format(message, args));
+	}
+	
+	public static void info(String message, Object...args) {
+		log(Level.INFO, message, args);
+	}
+	
 	/**
 	 * @param name
 	 * @return Specified resource, or null if does not exist
@@ -149,21 +162,21 @@ public final class Game {
 	 * @throws URISyntaxException
 	 */
 	public static void loadResources() throws IOException {
-		logger.info("Loading resources...");
-		logger.info(String.format("Using %d resource loaders", loaders.size()));
+		info("Loading resources...");
+		info("Using %d resource loaders", loaders.size());
 		Collection<String> entries = source.getEntries();
-		logger.info(String.format("Found %d possible resources", entries.size()));
+		info("Found %d possible resources", entries.size());
 		for(String entry : entries) {
-			logger.log(Level.FINER, String.format("Entry: %s", entry));
+			log(Level.FINER, "Entry: %s", entry);
 			String ext = entry.split(EXT_DELIM)[1];
 			for(ResourceLoader loader : loaders)
 				if(loader.extensions.contains(ext)) {
 					Object cache = loader.loadResource(source.getStream(entry));
-					logger.info(String.format("Loaded resource %s from %s", cache, entry));
+					info("Loaded resource %s from %s", cache, entry);
 					resources.put(entry, cache);
 				}
 		}
-		logger.info(String.format("Loaded %d total resources", resources.size()));
+		info("Loaded %d total resources", resources.size());
 	}
 	
 	/**
@@ -208,7 +221,7 @@ public final class Game {
 	public static void setSource(File src) throws IOException {
 		if(src.isDirectory()) source = new DirectorySource(src);
 		else source = new ZipSource(src);
-		logger.info(String.format("Using %s as source", source));
+		info("Using %s as source", source);
 	}
 	
 	public static void setSource(CodeSource src) throws IOException, URISyntaxException {

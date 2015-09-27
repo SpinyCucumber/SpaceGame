@@ -28,6 +28,10 @@ public class World {;
 		return colliders;
 	}
 	
+	public static void addCollider(Collider collider) {
+		colliders.add(collider);
+	}
+	
 	static {
 		
 		//Add collision detectors
@@ -68,8 +72,8 @@ public class World {;
 	 */
 	public class Entity {
 		
-		public Vec2 velocity, position;
-		public float mass, invMass, rotation, angVelocity, restitution;
+		protected Vec2 velocity, position;
+		protected float mass, invMass, rotation, angVelocity, restitution;
 		
 		public void remove() {
 			oldEntities.add(this);
@@ -142,7 +146,7 @@ public class World {;
 	 */
 	public void update(double delta) {
 		
-		for(Entity entity : newEntities) Game.getLogger().log(Level.FINE, String.format("New entity: %s", entity));
+		for(Entity entity : newEntities) Game.log(Level.FINE, "New entity: %s", entity);
 		entities.removeAll(oldEntities);
 		entities.addAll(newEntities);
 			

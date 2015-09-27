@@ -163,7 +163,7 @@ public class Shape {
 	 * Draws the shape using GL_LINE_LOOP. Convenience!
 	 * @see GL11
 	 */
-	public void lineLoop() {
+	public void glLineLoop() {
 		GL11.glBegin(GL11.GL_LINE_LOOP);
 		drawVertices();
 		GL11.glEnd();

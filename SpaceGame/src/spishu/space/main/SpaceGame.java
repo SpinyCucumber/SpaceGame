@@ -94,9 +94,9 @@ public class SpaceGame extends GameObject {
         world = new World(new Vec2(0, 0), 50.0f, 10);
         
         //Log junk
-        Game.getLogger().info(String.format("Initialized world %s", world));
-        Game.getLogger().info(String.format("Initialized camera %s", camera));
-        Game.getLogger().info(String.format("Using %d collision detectors", World.getColliders().size()));
+        Game.info("Initialized world %s", world);
+        Game.info("Initialized camera %s", camera);
+        Game.info("Using %d collision detectors", World.getColliders().size());
         
         //Get dimensions to be used in glOrtho
         Vec2 d = window.getDimensions().invScale(2);
