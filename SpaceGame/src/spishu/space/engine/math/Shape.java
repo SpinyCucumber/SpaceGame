@@ -1,6 +1,7 @@
 package spishu.space.engine.math;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +25,10 @@ public class Shape {
 	
 	public Shape(List<Vec2> vertices) {
 		this.vertices = vertices;
+	}
+	
+	public Shape(Vec2...vertices) { //Convenience
+		this(Arrays.asList(vertices));
 	}
 
 	public List<Vec2> getVertices() {
@@ -135,14 +140,19 @@ public class Shape {
 	}
 	
 	/**
-	 * Returns edges, or difference between adjacent vertices.
+	 * Calculates edge, or difference between next vertex. (right)
+	 */
+	public Vec2 edge(int index) {
+		Vec2 a = vertices.get(index), b = vertices.get((index+1) % vertices.size());
+		return b.sub(a);
+	}
+	
+	/**
+	 * Returns a list of all edges.
 	 */
 	public List<Vec2> edges() {
 		List<Vec2> edges = new ArrayList<Vec2>();
-		for(int i = 0; i < vertices.size(); i++) {
-			Vec2 a = vertices.get(i), b = vertices.get((i+1) % vertices.size());
-			edges.add(b.sub(a));
-		}
+		for(int i = 0; i < vertices.size(); i++) edges.add(edge(i));
 		return edges;
 	}
 	
@@ -153,6 +163,18 @@ public class Shape {
 		List<Vec2> normals = new ArrayList<Vec2>();
 		for(Vec2 edge : edges()) normals.add(edge.normalize().perp());
 		return normals;
+	}
+	
+	/**
+	 * Checks to see if vertex at specified index is convex (angle is > 180) <p>
+	 * A method that would return a list of concave vertices is possible,
+	 * but checking against collections is unadvised.
+	 */
+	public boolean isConcave(int index) {
+		int n = (index-1) % vertices.size();
+		if(n<0) n += vertices.size(); //Subtracting requires modulo, not % (remainder)
+		Vec2 left = edge(n).normalize(), right = edge(index).normalize();
+		return left.cross(right)<0;
 	}
 	
 	/**
@@ -250,10 +272,9 @@ public class Shape {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		Shape s = Rectangle.fromDimensions(new Vec2(100, 100));
-		Shape r = s.rotate((float) Math.toRadians(45));
+		Shape s = new Shape(new Vec2(-1,1), new Vec2(1,0), new Vec2(-1,-1), new Vec2(0,0));
+		System.out.println(s.isConcave(3));
 	}
 	
 }
