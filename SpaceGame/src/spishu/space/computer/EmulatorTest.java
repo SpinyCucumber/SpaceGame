@@ -52,7 +52,7 @@ public class EmulatorTest {
 	        if ( glfwInit() != GL11.GL_TRUE )
 	            throw new IllegalStateException("Unable to initialize GLFW");
 	        
-	        Game.addLoader(ResourceLoader.BYTE_LOADER);
+	        Game.addLoader(ResourceLoader.RAW_LOADER);
 	        Game.loadResources();
 	        initGraphics();
 	        

@@ -252,7 +252,7 @@ public final class Game {
 		
 		defaultLoaders = new ArrayDeque<ResourceLoader>();
 		defaultLoaders.add(ResourceLoader.ANIM_LOADER);
-		defaultLoaders.add(ResourceLoader.BYTE_LOADER);
+		defaultLoaders.add(ResourceLoader.RAW_LOADER);
 		defaultLoaders.add(ResourceLoader.GLSL_LOADER);
 		
 	}

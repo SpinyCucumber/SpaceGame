@@ -51,7 +51,14 @@ public abstract class ResourceLoader {
 			}
 		}
 		
-	}, BYTE_LOADER = new ResourceLoader("c8") {
+	}, TEX_LOADER = new ResourceLoader("png", "jpg") {
+
+		@Override
+		public Object loadResource(InputStream in) throws IOException {
+			return Texture.fromBufferedImage(ImageIO.read(in));
+		}
+		
+	}, RAW_LOADER = new ResourceLoader("c8") {
 
 		@Override
 		public Object loadResource(InputStream in) throws IOException {
