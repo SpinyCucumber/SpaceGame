@@ -138,6 +138,7 @@ public abstract class GameObject {
         // Create the window
         window = new GLWindow((Integer) config.get("windowWidth"), (Integer) config.get("windowHeight"));
         window.setPosition(GLWindow.getScreenDimensions().sub(window.getDim()).invScale(2));
+        window.setTitle(this.getClass().getSimpleName());
         window.makeContext();
         
         // Enable v-sync if requested
