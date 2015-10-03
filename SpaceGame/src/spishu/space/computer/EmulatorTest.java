@@ -58,7 +58,7 @@ public class EmulatorTest {
 	        
 			Framebuffer fbo = new Framebuffer(64, 32);
 			AABB fbOrtho = new AABB(new Vec2(0, 32), new Vec2(64, 0)),
-					screenOrtho = new AABB(Vec2.ZERO, window.getDimensions());
+					screenOrtho = new AABB(Vec2.ZERO, window.getDim());
 			System.out.println(fbOrtho + System.lineSeparator() + screenOrtho);
 			
 			chip.init();
@@ -106,7 +106,7 @@ public class EmulatorTest {
 				screenOrtho.glViewport();
 				screenOrtho.glOrtho();
 		        
-		        fbo.getColorTexture().bind();
+		        fbo.getColorTex().bind();
 		        Rectangle.fromAABB(screenOrtho).texturedQuad();
 		        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	            
@@ -138,7 +138,7 @@ public class EmulatorTest {
  
         // Create the window
         window = new GLWindow(1000, 700);
-        window.setPosition(GLWindow.getScreenDimensions().sub(window.getDimensions()).invScale(2));
+        window.setPosition(GLWindow.getScreenDimensions().sub(window.getDim()).invScale(2));
         window.setTitle("Chip8 Emulator");
         window.makeContext();
         // Enable v-sync

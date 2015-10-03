@@ -53,7 +53,7 @@ public class Rectangle extends Shape {
 		GL11.glEnd();
 	}
 	
-	public static Rectangle fromDimensions(Vec2 d) {
+	public static Rectangle fromDim(Vec2 d) {
 		Vec2 hd = d.invScale(2), p = new Vec2(-hd.x, hd.y);
 		List<Vec2> vertices = new ArrayList<Vec2>();
 		vertices.add(hd.negate());

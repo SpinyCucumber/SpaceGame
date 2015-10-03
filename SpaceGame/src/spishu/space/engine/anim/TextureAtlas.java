@@ -19,7 +19,7 @@ public class TextureAtlas extends Animation {
 		return texCoord.divDim(dimensions).add(point);
 	}
 
-	public Vec2 getTextureDimensions() {
+	public Vec2 getTextureDim() {
 		return new Vec2(texture.getWidth(), texture.getHeight()).divDim(dimensions);
 	}
 

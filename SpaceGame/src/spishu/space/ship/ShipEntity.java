@@ -47,8 +47,8 @@ public class ShipEntity extends Entity {
 	public ShipEntity(ShipData data, World world, Vec2 velocity, Vec2 position, float mass,
 			float rotation, float angVelocity, float restitution) {
 		world.super(velocity, position, mass, rotation, angVelocity, restitution);
-		texture = data.fbo.getColorTexture();
-		bounds = Rectangle.fromDimensions(data.dimensions);
+		texture = data.fbo.getColorTex();
+		bounds = Rectangle.fromDim(data.dimensions);
 	}
 
 	@Override

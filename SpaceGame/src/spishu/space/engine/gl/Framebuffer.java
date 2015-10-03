@@ -42,14 +42,14 @@ public class Framebuffer {
 		return height;
 	}
 	
-	public Vec2 getDimensions() {
+	public Vec2 getDim() {
 		return new Vec2(width, height);
 	}
 	
 	/**
 	 * @return The FBO's color texture
 	 */
-	public Texture getColorTexture() {
+	public Texture getColorTex() {
 		return colorTexture;
 	}
 

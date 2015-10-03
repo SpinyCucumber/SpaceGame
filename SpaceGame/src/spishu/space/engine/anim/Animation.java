@@ -13,7 +13,7 @@ public abstract class Animation { //Ported from CodingClub
 	protected float speed, frame;
 	
 	public abstract Vec2 getTexCoord(Vec2 texCoord, int frame);
-	public abstract Vec2 getTextureDimensions();
+	public abstract Vec2 getTextureDim();
 	public abstract void bind(int frame);
 	public abstract Animation clone();
 	

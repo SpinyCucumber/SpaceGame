@@ -27,9 +27,9 @@ public class TextureLineup extends Animation {
 		return texCoord;
 	}
 
-	public Vec2 getTextureDimensions() {
+	public Vec2 getTextureDim() {
 		List<Vec2> vertices = new ArrayList<Vec2>();
-		for(Texture texture : textures) vertices.add(texture.getDimensions());
+		for(Texture texture : textures) vertices.add(texture.getDim());
 		return new Shape(vertices).min();
 	}
 

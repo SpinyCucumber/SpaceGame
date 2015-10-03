@@ -90,7 +90,7 @@ public class Texture {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
 	}
 	
-	public Vec2 getDimensions() {
+	public Vec2 getDim() {
 		return new Vec2(width, height);
 	}
 	

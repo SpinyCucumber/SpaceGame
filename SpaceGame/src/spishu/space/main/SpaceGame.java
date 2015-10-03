@@ -61,7 +61,7 @@ public class SpaceGame extends GameObject {
     	
     	//Render fbo to screen
     	if(useShaders) fboShader.use();
-    	mainFBO.getColorTexture().bind();
+    	mainFBO.getColorTex().bind();
     	Rectangle.fromAABB(screenOrtho).texturedQuad();
     	GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
     	
@@ -99,9 +99,9 @@ public class SpaceGame extends GameObject {
         Game.info("Using %d collision detectors", World.getColliders().size());
         
         //Get dimensions to be used in glOrtho
-        Vec2 d = window.getDimensions().invScale(2);
+        Vec2 d = window.getDim().invScale(2);
         worldOrtho = new AABB(new Vec2(-d.x, d.y), new Vec2(d.x, -d.y));
-        screenOrtho = new AABB(Vec2.ZERO, window.getDimensions());
+        screenOrtho = new AABB(Vec2.ZERO, window.getDim());
         
         //Add entities. Testing ships.
         ShipTile tile = new ShipTile((Animation) Game.getResource("texture%stest.anim"));

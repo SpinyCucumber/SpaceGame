@@ -32,7 +32,7 @@ public class GLWindow {
 	private int width, height;
 	private long handle;
 	
-	public Vec2 getDimensions() {
+	public Vec2 getDim() {
 		return new Vec2(width, height);
 	}
 

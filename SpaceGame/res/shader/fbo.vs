@@ -1,4 +1,4 @@
-varying vec4 vertex;
+varying vec2 vertex;
 varying vec2 texCoord;
 
 void main() {

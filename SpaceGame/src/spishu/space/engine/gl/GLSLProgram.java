@@ -67,7 +67,7 @@ public class GLSLProgram {
 		glDeleteProgram(id);
 	}
 	
-	private int getUniformLocation(String name) {
+	private int getUniformLoc(String name) {
 		Integer loc = uniforms.get(name);
 		if(loc == null) {
 			loc = glGetUniformLocation(id, name);
@@ -77,11 +77,11 @@ public class GLSLProgram {
 	}
 	
 	public void setUniform(String name, float value) {
-		glUniform1f(getUniformLocation(name), value);
+		glUniform1f(getUniformLoc(name), value);
 	}
 	
 	public void setUniform(String name, float x, float y) {
-		glUniform2f(getUniformLocation(name), x, y);
+		glUniform2f(getUniformLoc(name), x, y);
 	}
 	
 	public void setUniform(String name, Vec2 vec) {
