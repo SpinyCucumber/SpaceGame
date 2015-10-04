@@ -105,7 +105,7 @@ public class Texture {
 	/**
 	 * Calls opengl 
 	 */
-	public void destroy() {
+	public void delete() {
 		GL11.glDeleteTextures(id);
 	}
 

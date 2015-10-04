@@ -166,18 +166,6 @@ public class Shape {
 	}
 	
 	/**
-	 * Checks to see if vertex at specified index is convex (angle is > 180) <p>
-	 * A method that would return a list of concave vertices is possible,
-	 * but checking against collections is unadvised.
-	 */
-	public boolean isConcave(int index) {
-		int n = (index-1) % vertices.size();
-		if(n<0) n += vertices.size(); //Subtracting requires modulo, not % (remainder)
-		Vec2 left = edge(n).normalize(), right = edge(index).normalize();
-		return left.cross(right)<0;
-	}
-	
-	/**
 	 * Project the shape onto a 1-dimensional surface, like creating a shadow.
 	 * @return Range of projection, represented by a 2d vector.
 	 */
@@ -230,10 +218,53 @@ public class Shape {
 	
 	/**
 	 * Recursively decomposes shape into a set of convex shapes.
-	 * @return List of convex shapes
+	 * @return Set of convex shapes
 	 */
-	public List<Shape> decompose() { //TODO
-		List<Shape> shapes = new ArrayList<Shape>();
+	public Set<Shape> decompose() {
+		
+		List<Vec2> normals = normals();
+		Set<Shape> shapes = new HashSet<Shape>();
+		
+		for(int i0 = 0; i0 < vertices.size(); i0++) { //Find first concave vertex
+			
+			int n = (i0-1) % vertices.size();
+			if(n<0) n += vertices.size(); //Subtracting requires modulo, not % (remainder)
+			Vec2 left = normals.get(n), right = normals.get(i0);
+			
+			if(left.cross(right)<0) { //Vertex is concave, begin searching for split point.
+				
+				Vec2 vertex = vertices.get(i0);
+				for(int i1 = i0+1; i1 < i0+vertices.size(); i1++) {
+					
+					n = i1%vertices.size();
+					Vec2 dir = vertices.get(n).sub(vertex).normalize();
+					
+					if(dir.dot(left) <= 0) { //Found split point
+
+						for(Shape shape : split(Math.min(i0, n), Math.max(i0, n))) { //Decompose children and add them
+							shapes.addAll(shape.decompose());
+						}
+						return shapes;
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+		shapes.add(this); //If no concave point found, shape is convex, and return self.
+		return shapes;
+
+	}
+	
+	public Set<Shape> split(int beginIndex, int endIndex) {
+		Set<Shape> shapes = new HashSet<Shape>();
+		List<Vec2> vert1 = vertices.subList(beginIndex, endIndex+1), vert2 = new ArrayList<Vec2>(vertices);
+		vert2.removeAll(vertices.subList(beginIndex+1, endIndex));
+		shapes.add(new Shape(vert1));
+		shapes.add(new Shape(vert2));
 		return shapes;
 	}
 	
@@ -274,7 +305,8 @@ public class Shape {
 
 	public static void main(String[] args) {
 		Shape s = new Shape(new Vec2(-1,1), new Vec2(1,0), new Vec2(-1,-1), new Vec2(0,0));
-		System.out.println(s.isConcave(3));
+		System.out.println(String.format("Starting shape: %s", s));
+		System.out.println(String.format("Decomposed shapes: %s", s.decompose()));
 	}
 	
 }
