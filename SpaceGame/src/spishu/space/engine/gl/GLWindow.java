@@ -72,7 +72,7 @@ public class GLWindow {
 		return glfwGetKey(handle, key) == GL11.GL_TRUE;
 	}
 	
-	public Vec2 getMousePosition() {
+	public Vec2 getMousePos() {
 		DoubleBuffer x = BufferUtils.createDoubleBuffer(1),
 				y = BufferUtils.createDoubleBuffer(1);
 
