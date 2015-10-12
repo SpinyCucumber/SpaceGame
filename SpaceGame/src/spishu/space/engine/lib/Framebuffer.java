@@ -1,4 +1,4 @@
-package spishu.space.engine.gl;
+package spishu.space.engine.lib;
 
 import static org.lwjgl.opengl.EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT;
 import static org.lwjgl.opengl.EXTFramebufferObject.GL_FRAMEBUFFER_COMPLETE_EXT;

@@ -1,4 +1,4 @@
-package spishu.space.engine.gl;
+package spishu.space.engine.lib;
 
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;

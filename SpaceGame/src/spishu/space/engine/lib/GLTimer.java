@@ -1,4 +1,4 @@
-package spishu.space.engine.gl;
+package spishu.space.engine.lib;
 
 import org.lwjgl.glfw.GLFW;
 

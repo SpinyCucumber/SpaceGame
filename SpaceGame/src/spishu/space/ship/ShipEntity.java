@@ -2,7 +2,7 @@ package spishu.space.ship;
 
 import org.lwjgl.opengl.GL11;
 
-import spishu.space.engine.gl.Texture;
+import spishu.space.engine.lib.Texture;
 import spishu.space.engine.math.Rectangle;
 import spishu.space.engine.math.Vec2;
 import spishu.space.engine.phys.World;

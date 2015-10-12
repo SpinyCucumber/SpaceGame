@@ -20,8 +20,8 @@ import org.jdom2.input.SAXBuilder;
 import org.lwjgl.opengl.GL20;
 
 import spishu.space.engine.anim.TextureLineup;
-import spishu.space.engine.gl.GLSLProgram;
-import spishu.space.engine.gl.Texture;
+import spishu.space.engine.lib.GLSLProgram;
+import spishu.space.engine.lib.Texture;
 
 /**
  * Loads objects from inputstreams created from resources with the specifies extension.
