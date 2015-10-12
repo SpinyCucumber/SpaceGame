@@ -27,8 +27,8 @@ import org.lwjgl.opengl.GLContext;
 
 import spishu.space.engine.game.Game;
 import spishu.space.engine.game.ResourceLoader;
-import spishu.space.engine.gl.Framebuffer;
-import spishu.space.engine.gl.GLWindow;
+import spishu.space.engine.lib.Framebuffer;
+import spishu.space.engine.lib.GLWindow;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
 import spishu.space.engine.math.Vec2;

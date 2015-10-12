@@ -1,6 +1,6 @@
 package spishu.space.engine.anim;
 
-import spishu.space.engine.gl.Texture;
+import spishu.space.engine.lib.Texture;
 import spishu.space.engine.math.Vec2;
 
 public class TextureAtlas extends Animation {

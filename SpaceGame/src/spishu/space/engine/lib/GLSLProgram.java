@@ -1,4 +1,4 @@
-package spishu.space.engine.gl;
+package spishu.space.engine.lib;
 
 import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
 import static org.lwjgl.opengl.GL20.glAttachShader;

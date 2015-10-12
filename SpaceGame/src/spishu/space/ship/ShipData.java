@@ -1,6 +1,6 @@
 package spishu.space.ship;
 
-import spishu.space.engine.gl.Framebuffer;
+import spishu.space.engine.lib.Framebuffer;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
 import spishu.space.engine.math.Vec2;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import spishu.space.engine.gl.Texture;
+import spishu.space.engine.lib.Texture;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
 

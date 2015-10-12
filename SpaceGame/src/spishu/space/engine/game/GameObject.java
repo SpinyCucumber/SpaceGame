@@ -14,8 +14,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.yaml.snakeyaml.Yaml;
 
-import spishu.space.engine.gl.GLTimer;
-import spishu.space.engine.gl.GLWindow;
+import spishu.space.engine.lib.GLTimer;
+import spishu.space.engine.lib.GLWindow;
 
 /**
  * Abstract game class. Pretty much just a bundling of useful objects
