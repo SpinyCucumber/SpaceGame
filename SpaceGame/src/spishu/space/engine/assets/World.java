@@ -10,7 +10,7 @@ import java.util.logging.Level;
 
 import spishu.space.engine.game.Game;
 import spishu.space.engine.math.Shape;
-import spishu.space.engine.math.Vec2;
+import spishu.space.engine.math.Vec2d;
 import spishu.space.main.ShipEntity;
 /**
  * A container that lets entities interact with eachother.
@@ -72,7 +72,7 @@ public class World {;
 	 */
 	public class Entity {
 		
-		protected Vec2 velocity, position;
+		protected Vec2d velocity, position;
 		protected float mass, invMass, rotation, angVelocity, restitution;
 		
 		public void remove() {
@@ -87,9 +87,9 @@ public class World {;
 			velocity = velocity.add(gravity.scale(mass));
 			
 			//Modify speed
-			if(!velocity.equals(Vec2.ZERO)) {
+			if(!velocity.equals(Vec2d.ZERO)) {
 				float speed = velocity.length();
-				Vec2 dir = velocity.invScale(speed);
+				Vec2d dir = velocity.invScale(speed);
 				speed = Math.max(0, speed - slowdown * (float) delta);
 				velocity = dir.scale(speed);
 			}
@@ -120,7 +120,7 @@ public class World {;
 					+ restitution + "]";
 		}
 
-		public Entity(Vec2 velocity, Vec2 position, float mass, float rotation, float angVelocity, float restitution) {
+		public Entity(Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity, float restitution) {
 			this.velocity = velocity;
 			this.position = position;
 			this.mass = mass;
@@ -137,7 +137,7 @@ public class World {;
 	private Deque<Entity> newEntities = new ArrayDeque<Entity>(),
 			oldEntities = new ArrayDeque<Entity>();
 	
-	private Vec2 gravity;
+	private Vec2d gravity;
 	private float slowdown, angSlowdown;
 	
 	/**
@@ -193,7 +193,7 @@ public class World {;
 	 * @param slowdown Amount subtracted from entities' speed each frame
 	 * @param angSlowdown Slowdown of angular speed
 	 */
-	public World(Vec2 gravity, float slowdown, float angSlowdown) {
+	public World(Vec2d gravity, float slowdown, float angSlowdown) {
 		this.gravity = gravity;
 		this.slowdown = slowdown;
 		this.angSlowdown = angSlowdown;
@@ -222,7 +222,7 @@ public class World {;
 		float j = -(1 + e) * rv; //Get impulse scalar... the impulse is the change in momemtum. Most complicated step.
 		j /= e1.invMass + e2.invMass; //Divide by total mass, to yield a ratio.
 		
-		Vec2 impulse = result.normal.scale(j); //Scale normal to get impulse vector
+		Vec2d impulse = result.normal.scale(j); //Scale normal to get impulse vector
 		e1.velocity = e1.velocity.sub(impulse.scale(e1.invMass)); //Get parts and apply impulse.
 		e2.velocity = e2.velocity.add(impulse.scale(e2.invMass));
 		

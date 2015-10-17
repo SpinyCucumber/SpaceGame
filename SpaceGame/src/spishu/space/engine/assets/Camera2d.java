@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 import static org.lwjgl.glfw.GLFW.*;
 
 import spishu.space.engine.lib.GLWindow;
-import spishu.space.engine.math.Vec2;
+import spishu.space.engine.math.Vec2d;
 
 /**
  * Simple scrolling camera.
@@ -14,7 +14,7 @@ import spishu.space.engine.math.Vec2;
  */
 public class Camera2d {
 	
-	private Vec2 position;
+	private Vec2d position;
 	private double zoom, moveSpeed, zoomSpeed;
 	private GLWindow window;
 	
@@ -32,7 +32,7 @@ public class Camera2d {
 		if(window.isKeyPressed(GLFW_KEY_LEFT_CONTROL)) zoom *= zoomSpeed;
 	}
 
-	public Camera2d(Vec2 position, double zoom, double moveSpeed, double zoomSpeed,
+	public Camera2d(Vec2d position, double zoom, double moveSpeed, double zoomSpeed,
 			GLWindow window) {
 		this.position = position;
 		this.zoom = zoom;

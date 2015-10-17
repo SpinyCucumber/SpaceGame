@@ -6,7 +6,7 @@ import java.util.List;
 
 import spishu.space.engine.lib.Texture;
 import spishu.space.engine.math.Shape;
-import spishu.space.engine.math.Vec2;
+import spishu.space.engine.math.Vec2d;
 
 /**
  * Implementation of animation that uses an array of textures.
@@ -23,12 +23,12 @@ public class TextureLineup extends Animation {
 		this.length = textures.length;
 	}
 
-	public Vec2 getTexCoord(Vec2 texCoord, int frame) {
+	public Vec2d getTexCoord(Vec2d texCoord, int frame) {
 		return texCoord;
 	}
 
-	public Vec2 getTextureDim() {
-		List<Vec2> vertices = new ArrayList<Vec2>();
+	public Vec2d getTextureDim() {
+		List<Vec2d> vertices = new ArrayList<Vec2d>();
 		for(Texture texture : textures) vertices.add(texture.getDim());
 		return new Shape(vertices).min();
 	}

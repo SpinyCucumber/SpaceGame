@@ -20,7 +20,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWvidmode;
 import org.lwjgl.opengl.GL11;
 
-import spishu.space.engine.math.Vec2;
+import spishu.space.engine.math.Vec2d;
 
 /**
  * A class representing a glfw window object.
@@ -32,8 +32,8 @@ public class GLWindow {
 	private int width, height;
 	private long handle;
 	
-	public Vec2 getDim() {
-		return new Vec2(width, height);
+	public Vec2d getDim() {
+		return new Vec2d(width, height);
 	}
 
 	public int getWidth() {
@@ -52,7 +52,7 @@ public class GLWindow {
 		glfwMakeContextCurrent(handle);
 	}
 	
-	public void setPosition(Vec2 pos) {
+	public void setPosition(Vec2d pos) {
 		glfwSetWindowPos(handle, (int) pos.x, (int) pos.y);
 	}
 	
@@ -72,14 +72,14 @@ public class GLWindow {
 		return glfwGetKey(handle, key) == GL11.GL_TRUE;
 	}
 	
-	public Vec2 getMousePos() {
+	public Vec2d getMousePos() {
 		DoubleBuffer x = BufferUtils.createDoubleBuffer(1),
 				y = BufferUtils.createDoubleBuffer(1);
 
 	    glfwGetCursorPos(handle, x, y);
 	    x.rewind();
 	    y.rewind();
-	    return new Vec2((float) x.get(), (float) y.get());
+	    return new Vec2d((float) x.get(), (float) y.get());
 	}
 	
 	public GLWindow(int width, int height) {
@@ -90,9 +90,9 @@ public class GLWindow {
             throw new RuntimeException("Failed to create the GLFW window");
 	}
 	
-	public static Vec2 getScreenDimensions() {
+	public static Vec2d getScreenDimensions() {
 		ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-		return new Vec2(GLFWvidmode.width(vidmode), GLFWvidmode.height(vidmode));
+		return new Vec2d(GLFWvidmode.width(vidmode), GLFWvidmode.height(vidmode));
 	}
 
 	@Override

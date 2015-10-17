@@ -14,14 +14,14 @@ import org.lwjgl.opengl.GL11;
  */
 public class Rectangle extends Shape {
 
-	private Rectangle(List<Vec2> vertices) {
+	private Rectangle(List<Vec2d> vertices) {
 		super(vertices);
 	}
 	
 	@Override
-	public List<Vec2> normals() {
-		List<Vec2> axes = new ArrayList<Vec2>();
-		Vec2 n = vertices.get(1).sub(vertices.get(0)).normalize();
+	public List<Vec2d> normals() {
+		List<Vec2d> axes = new ArrayList<Vec2d>();
+		Vec2d n = vertices.get(1).sub(vertices.get(0)).normalize();
 		axes.add(n);
 		axes.add(n.perp());
 		return axes;
@@ -33,7 +33,7 @@ public class Rectangle extends Shape {
 	}
 	
 	@Override
-	public Rectangle translate(Vec2 d) {
+	public Rectangle translate(Vec2d d) {
 		return new Rectangle(super.translate(d).vertices);
 	}
 	
@@ -53,9 +53,9 @@ public class Rectangle extends Shape {
 		GL11.glEnd();
 	}
 	
-	public static Rectangle fromDim(Vec2 d) {
-		Vec2 hd = d.invScale(2), p = new Vec2(-hd.x, hd.y);
-		List<Vec2> vertices = new ArrayList<Vec2>();
+	public static Rectangle fromDim(Vec2d d) {
+		Vec2d hd = d.invScale(2), p = new Vec2d(-hd.x, hd.y);
+		List<Vec2d> vertices = new ArrayList<Vec2d>();
 		vertices.add(hd.negate());
 		vertices.add(p.negate());
 		vertices.add(hd);
@@ -64,11 +64,11 @@ public class Rectangle extends Shape {
 	}
 	
 	public static Rectangle fromAABB(AABB aabb) {
-		List<Vec2> vertices = new ArrayList<Vec2>();
+		List<Vec2d> vertices = new ArrayList<Vec2d>();
 		vertices.add(aabb.corner1);
-		vertices.add(new Vec2(aabb.corner2.x, aabb.corner1.y));
+		vertices.add(new Vec2d(aabb.corner2.x, aabb.corner1.y));
 		vertices.add(aabb.corner2);
-		vertices.add(new Vec2(aabb.corner1.x, aabb.corner2.y));
+		vertices.add(new Vec2d(aabb.corner1.x, aabb.corner2.y));
 		return new Rectangle(vertices);
 	}
 

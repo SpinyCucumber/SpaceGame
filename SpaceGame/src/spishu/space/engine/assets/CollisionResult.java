@@ -1,13 +1,13 @@
 package spishu.space.engine.assets;
 
-import spishu.space.engine.math.Vec2;
+import spishu.space.engine.math.Vec2d;
 
 public class CollisionResult {
 	
-	public Vec2 normal;
+	public Vec2d normal;
 	public float depth;
 	
-	public CollisionResult(Vec2 normal, float depth) {
+	public CollisionResult(Vec2d normal, float depth) {
 		this.normal = normal;
 		this.depth = depth;
 	}

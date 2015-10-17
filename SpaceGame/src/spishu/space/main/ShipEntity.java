@@ -6,7 +6,7 @@ import spishu.space.engine.assets.World;
 import spishu.space.engine.assets.World.Entity;
 import spishu.space.engine.lib.Texture;
 import spishu.space.engine.math.Rectangle;
-import spishu.space.engine.math.Vec2;
+import spishu.space.engine.math.Vec2d;
 
 /**
  * The physical ship entity. Tiles are rendered to framebuffer beforehand.
@@ -44,7 +44,7 @@ public class ShipEntity extends Entity {
 	 * @param angVelocity
 	 * @param restitution
 	 */
-	public ShipEntity(ShipData data, World world, Vec2 velocity, Vec2 position, float mass,
+	public ShipEntity(ShipData data, World world, Vec2d velocity, Vec2d position, float mass,
 			float rotation, float angVelocity, float restitution) {
 		world.super(velocity, position, mass, rotation, angVelocity, restitution);
 		texture = data.fbo.getColorTex();

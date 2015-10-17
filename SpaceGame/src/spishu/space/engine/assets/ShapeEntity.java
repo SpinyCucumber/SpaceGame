@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import spishu.space.engine.assets.World.Entity;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Shape;
-import spishu.space.engine.math.Vec2;
+import spishu.space.engine.math.Vec2d;
 
 /**
  * A simple implementation of entity with basic interactivity.
@@ -34,7 +34,7 @@ public class ShapeEntity<T extends Shape> extends Entity {
 	 * @param bounds
 	 * @param texture
 	 */
-	public ShapeEntity(World world, Vec2 velocity, Vec2 position, float mass, float rotation, float angVelocity,
+	public ShapeEntity(World world, Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity,
 			float restitution, T bounds, Animation texture) {
 		
 		world.super(velocity, position, mass, rotation, angVelocity, restitution);
@@ -43,11 +43,11 @@ public class ShapeEntity<T extends Shape> extends Entity {
 		
 		//Generate AABB for all possible rotations
 		float apoth = bounds.getVertices().get(0).length();
-		for(Vec2 vertex : bounds.getVertices()) {
+		for(Vec2d vertex : bounds.getVertices()) {
 			float length = vertex.length();
 			if(length > apoth) apoth = length;
 		}
-		Vec2 v = new Vec2(apoth);
+		Vec2d v = new Vec2d(apoth);
 		aabb = new AABB(v.negate(), v);
 		
 		//Generate texcoord shape by scaling bounds down.

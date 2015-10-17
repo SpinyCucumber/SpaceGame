@@ -21,17 +21,17 @@ import spishu.space.engine.assets.CollisionResult;
  */
 public class Shape {
 
-	protected List<Vec2> vertices; //Using list for flexibility.
+	protected List<Vec2d> vertices; //Using list for flexibility.
 	
-	public Shape(List<Vec2> vertices) {
+	public Shape(List<Vec2d> vertices) {
 		this.vertices = vertices;
 	}
 	
-	public Shape(Vec2...vertices) { //Convenience
+	public Shape(Vec2d...vertices) { //Convenience
 		this(Arrays.asList(vertices));
 	}
 
-	public List<Vec2> getVertices() {
+	public List<Vec2d> getVertices() {
 		return vertices;
 	}
 
@@ -40,9 +40,9 @@ public class Shape {
 	 * @param d Translation vector
 	 * @return Translated shape
 	 */
-	public Shape translate(Vec2 d) { //Most methods follow this format
-		List<Vec2> newVertices = new ArrayList<Vec2>();
-		for(Vec2 vertex : vertices) newVertices.add(vertex.add(d));
+	public Shape translate(Vec2d d) { //Most methods follow this format
+		List<Vec2d> newVertices = new ArrayList<Vec2d>();
+		for(Vec2d vertex : vertices) newVertices.add(vertex.add(d));
 		return new Shape(newVertices);
 	}
 	
@@ -51,9 +51,9 @@ public class Shape {
 	 * @param mat Matrix
 	 * @return Transformed shape
 	 */
-	public Shape transform(Matrix2 mat) {
-		List<Vec2> newVertices = new ArrayList<Vec2>();
-		for(Vec2 vertex : vertices) newVertices.add(vertex.mul(mat));
+	public Shape transform(Matrix2d mat) {
+		List<Vec2d> newVertices = new ArrayList<Vec2d>();
+		for(Vec2d vertex : vertices) newVertices.add(vertex.mul(mat));
 		return new Shape(newVertices);
 	}
 	
@@ -64,16 +64,16 @@ public class Shape {
 	 * @return Rotated shape.
 	 */
 	public Shape rotate(float a) {
-		return transform(Matrix2.fromVec(Vec2.fromAngle(a)));
+		return transform(Matrix2d.fromVec(Vec2d.fromAngle(a)));
 	}
 	
 	/**
 	 * Scales vertices element-wise.
 	 * Useful for shrinking or growing shapes to fit a specified space.
 	 */
-	public Shape divDim(Vec2 dim) {
-		List<Vec2> newVertices = new ArrayList<Vec2>();
-		for(Vec2 vertex : vertices) newVertices.add(vertex.divDim(dim));
+	public Shape divDim(Vec2d dim) {
+		List<Vec2d> newVertices = new ArrayList<Vec2d>();
+		for(Vec2d vertex : vertices) newVertices.add(vertex.divDim(dim));
 		return new Shape(newVertices);
 	}
 	
@@ -84,9 +84,9 @@ public class Shape {
 	 * @return Subdivided shape
 	 */
 	public Shape subdivide() {
-		List<Vec2> edges = edges(), newVertices = new ArrayList<Vec2>();
+		List<Vec2d> edges = edges(), newVertices = new ArrayList<Vec2d>();
 		for(int i = 0; i < vertices.size(); i++) {
-			Vec2 p = vertices.get(i), edge = edges.get(i);
+			Vec2d p = vertices.get(i), edge = edges.get(i);
 			newVertices.add(p.add(edge.scale(1f/3)));
 			newVertices.add(p.add(edge.scale(2f/3)));
 		}
@@ -105,28 +105,28 @@ public class Shape {
 	/**
 	 * @return Top-left bounds in shape.
 	 */
-	public Vec2 min() {
+	public Vec2d min() {
 		
 		float x = vertices.get(0).x, y = vertices.get(0).y;
-		for(Vec2 vertex : vertices) {
+		for(Vec2d vertex : vertices) {
 			x = Math.min(x, vertex.x);
 			y = Math.min(y, vertex.y);
 		}
-		return new Vec2(x, y);
+		return new Vec2d(x, y);
 		
 	}
 	
 	/**
 	 * @return Bottom-right bounds in shape.
 	 */
-	public Vec2 max() {
+	public Vec2d max() {
 		
 		float x = vertices.get(0).x, y = vertices.get(0).y;
-		for(Vec2 vertex : vertices) {
+		for(Vec2d vertex : vertices) {
 			x = Math.max(x, vertex.x);
 			y = Math.max(y, vertex.y);
 		}
-		return new Vec2(x, y);
+		return new Vec2d(x, y);
 		
 	}
 	
@@ -135,23 +135,23 @@ public class Shape {
 	 * by taking the midpoint of the top-left bounds and bottom-right bounds.
 	 * @return Centroid
 	 */
-	public Vec2 center() {
+	public Vec2d center() {
 		return min().midpoint(max());
 	}
 	
 	/**
 	 * Calculates edge, or difference between next vertex. (right)
 	 */
-	public Vec2 edge(int index) {
-		Vec2 a = vertices.get(index), b = vertices.get((index+1) % vertices.size());
+	public Vec2d edge(int index) {
+		Vec2d a = vertices.get(index), b = vertices.get((index+1) % vertices.size());
 		return b.sub(a);
 	}
 	
 	/**
 	 * Returns a list of all edges.
 	 */
-	public List<Vec2> edges() {
-		List<Vec2> edges = new ArrayList<Vec2>();
+	public List<Vec2d> edges() {
+		List<Vec2d> edges = new ArrayList<Vec2d>();
 		for(int i = 0; i < vertices.size(); i++) edges.add(edge(i));
 		return edges;
 	}
@@ -159,9 +159,9 @@ public class Shape {
 	/**
 	 * Get the axes for testing by normalizing the vectors perpendicular the the edges.
 	 */
-	public List<Vec2> normals() {
-		List<Vec2> normals = new ArrayList<Vec2>();
-		for(Vec2 edge : edges()) normals.add(edge.normalize().perp());
+	public List<Vec2d> normals() {
+		List<Vec2d> normals = new ArrayList<Vec2d>();
+		for(Vec2d edge : edges()) normals.add(edge.normalize().perp());
 		return normals;
 	}
 	
@@ -169,14 +169,14 @@ public class Shape {
 	 * Project the shape onto a 1-dimensional surface, like creating a shadow.
 	 * @return Range of projection, represented by a 2d vector.
 	 */
-	public Vec2 project(Vec2 axis) {
+	public Vec2d project(Vec2d axis) {
 		float min = axis.dot(vertices.get(0)), max = min;
 		for(int i = 1; i < vertices.size(); i++) {
 			float p = axis.dot(vertices.get(i));
 			if(p < min) min = p;
 			else if(p > max) max = p;
 		}
-		Vec2 projection = new Vec2(min, max);
+		Vec2d projection = new Vec2d(min, max);
 		return projection;
 	}
 
@@ -188,18 +188,18 @@ public class Shape {
 	 */
 	public CollisionResult checkCollision(Shape b) {
 		
-		Set<Vec2> axes = new HashSet<Vec2>();
+		Set<Vec2d> axes = new HashSet<Vec2d>();
 		axes.addAll(this.normals());
 		axes.addAll(b.normals());
-		Iterator<Vec2> iterator = axes.iterator();
+		Iterator<Vec2d> iterator = axes.iterator();
 		
-		Vec2 normal = iterator.next();
+		Vec2d normal = iterator.next();
 		float depth = project(normal).overlap1D(b.project(normal));
 		if(depth < 0) return null;
 		
 		while(iterator.hasNext()) {
 			
-			Vec2 axis = iterator.next(), p1 = project(axis), p2 = b.project(axis);
+			Vec2d axis = iterator.next(), p1 = project(axis), p2 = b.project(axis);
 			float ol = p1.overlap1D(p2);
 			
 			if (ol < 0) return null;
@@ -209,7 +209,7 @@ public class Shape {
 			}
 			
 		}
-		Vec2 d = center().sub(b.center());
+		Vec2d d = center().sub(b.center());
 		if(normal.dot(d) > 0) normal = normal.negate();
 
 		return new CollisionResult(normal, depth);
@@ -222,22 +222,22 @@ public class Shape {
 	 */
 	public Set<Shape> decompose() {
 		
-		List<Vec2> normals = normals();
+		List<Vec2d> normals = normals();
 		Set<Shape> shapes = new HashSet<Shape>();
 		
 		for(int i0 = 0; i0 < vertices.size(); i0++) { //Find first concave vertex
 			
 			int n = (i0-1) % vertices.size();
 			if(n<0) n += vertices.size(); //Subtracting requires modulo, not % (remainder)
-			Vec2 left = normals.get(n), right = normals.get(i0);
+			Vec2d left = normals.get(n), right = normals.get(i0);
 			
 			if(left.cross(right)<0) { //Vertex is concave, begin searching for split point.
 				
-				Vec2 vertex = vertices.get(i0);
+				Vec2d vertex = vertices.get(i0);
 				for(int i1 = i0+1; i1 < i0+vertices.size(); i1++) {
 					
 					n = i1%vertices.size();
-					Vec2 dir = vertices.get(n).sub(vertex).normalize();
+					Vec2d dir = vertices.get(n).sub(vertex).normalize();
 					
 					if(dir.dot(left) <= 0) { //Found split point
 
@@ -261,7 +261,7 @@ public class Shape {
 	
 	public Set<Shape> split(int beginIndex, int endIndex) {
 		Set<Shape> shapes = new HashSet<Shape>();
-		List<Vec2> vert1 = vertices.subList(beginIndex, endIndex+1), vert2 = new ArrayList<Vec2>(vertices);
+		List<Vec2d> vert1 = vertices.subList(beginIndex, endIndex+1), vert2 = new ArrayList<Vec2d>(vertices);
 		vert2.removeAll(vertices.subList(beginIndex+1, endIndex));
 		shapes.add(new Shape(vert1));
 		shapes.add(new Shape(vert2));
@@ -283,7 +283,7 @@ public class Shape {
 	 * drawTexCoords is redundant because you need to call a vertex in between texCoords.
 	 */
 	public void drawVertices() {
-		for(Vec2 vertex : vertices) vertex.glVertex();
+		for(Vec2d vertex : vertices) vertex.glVertex();
 	}
 	
 	@Override
@@ -304,7 +304,7 @@ public class Shape {
 	}
 
 	public static void main(String[] args) {
-		Shape s = new Shape(new Vec2(-1,1), new Vec2(1,0), new Vec2(-1,-1), new Vec2(0,0));
+		Shape s = new Shape(new Vec2d(-1,1), new Vec2d(1,0), new Vec2d(-1,-1), new Vec2d(0,0));
 		System.out.println(String.format("Starting shape: %s", s));
 		System.out.println(String.format("Decomposed shapes: %s", s.decompose()));
 	}

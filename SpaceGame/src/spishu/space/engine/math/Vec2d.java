@@ -8,60 +8,60 @@ import org.lwjgl.opengl.GL11;
  * @author SpinyCucumber
  *
  */
-public class Vec2 {
+public class Vec2d {
 	
-	public static final Vec2 ZERO = new Vec2(0);
+	public static final Vec2d ZERO = new Vec2d(0);
 	
-	public static Vec2 fromAngle(float angle) {
-		return new Vec2((float) Math.sin(angle), (float) Math.cos(angle));
+	public static Vec2d fromAngle(float angle) {
+		return new Vec2d((float) Math.sin(angle), (float) Math.cos(angle));
 	}
 	
-	public static Vec2 randomUnit() {
+	public static Vec2d randomUnit() {
 		return fromAngle((float) (Math.random() * Math.PI * 2));
 	}
 	
 	public float x, y;
 	
-	public Vec2() {}
+	public Vec2d() {}
 	
-	public Vec2(float d) {
+	public Vec2d(float d) {
 		this(d, d);
 	}
 	
-	public Vec2(float x, float y) {
+	public Vec2d(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public Vec2 add(Vec2 o) {
-		return new Vec2(x + o.x, y + o.y);
+	public Vec2d add(Vec2d o) {
+		return new Vec2d(x + o.x, y + o.y);
 	}
 	
 	public float angle() {
 		return (float) Math.atan2(y, x);
 	}
 	
-	public Vec2 clone() {
-		return new Vec2(x, y);
+	public Vec2d clone() {
+		return new Vec2d(x, y);
 	}
 	
 	public boolean contains1D(float point) {
 		return point > Math.min(x, y) && point <= Math.max(x, y);
 	}
 	
-	public float cross(Vec2 o) {
+	public float cross(Vec2d o) {
 		return dot(o.perp());
 	}
 	
-	public Vec2 mulDim(Vec2 o) {
-		return new Vec2(x * o.x, y * o.y);
+	public Vec2d mulDim(Vec2d o) {
+		return new Vec2d(x * o.x, y * o.y);
 	}
 	
-	public Vec2 divDim(Vec2 o) {
-		return new Vec2(x / o.x, y / o.y);
+	public Vec2d divDim(Vec2d o) {
+		return new Vec2d(x / o.x, y / o.y);
 	}
 	
-	public float dot(Vec2 o) {
+	public float dot(Vec2d o) {
 		return x * o.x + y * o.y;
 	}
 	
@@ -72,7 +72,7 @@ public class Vec2 {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Vec2 other = (Vec2) obj;
+		Vec2d other = (Vec2d) obj;
 		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
 			return false;
 		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
@@ -105,7 +105,7 @@ public class Vec2 {
 	/**
 	 * Convenient drawing method.
 	 */
-	public void lineTo(Vec2 o) {
+	public void lineTo(Vec2d o) {
 		GL11.glBegin(GL11.GL_LINES);
 		glVertex();
 		o.glVertex();
@@ -123,48 +123,48 @@ public class Vec2 {
 		return result;
 	}
 	
-	public Vec2 invScale(float s) {
-		return new Vec2(x / s, y / s);
+	public Vec2d invScale(float s) {
+		return new Vec2d(x / s, y / s);
 	}
 	
 	public float length() {
 		return (float) Math.sqrt(x * x + y * y);
 	}
 	
-	public Vec2 midpoint(Vec2 o) {
+	public Vec2d midpoint(Vec2d o) {
 		return add(o).invScale(2);
 	}
 	
-	public Vec2 mul(Matrix2 m) {
-		return new Vec2(dot(m.x), dot(m.y));
+	public Vec2d mul(Matrix2d m) {
+		return new Vec2d(dot(m.x), dot(m.y));
 	}
 	
-	public Vec2 negate() {
-		return new Vec2(-x, -y);
+	public Vec2d negate() {
+		return new Vec2d(-x, -y);
 	}
 
-	public Vec2 normalize() {
+	public Vec2d normalize() {
 		return invScale(length());
 	}
 
-	public float overlap1D(Vec2 o) {
+	public float overlap1D(Vec2d o) {
 		return Math.min(y, o.y) - Math.max(x, o.x);
 	}
 	
-	public Vec2 perp() {
-		return new Vec2(-y, x);
+	public Vec2d perp() {
+		return new Vec2d(-y, x);
 	}
 
-	public Vec2 scale(float s) {
-		return new Vec2(x * s, y * s);
+	public Vec2d scale(float s) {
+		return new Vec2d(x * s, y * s);
 	}
 
 	public float slope() {
 		return y / x;
 	}
 
-	public Vec2 sub(Vec2 o) {
-		return new Vec2(x - o.x, y - o.y);
+	public Vec2d sub(Vec2d o) {
+		return new Vec2d(x - o.x, y - o.y);
 	}
 
 	@Override

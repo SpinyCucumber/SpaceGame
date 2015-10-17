@@ -18,7 +18,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_VIEWPORT_BIT;
 import static org.lwjgl.opengl.GL11.glPushAttrib;
 import static org.lwjgl.opengl.GL11.glViewport;
-import spishu.space.engine.math.Vec2;
+import spishu.space.engine.math.Vec2d;
 
 public class Framebuffer {
 	
@@ -42,8 +42,8 @@ public class Framebuffer {
 		return height;
 	}
 	
-	public Vec2 getDim() {
-		return new Vec2(width, height);
+	public Vec2d getDim() {
+		return new Vec2d(width, height);
 	}
 	
 	/**

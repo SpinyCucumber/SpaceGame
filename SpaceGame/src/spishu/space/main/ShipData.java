@@ -3,7 +3,7 @@ package spishu.space.main;
 import spishu.space.engine.lib.Framebuffer;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
-import spishu.space.engine.math.Vec2;
+import spishu.space.engine.math.Vec2d;
 
 /**
  * Class containing data necessary to create a new ShipEntity.
@@ -12,22 +12,22 @@ import spishu.space.engine.math.Vec2;
  */
 public class ShipData {
 	
-	private static final Vec2 tileDim = new Vec2(100);
+	private static final Vec2d tileDim = new Vec2d(100);
 	
 	private ShipTile[][] tiles;
 	int width, height;
 	Framebuffer fbo;
-	Vec2 dimensions;
+	Vec2d dimensions;
 	
 	public void renderToBuffer() {
 		if(fbo != null) fbo.delete();
 		fbo = new Framebuffer(1000, 1000);
 		fbo.bind();
-		Rectangle tileShape = Rectangle.fromAABB(new AABB(Vec2.ZERO, tileDim));
+		Rectangle tileShape = Rectangle.fromAABB(new AABB(Vec2d.ZERO, tileDim));
 		for(int x = 0; x < width; x++) {
 			for(int y = 0; y < height; y++) {
 				tiles[x][y].texture.bind(0);
-				tileShape.translate(new Vec2(x, y).mulDim(tileDim)).texturedQuad();
+				tileShape.translate(new Vec2d(x, y).mulDim(tileDim)).texturedQuad();
 			}
 		};
 		Framebuffer.unbind();
@@ -37,7 +37,7 @@ public class ShipData {
 		this.tiles = tiles;
 		width = tiles.length;
 		height = tiles[0].length;
-		dimensions = new Vec2(width, height).mulDim(tileDim);
+		dimensions = new Vec2d(width, height).mulDim(tileDim);
 	}
 	
 }

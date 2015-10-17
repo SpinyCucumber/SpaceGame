@@ -4,14 +4,14 @@ import org.lwjgl.opengl.GL11;
 
 public class AABB {
 	
-	public Vec2 corner1, corner2;
+	public Vec2d corner1, corner2;
 	
-	public AABB(Vec2 corner1, Vec2 corner2) {
+	public AABB(Vec2d corner1, Vec2d corner2) {
 		this.corner1 = corner1;
 		this.corner2 = corner2;
 	}
 
-	public AABB translate(Vec2 t) {
+	public AABB translate(Vec2d t) {
 		return new AABB(corner1.add(t), corner2.add(t));
 	}
 	
@@ -20,12 +20,12 @@ public class AABB {
 				dimRange().overlap1D(o.dimRange()) > 0;
 	}
 	
-	public Vec2 posRange() {
-		return new Vec2(corner1.x, corner2.x);
+	public Vec2d posRange() {
+		return new Vec2d(corner1.x, corner2.x);
 	}
 	
-	public Vec2 dimRange() {
-		return new Vec2(corner1.y, corner2.y);
+	public Vec2d dimRange() {
+		return new Vec2d(corner1.y, corner2.y);
 	}
 	
 	public void glOrtho() {

@@ -31,7 +31,7 @@ import spishu.space.engine.lib.Framebuffer;
 import spishu.space.engine.lib.GLWindow;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
-import spishu.space.engine.math.Vec2;
+import spishu.space.engine.math.Vec2d;
 
 public class EmulatorTest {
 	
@@ -57,8 +57,8 @@ public class EmulatorTest {
 	        initGraphics();
 	        
 			Framebuffer fbo = new Framebuffer(64, 32);
-			AABB fbOrtho = new AABB(new Vec2(0, 32), new Vec2(64, 0)),
-					screenOrtho = new AABB(Vec2.ZERO, window.getDim());
+			AABB fbOrtho = new AABB(new Vec2d(0, 32), new Vec2d(64, 0)),
+					screenOrtho = new AABB(Vec2d.ZERO, window.getDim());
 			System.out.println(fbOrtho + System.lineSeparator() + screenOrtho);
 			
 			chip.init();

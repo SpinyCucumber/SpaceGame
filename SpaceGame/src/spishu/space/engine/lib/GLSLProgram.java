@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import spishu.space.engine.math.Vec2;
+import spishu.space.engine.math.Vec2d;
 
 /**
  * A class representing a single GLSL program.
@@ -84,7 +84,7 @@ public class GLSLProgram {
 		glUniform2f(getUniformLoc(name), x, y);
 	}
 	
-	public void setUniform(String name, Vec2 vec) {
+	public void setUniform(String name, Vec2d vec) {
 		setUniform(name, vec.x, vec.y);
 	}
 	
