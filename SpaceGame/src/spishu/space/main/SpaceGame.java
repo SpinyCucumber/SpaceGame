@@ -12,9 +12,6 @@ import spishu.space.engine.lib.GLSLProgram;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
 import spishu.space.engine.math.Vec2;
-import spishu.space.ship.ShipData;
-import spishu.space.ship.ShipEntity;
-import spishu.space.ship.ShipTile;
 
 /**
  * Main game class, representing an instance of the game.

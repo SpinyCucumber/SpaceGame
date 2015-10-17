@@ -1,4 +1,4 @@
-package spishu.space.ship;
+package spishu.space.main;
 
 import spishu.space.engine.lib.Framebuffer;
 import spishu.space.engine.math.AABB;

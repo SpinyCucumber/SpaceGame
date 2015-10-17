@@ -1,4 +1,4 @@
-package spishu.space.ship;
+package spishu.space.main;
 
 import org.lwjgl.opengl.GL11;
 
