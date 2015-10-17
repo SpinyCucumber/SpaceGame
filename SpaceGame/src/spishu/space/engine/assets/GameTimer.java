@@ -1,4 +1,4 @@
-package spishu.space.engine.lib;
+package spishu.space.engine.assets;
 
 import org.lwjgl.glfw.GLFW;
 
@@ -7,7 +7,7 @@ import org.lwjgl.glfw.GLFW;
  * @author SpinyCucumber
  *
  */
-public class GLTimer {
+public class GameTimer {
 	
 	private double time, lastTime, timeScale;
 	private long frames;
@@ -32,7 +32,7 @@ public class GLTimer {
     	return delta;
     }
 	
-	public GLTimer(double timeScale) {
+	public GameTimer(double timeScale) {
 		this.timeScale = timeScale;
 	}
 

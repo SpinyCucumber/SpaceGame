@@ -19,7 +19,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.lwjgl.opengl.GL20;
 
-import spishu.space.engine.anim.TextureLineup;
+import spishu.space.engine.assets.TextureLineup;
 import spishu.space.engine.lib.GLSLProgram;
 import spishu.space.engine.lib.Texture;
 

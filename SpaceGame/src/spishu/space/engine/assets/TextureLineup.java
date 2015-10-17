@@ -1,4 +1,4 @@
-package spishu.space.engine.anim;
+package spishu.space.engine.assets;
 
 import java.util.ArrayList;
 import java.util.Arrays;

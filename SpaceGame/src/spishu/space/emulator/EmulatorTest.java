@@ -1,4 +1,4 @@
-package spishu.space.computer;
+package spishu.space.emulator;
 
 import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
 import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
@@ -39,7 +39,7 @@ public class EmulatorTest {
 	
 	GLWindow window;
 	
-	Chip chip = new Chip();
+	Chip8 chip = new Chip8();
 	private byte[] display;
 	private int displen;
 

@@ -1,4 +1,4 @@
-package spishu.space.engine.phys;
+package spishu.space.engine.assets;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

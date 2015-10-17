@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.yaml.snakeyaml.Yaml;
 
-import spishu.space.engine.lib.GLTimer;
+import spishu.space.engine.assets.GameTimer;
 import spishu.space.engine.lib.GLWindow;
 
 /**
@@ -25,7 +25,7 @@ import spishu.space.engine.lib.GLWindow;
  */
 public abstract class GameObject {
 	
-	protected GLTimer timer;
+	protected GameTimer timer;
 	protected GLWindow window;
 	protected Map<String, Object> config;
 	
@@ -74,7 +74,7 @@ public abstract class GameObject {
 			GLFW.glfwSetErrorCallback(errorCallback);
 			
 			initGraphics();
-			timer = new GLTimer((Double) config.get("timeScale"));
+			timer = new GameTimer((Double) config.get("timeScale"));
 			
 			//Log initialized components
 			Game.info("Initialized window %s", window);

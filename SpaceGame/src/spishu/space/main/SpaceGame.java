@@ -2,16 +2,16 @@ package spishu.space.main;
 
 import org.lwjgl.opengl.GL11;
 
-import spishu.space.engine.anim.Animation;
+import spishu.space.engine.assets.Animation;
+import spishu.space.engine.assets.Camera2d;
+import spishu.space.engine.assets.World;
 import spishu.space.engine.game.Game;
 import spishu.space.engine.game.GameObject;
-import spishu.space.engine.lib.Camera2d;
 import spishu.space.engine.lib.Framebuffer;
 import spishu.space.engine.lib.GLSLProgram;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Rectangle;
 import spishu.space.engine.math.Vec2;
-import spishu.space.engine.phys.World;
 import spishu.space.ship.ShipData;
 import spishu.space.ship.ShipEntity;
 import spishu.space.ship.ShipTile;

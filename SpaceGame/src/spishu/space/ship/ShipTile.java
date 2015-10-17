@@ -1,6 +1,6 @@
 package spishu.space.ship;
 
-import spishu.space.engine.anim.Animation;
+import spishu.space.engine.assets.Animation;
 
 /**
  * A ship tile type.

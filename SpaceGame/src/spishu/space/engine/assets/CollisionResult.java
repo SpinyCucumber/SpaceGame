@@ -1,4 +1,4 @@
-package spishu.space.engine.phys;
+package spishu.space.engine.assets;
 
 import spishu.space.engine.math.Vec2;
 

@@ -1,4 +1,4 @@
-package spishu.space.computer;
+package spishu.space.emulator;
 
 @SuppressWarnings("unused")
 public class Emulator {

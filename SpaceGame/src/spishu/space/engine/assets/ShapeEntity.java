@@ -1,12 +1,11 @@
-package spishu.space.engine.phys;
+package spishu.space.engine.assets;
 
 import org.lwjgl.opengl.GL11;
 
-import spishu.space.engine.anim.Animation;
+import spishu.space.engine.assets.World.Entity;
 import spishu.space.engine.math.AABB;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2;
-import spishu.space.engine.phys.World.Entity;
 
 /**
  * A simple implementation of entity with basic interactivity.

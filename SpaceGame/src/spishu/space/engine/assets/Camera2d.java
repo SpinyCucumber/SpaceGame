@@ -1,8 +1,9 @@
-package spishu.space.engine.lib;
+package spishu.space.engine.assets;
 
 import org.lwjgl.opengl.GL11;
 import static org.lwjgl.glfw.GLFW.*;
 
+import spishu.space.engine.lib.GLWindow;
 import spishu.space.engine.math.Vec2;
 
 /**

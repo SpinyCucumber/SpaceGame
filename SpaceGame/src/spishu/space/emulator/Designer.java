@@ -1,4 +1,4 @@
-package spishu.space.computer;
+package spishu.space.emulator;
 
 /**
  * The future home of the computer component selector

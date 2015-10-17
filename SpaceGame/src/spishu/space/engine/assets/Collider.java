@@ -1,6 +1,6 @@
-package spishu.space.engine.phys;
+package spishu.space.engine.assets;
 
-import spishu.space.engine.phys.World.Entity;
+import spishu.space.engine.assets.World.Entity;
 
 public interface Collider {
 	

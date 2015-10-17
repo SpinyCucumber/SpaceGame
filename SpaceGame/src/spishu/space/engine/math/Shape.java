@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.lwjgl.opengl.GL11;
 
-import spishu.space.engine.phys.CollisionResult;
+import spishu.space.engine.assets.CollisionResult;
 
 
 /**

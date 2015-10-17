@@ -1,4 +1,4 @@
-package spishu.space.engine.anim;
+package spishu.space.engine.assets;
 
 import spishu.space.engine.lib.Texture;
 import spishu.space.engine.math.Vec2;
