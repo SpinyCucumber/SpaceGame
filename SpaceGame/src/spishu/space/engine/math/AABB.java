@@ -38,6 +38,10 @@ public class AABB {
 	public void glViewport() {
 		GL11.glViewport((int) corner1.x, (int) corner1.y, (int) corner2.x, (int) corner2.y);
 	}
+	
+	public static AABB fromDim(Vec2d half) {
+		return new AABB(half.negate(), half);
+	}
 
 	@Override
 	public String toString() {
