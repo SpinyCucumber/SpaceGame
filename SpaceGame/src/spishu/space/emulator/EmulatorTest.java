@@ -30,7 +30,7 @@ import spishu.space.engine.game.ResourceLoader;
 import spishu.space.engine.lib.Framebuffer;
 import spishu.space.engine.lib.GLWindow;
 import spishu.space.engine.math.AABB;
-import spishu.space.engine.math.Rectangle;
+import spishu.space.engine.math.Rect;
 import spishu.space.engine.math.Vec2d;
 
 public class EmulatorTest {
@@ -52,6 +52,7 @@ public class EmulatorTest {
 	        if ( glfwInit() != GL11.GL_TRUE )
 	            throw new IllegalStateException("Unable to initialize GLFW");
 	        
+	        Game.setSource(getClass());
 	        Game.addLoader(ResourceLoader.RAW_LOADER);
 	        Game.loadResources();
 	        initGraphics();
@@ -107,7 +108,7 @@ public class EmulatorTest {
 				screenOrtho.glOrtho();
 		        
 		        fbo.getColorTex().bind();
-		        Rectangle.fromAABB(screenOrtho).texturedQuad();
+		        Rect.fromAABB(screenOrtho).texturedQuad();
 		        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	            
 	            window.swapBuffers();

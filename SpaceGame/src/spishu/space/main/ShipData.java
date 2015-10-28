@@ -2,7 +2,7 @@ package spishu.space.main;
 
 import spishu.space.engine.lib.Framebuffer;
 import spishu.space.engine.math.AABB;
-import spishu.space.engine.math.Rectangle;
+import spishu.space.engine.math.Rect;
 import spishu.space.engine.math.Vec2d;
 
 /**
@@ -23,7 +23,7 @@ public class ShipData {
 		if(fbo != null) fbo.delete();
 		fbo = new Framebuffer(1000, 1000);
 		fbo.bind();
-		Rectangle tileShape = Rectangle.fromAABB(new AABB(Vec2d.ZERO, tileDim));
+		Rect tileShape = Rect.fromAABB(new AABB(Vec2d.ZERO, tileDim));
 		for(int x = 0; x < width; x++) {
 			for(int y = 0; y < height; y++) {
 				tiles[x][y].texture.bind(0);

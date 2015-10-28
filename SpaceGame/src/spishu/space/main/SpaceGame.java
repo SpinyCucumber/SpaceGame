@@ -10,7 +10,7 @@ import spishu.space.engine.game.GameObject;
 import spishu.space.engine.lib.Framebuffer;
 import spishu.space.engine.lib.GLSLProgram;
 import spishu.space.engine.math.AABB;
-import spishu.space.engine.math.Rectangle;
+import spishu.space.engine.math.Rect;
 import spishu.space.engine.math.Vec2d;
 
 /**
@@ -59,7 +59,7 @@ public class SpaceGame extends GameObject {
     	//Render fbo to screen
     	if(useShaders) fboShader.use();
     	mainFBO.getColorTex().bind();
-    	Rectangle.fromAABB(screenOrtho).texturedQuad();
+    	Rect.fromAABB(screenOrtho).texturedQuad();
     	GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
     	
     	window.setTitle("SWAG LEVEL: " + timer.getTime());

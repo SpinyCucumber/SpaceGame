@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import spishu.space.engine.assets.World;
 import spishu.space.engine.assets.World.Entity;
 import spishu.space.engine.lib.Texture;
-import spishu.space.engine.math.Rectangle;
+import spishu.space.engine.math.Rect;
 import spishu.space.engine.math.Vec2d;
 
 /**
@@ -17,9 +17,9 @@ import spishu.space.engine.math.Vec2d;
 public class ShipEntity extends Entity {
 	
 	private Texture texture;
-	private Rectangle bounds;
+	private Rect bounds;
 	
-	public Rectangle getBounds() {
+	public Rect getBounds() {
 		return bounds;
 	}
 	
@@ -48,7 +48,7 @@ public class ShipEntity extends Entity {
 			float rotation, float angVelocity, float restitution) {
 		world.super(velocity, position, mass, rotation, angVelocity, restitution);
 		texture = data.fbo.getColorTex();
-		bounds = Rectangle.fromDim(data.dimensions);
+		bounds = Rect.fromDim(data.dimensions);
 	}
 
 	@Override
