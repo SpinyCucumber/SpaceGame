@@ -150,7 +150,7 @@ public final class Game {
 	 * @return Specified resource, or null if does not exist
 	 */
 	public static Object getResource(String name) {
-		return resources.get(String.format(name, File.separator));
+		return resources.get(name.replace("\\\\", File.separator));
 	}
 	/**
 	 * @return Object representing code source
