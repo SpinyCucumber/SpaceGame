@@ -15,11 +15,11 @@ import spishu.space.engine.math.Vec2d;
  * @param <T> The shape subclass.
  * 
  */
-public class ShapeEntity<T extends Shape> extends Entity {
+public class ShapeEntity extends Entity {
 
 	private Animation texture;
 	private int list;
-	protected T bounds;
+	protected Shape bounds;
 	private AABB aabb;
 	
 	/**
@@ -35,7 +35,7 @@ public class ShapeEntity<T extends Shape> extends Entity {
 	 * @param texture
 	 */
 	public ShapeEntity(World world, Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity,
-			float restitution, T bounds, Animation texture) {
+			float restitution, Shape bounds, Animation texture) {
 		
 		world.super(velocity, position, mass, rotation, angVelocity, restitution);
 		this.texture = texture;
@@ -63,7 +63,7 @@ public class ShapeEntity<T extends Shape> extends Entity {
 		
 	}
 	
-	public T getBounds() {
+	public Shape getBounds() {
 		return bounds;
 	}
 
