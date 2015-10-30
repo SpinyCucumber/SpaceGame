@@ -24,10 +24,6 @@ public class TextureLineup implements Animation {
 		this.length = textures.size();
 	}
 
-	public Vec2d getTexCoord(Vec2d texCoord) {
-		return texCoord;
-	}
-
 	public Vec2d getTextureDim() {
 		List<Vec2d> vertices = new ArrayList<Vec2d>();
 		for(Texture texture : textures) vertices.add(texture.getDim());

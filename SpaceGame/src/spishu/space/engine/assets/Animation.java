@@ -8,11 +8,12 @@ import spishu.space.engine.math.Vec2d;
  *
  */
 public interface Animation {
-	
-	Vec2d getTexCoord(Vec2d texCoord);
+
 	Vec2d getTextureDim();
 	void bind();
-	void update(double delta);
 	Animation clone();
+	
+	default void update(double delta) {}
+	default Vec2d getTexCoord(Vec2d texCoord) { return texCoord; }
 	
 }

@@ -12,11 +12,6 @@ public class SingleTexture implements Animation {
 	}
 
 	@Override
-	public Vec2d getTexCoord(Vec2d texCoord) {
-		return texCoord;
-	}
-
-	@Override
 	public Vec2d getTextureDim() {
 		return texture.getDim();
 	}
@@ -24,11 +19,6 @@ public class SingleTexture implements Animation {
 	@Override
 	public void bind() {
 		texture.bind();
-	}
-
-	@Override
-	public void update(double delta) {
-		//Do nothing
 	}
 
 	@Override
