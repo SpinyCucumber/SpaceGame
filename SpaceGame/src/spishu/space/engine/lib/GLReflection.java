@@ -2,6 +2,7 @@ package spishu.space.engine.lib;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.lwjgl.glfw.GLFW;
@@ -14,12 +15,14 @@ public final class GLReflection {
 	
 	public static void generateKeymap() throws IllegalAccessException {
 		Game.info("Generating keymap...");
+		keys = new HashMap<String, Integer>();
 		for(Field field : GLFW.class.getFields()) {
 			if(!Modifier.isStatic(field.getModifiers())
 					|| !field.getName().startsWith("GLFW_KEY")) continue;
 			String name = field.getName().substring(9);
 			keys.put(name, field.getInt(null));
 		}
+		Game.info("Mapped %d keys", keys.size());
 	}
 	
 	public static int getKey(String name) {
