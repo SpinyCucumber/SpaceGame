@@ -13,17 +13,19 @@ import spishu.space.engine.math.Vec2d;
  * @author SpinyCucumber
  *
  */
-public class TextureLineup extends Animation {
+public class TextureLineup implements Animation {
 	
 	private Texture[] textures;
+	private float speed, frame;
+	private int length;
 	
 	public TextureLineup(float speed, Texture...textures) {
-		super(speed);
+		this.speed = speed;
 		this.textures = textures;
 		this.length = textures.length;
 	}
 
-	public Vec2d getTexCoord(Vec2d texCoord, int frame) {
+	public Vec2d getTexCoord(Vec2d texCoord) {
 		return texCoord;
 	}
 
@@ -33,7 +35,7 @@ public class TextureLineup extends Animation {
 		return new Shape(vertices).min();
 	}
 
-	public void bind(int frame) {
+	public void bind() {
 		textures[(int) Math.floor(frame)].bind();
 	}
 
@@ -44,6 +46,11 @@ public class TextureLineup extends Animation {
 	@Override
 	public String toString() {
 		return "TextureLineup [textures=" + Arrays.toString(textures) + "]";
+	}
+
+	@Override
+	public void update(double delta) {
+		frame = (frame+speed*(float)delta)%length;
 	}
 	
 }

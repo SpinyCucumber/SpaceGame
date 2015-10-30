@@ -26,7 +26,7 @@ public class ShipData {
 		Rect tileShape = Rect.fromAABB(new AABB(Vec2d.ZERO, tileDim));
 		for(int x = 0; x < width; x++) {
 			for(int y = 0; y < height; y++) {
-				tiles[x][y].texture.bind(0);
+				tiles[x][y].texture.bind();
 				tileShape.translate(new Vec2d(x, y).mulDim(tileDim)).texturedQuad();
 			}
 		};
