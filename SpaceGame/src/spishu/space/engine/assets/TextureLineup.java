@@ -1,7 +1,6 @@
 package spishu.space.engine.assets;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import spishu.space.engine.lib.Texture;
@@ -15,14 +14,14 @@ import spishu.space.engine.math.Vec2d;
  */
 public class TextureLineup implements Animation {
 	
-	private Texture[] textures;
+	private List<Texture> textures;
 	private float speed, frame;
 	private int length;
 	
-	public TextureLineup(float speed, Texture...textures) {
+	public TextureLineup(float speed, List<Texture> textures) {
 		this.speed = speed;
 		this.textures = textures;
-		this.length = textures.length;
+		this.length = textures.size();
 	}
 
 	public Vec2d getTexCoord(Vec2d texCoord) {
@@ -36,16 +35,18 @@ public class TextureLineup implements Animation {
 	}
 
 	public void bind() {
-		textures[(int) Math.floor(frame)].bind();
+		textures.get((int) Math.floor(frame)).bind();
 	}
 
 	public Animation clone() {
-		return new TextureLineup(speed, textures.clone());
+		List<Texture> newList = new ArrayList<Texture>();
+		newList.addAll(textures);
+		return new TextureLineup(speed, newList);
 	}
 
 	@Override
 	public String toString() {
-		return "TextureLineup [textures=" + Arrays.toString(textures) + "]";
+		return "TextureLineup [textures=" + textures + "]";
 	}
 
 	@Override
