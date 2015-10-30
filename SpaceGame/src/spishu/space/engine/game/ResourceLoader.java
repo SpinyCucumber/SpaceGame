@@ -19,9 +19,12 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.lwjgl.opengl.GL20;
 
+import spishu.space.engine.assets.SingleTexture;
+import spishu.space.engine.assets.TextureAtlas;
 import spishu.space.engine.assets.TextureLineup;
 import spishu.space.engine.lib.GLSLProgram;
 import spishu.space.engine.lib.Texture;
+import spishu.space.engine.math.Vec2d;
 
 /**
  * Loads objects from inputstreams created from resources with the specifies extension.
@@ -38,13 +41,32 @@ public abstract class ResourceLoader {
 			try {
 				
 				Element root = xmlBuilder.build(in).getRootElement();
-				List<Texture> textures = new ArrayList<Texture>();
-				for(Element textureElem : root.getChildren()) {
-					String location = String.format(textureElem.getAttributeValue("location"), File.separator);
-					textures.add(Texture.fromBufferedImage(ImageIO.read(Game.getSource().getStream(location))));
+				String type = root.getAttributeValue("type");
+				
+				switch(type) {
+					case "lineup" : {
+						List<Texture> textures = new ArrayList<Texture>();
+						for(Element child : root.getChildren()) {
+							String location = child.getAttributeValue("location").replaceAll("\\", File.pathSeparator);
+							textures.add((Texture) TEX_LOADER.loadResource(Game.getSource().getStream(location)));
+						}
+						float speed = Float.parseFloat(root.getAttributeValue("speed"));
+						return new TextureLineup(speed, textures);
+					}
+					case "atlas" : {
+						Vec2d dim = Vec2d.fromXML(root.getChild("dim"));
+						float speed = Float.parseFloat(root.getAttributeValue("speed"));
+						String location = root.getAttributeValue("location").replaceAll("\\", File.pathSeparator);
+						Texture texture = (Texture) TEX_LOADER.loadResource(Game.getSource().getStream(location));
+						return new TextureAtlas(speed, texture, dim);
+					}
+					case "single" : {
+						String location = root.getAttributeValue("location").replaceAll("\\", File.pathSeparator);
+						Texture texture = (Texture) TEX_LOADER.loadResource(Game.getSource().getStream(location));
+						return new SingleTexture(texture);
+					}
+					default : return null;
 				}
-				return new TextureLineup(Float.parseFloat(root.getAttributeValue("speed")),
-						textures.toArray(new Texture[textures.size()]));
 				
 			} catch (JDOMException e) {
 				throw new RuntimeException(e);
