@@ -18,6 +18,7 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.lwjgl.opengl.GL20;
+import org.yaml.snakeyaml.Yaml;
 
 import spishu.space.engine.assets.SingleTexture;
 import spishu.space.engine.assets.TextureAtlas;
@@ -137,9 +138,17 @@ public abstract class ResourceLoader implements Comparable<ResourceLoader> {
 			return GLSLProgram.buildShader(src, GL20.GL_VERTEX_SHADER);
 		}
 		
+	}, YAML_LOADER = new ResourceLoader(0, "yml") {
+
+		@Override
+		public Object loadResource(InputStream in) throws IOException {
+			return yaml.load(in);
+		}
+		
 	};
 	
 	private static final SAXBuilder xmlBuilder = new SAXBuilder();
+	private static final Yaml yaml = new Yaml();
 	
 	private Set<String> extensions;
 	private int priority;

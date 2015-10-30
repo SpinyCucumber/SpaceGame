@@ -248,6 +248,7 @@ public final class Game {
 		defaultLoaders.add(ResourceLoader.GLSL_LOADER);
 		defaultLoaders.add(ResourceLoader.FS_LOADER);
 		defaultLoaders.add(ResourceLoader.VS_LOADER);
+		defaultLoaders.add(ResourceLoader.YAML_LOADER);
 	}
 	
 	private static ResourceSource source;
