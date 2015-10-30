@@ -1,5 +1,6 @@
 package spishu.space.engine.math;
 
+import org.jdom2.Element;
 import org.lwjgl.opengl.GL11;
 
 public class AABB {
@@ -9,6 +10,13 @@ public class AABB {
 	public AABB(Vec2d corner1, Vec2d corner2) {
 		this.corner1 = corner1;
 		this.corner2 = corner2;
+	}
+	
+	public static AABB fromXML(Element xml)	{
+		return new AABB(new Vec2d(Float.parseFloat(xml.getAttributeValue("X_0")),
+				Float.parseFloat(xml.getAttributeValue("Y_0"))),
+				new Vec2d(Float.parseFloat(xml.getAttributeValue("X_1")),
+				Float.parseFloat(xml.getAttributeValue("Y_1"))));
 	}
 
 	public AABB translate(Vec2d t) {

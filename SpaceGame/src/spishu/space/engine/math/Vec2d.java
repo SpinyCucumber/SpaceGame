@@ -1,5 +1,6 @@
 package spishu.space.engine.math;
 
+import org.jdom2.Element;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -18,6 +19,11 @@ public class Vec2d {
 	
 	public static Vec2d randomUnit() {
 		return fromAngle((float) (Math.random() * Math.PI * 2));
+	}
+	
+	public static Vec2d fromXML(Element xml) {
+		return new Vec2d(Float.parseFloat(xml.getAttributeValue("X")),
+				Float.parseFloat(xml.getAttributeValue("Y")));
 	}
 	
 	public float x, y;
