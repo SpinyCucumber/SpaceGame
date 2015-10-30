@@ -153,7 +153,7 @@ public class World {;
 		oldEntities.clear();
 		newEntities.clear();
 		
-		for(Entity ent : entities) ent.update(delta); //Update all entities
+		for(Entity ent : entities) ent.update(delta);
 		for(int i1 = 0; i1 < entities.size(); i1++) { //Iterate over all pairs of entities
 			Entity e1 = entities.get(i1);
 			for(int i2 = i1 + 1; i2 < entities.size(); i2++) {
