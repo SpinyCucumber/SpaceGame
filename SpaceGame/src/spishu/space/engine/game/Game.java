@@ -10,10 +10,13 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.security.CodeSource;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -123,7 +126,7 @@ public final class Game {
 		loaders.add(loader);
 	}
 	
-	public static Deque<ResourceLoader> getLoaders() {
+	public static List<ResourceLoader> getLoaders() {
 		return loaders;
 	}
 	
@@ -162,27 +165,39 @@ public final class Game {
 	 * @throws URISyntaxException
 	 */
 	public static void loadResources() throws IOException {
+		
 		info("Loading resources...");
-		info("Using %d resource loaders", loaders.size());
+		Collections.sort(loaders);
+		info("Using %d resource loaders (Sorted based on priority)", loaders.size());
+
 		Collection<String> entries = source.getEntries();
 		info("Found %d possible resources", entries.size());
-		for(String entry : entries) {
-			log(Level.FINER, "Entry: %s", entry);
-			String ext = entry.split(EXT_DELIM)[1];
-			for(ResourceLoader loader : loaders)
-				if(loader.extensions.contains(ext)) {
-					Object cache = loader.loadResource(source.getStream(entry));
-					info("Loaded resource %s from %s", cache, entry);
-					resources.put(entry, cache);
+		for(String entry : entries) log(Level.FINE, "Entry: %s", entry);
+		
+		for(ResourceLoader loader : loaders) {
+			for(String entry : entries) {
+				String extension = entry.split(EXT_DELIM)[1];
+				if(!loader.getExtensions().contains(extension)) continue;
+				try {
+					InputStream in = source.getStream(entry);
+					Object obj = loader.loadResource(in);
+					resources.put(entry, obj);
+					info("Loaded resource %s from %s", obj, entry);
+				} catch(IOException e) {
+					throw new IOException(String.format("Error loading from %s:", entry), e);
 				}
+			}
 		}
-		info("Loaded %d total resources", resources.size());
+		
+		info("Loaded %d total resources out of %d possible resources", resources.size(), entries.size());
+		
 	}
 	
 	/**
 	 * Use resource loaders defined in Game class.
 	 */
 	public static void useDefaultLoaders() {
+		info("Using default loaders");
 		loaders.addAll(defaultLoaders);
 	}
 	
@@ -232,11 +247,21 @@ public final class Game {
 		setSource(src.getProtectionDomain().getCodeSource());
 	}
 	
+	private static void setUpDefaultLoaders() {
+		defaultLoaders = new ArrayList<ResourceLoader>();
+		defaultLoaders.add(ResourceLoader.ANIM_LOADER);
+		defaultLoaders.add(ResourceLoader.TEX_LOADER);
+		defaultLoaders.add(ResourceLoader.RAW_LOADER);
+		defaultLoaders.add(ResourceLoader.GLSL_LOADER);
+		defaultLoaders.add(ResourceLoader.FS_LOADER);
+		defaultLoaders.add(ResourceLoader.VS_LOADER);
+	}
+	
 	private static ResourceSource source;
 	
 	private static Logger logger;
 	
-	private static Deque<ResourceLoader> loaders, defaultLoaders;
+	private static List<ResourceLoader> loaders, defaultLoaders;
 	
 	private static Map<String, Object> resources;
 	
@@ -244,16 +269,13 @@ public final class Game {
 		
 		logger = Logger.getLogger("SpaceGame");
 		resources = new HashMap<String, Object>();
-		loaders = new ArrayDeque<ResourceLoader>();
+		loaders = new ArrayList<ResourceLoader>();
 
 		logger.setUseParentHandlers(false);
 		Handler handler = new StreamHandler(System.out, loggerFormatter);
 		logger.addHandler(handler);
 		
-		defaultLoaders = new ArrayDeque<ResourceLoader>();
-		defaultLoaders.add(ResourceLoader.ANIM_LOADER);
-		defaultLoaders.add(ResourceLoader.RAW_LOADER);
-		defaultLoaders.add(ResourceLoader.GLSL_LOADER);
+		setUpDefaultLoaders();
 		
 	}
 	

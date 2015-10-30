@@ -31,10 +31,10 @@ import spishu.space.engine.math.Vec2d;
  * @author SpinyCucumber
  *
  */
-public abstract class ResourceLoader {
+public abstract class ResourceLoader implements Comparable<ResourceLoader> {
 	
 	//Default resource loaders.
-	public static final ResourceLoader ANIM_LOADER = new ResourceLoader("anim") {
+	public static final ResourceLoader ANIM_LOADER = new ResourceLoader(1, "anim") {
 
 		@Override
 		public Object loadResource(InputStream in) throws IOException {
@@ -47,8 +47,8 @@ public abstract class ResourceLoader {
 					case "lineup" : {
 						List<Texture> textures = new ArrayList<Texture>();
 						for(Element child : root.getChildren()) {
-							String location = child.getAttributeValue("location").replaceAll("\\", File.pathSeparator);
-							textures.add((Texture) TEX_LOADER.loadResource(Game.getSource().getStream(location)));
+							String location = child.getAttributeValue("location").replace("\\\\", File.separator);
+							textures.add((Texture) Game.getResource(location));
 						}
 						float speed = Float.parseFloat(root.getAttributeValue("speed"));
 						return new TextureLineup(speed, textures);
@@ -56,13 +56,13 @@ public abstract class ResourceLoader {
 					case "atlas" : {
 						Vec2d dim = Vec2d.fromXML(root.getChild("dim"));
 						float speed = Float.parseFloat(root.getAttributeValue("speed"));
-						String location = root.getAttributeValue("location").replaceAll("\\", File.pathSeparator);
-						Texture texture = (Texture) TEX_LOADER.loadResource(Game.getSource().getStream(location));
+						String location = root.getAttributeValue("location").replace("\\\\", File.separator);
+						Texture texture = (Texture) Game.getResource(location);
 						return new TextureAtlas(speed, texture, dim);
 					}
 					case "single" : {
-						String location = root.getAttributeValue("location").replaceAll("\\", File.pathSeparator);
-						Texture texture = (Texture) TEX_LOADER.loadResource(Game.getSource().getStream(location));
+						String location = root.getAttributeValue("location").replace("\\\\", File.separator);
+						Texture texture = (Texture) Game.getResource(location);
 						return new SingleTexture(texture);
 					}
 					default : return null;
@@ -73,14 +73,14 @@ public abstract class ResourceLoader {
 			}
 		}
 		
-	}, TEX_LOADER = new ResourceLoader("png", "jpg") {
+	}, TEX_LOADER = new ResourceLoader(0, "png", "jpg") {
 
 		@Override
 		public Object loadResource(InputStream in) throws IOException {
 			return Texture.fromBufferedImage(ImageIO.read(in));
 		}
 		
-	}, RAW_LOADER = new ResourceLoader("c8") {
+	}, RAW_LOADER = new ResourceLoader(0, "c8") {
 
 		@Override
 		public Object loadResource(InputStream in) throws IOException {
@@ -90,7 +90,7 @@ public abstract class ResourceLoader {
 			return buffer;
 		}
 		
-	}, GLSL_LOADER = new ResourceLoader("glsl") {
+	}, GLSL_LOADER = new ResourceLoader(1, "glsl") {
 		
 		Map<String, Integer> shaderTypes;
 		
@@ -107,16 +107,9 @@ public abstract class ResourceLoader {
 				Element root = xmlBuilder.build(in).getRootElement();
 				List<Integer> shaders = new ArrayList<Integer>();
 				
-				for(Element shaderElem : root.getChildren()) {
-					
-					InputStream stream = Game.getSource().getStream(shaderElem.getAttributeValue("location").replaceAll("\\", File.pathSeparator));
-					byte[] bytes = new byte[stream.available()];
-					stream.read(bytes);
-					String src = new String(bytes);
-					
-					int type = shaderTypes.get(shaderElem.getAttributeValue("type"));
-					shaders.add(GLSLProgram.buildShader(src, type));
-					
+				for(Element child : root.getChildren()) {
+					String location = child.getAttributeValue("location").replace("\\\\", File.separator);
+					shaders.add((Integer) Game.getResource(location));
 				}
 				return new GLSLProgram(shaders.toArray(new Integer[shaders.size()]));
 			} catch (JDOMException e) {
@@ -124,17 +117,51 @@ public abstract class ResourceLoader {
 			}
 		}
 		
+	}, FS_LOADER = new ResourceLoader(0, "fs") {
+
+		@Override
+		public Object loadResource(InputStream in) throws IOException {
+			byte[] bytes = new byte[in.available()];
+			in.read(bytes);
+			String src = new String(bytes);
+			return GLSLProgram.buildShader(src, GL20.GL_FRAGMENT_SHADER);
+		}
+		
+	}, VS_LOADER = new ResourceLoader(0, "vs") {
+
+		@Override
+		public Object loadResource(InputStream in) throws IOException {
+			byte[] bytes = new byte[in.available()];
+			in.read(bytes);
+			String src = new String(bytes);
+			return GLSLProgram.buildShader(src, GL20.GL_VERTEX_SHADER);
+		}
+		
 	};
 	
 	private static final SAXBuilder xmlBuilder = new SAXBuilder();
 	
-	Set<String> extensions;
+	private Set<String> extensions;
+	private int priority;
 	
-	public ResourceLoader(String...extensions) {
+	public ResourceLoader(int priority, String...extensions) {
+		this.priority = priority;
 		this.extensions = new HashSet<String>();
 		Collections.addAll(this.extensions, extensions);
 	}
 	
+	public int compareTo(ResourceLoader other) {
+		return priority-other.priority;
+	}
+
+	public Set<String> getExtensions() {
+		return extensions;
+	}
+	
+	public int getPriority() {
+		return priority;
+	}
+
 	/**
 	 * Loads a resource from an inputstream.
 	 * @param in InputStream from source
