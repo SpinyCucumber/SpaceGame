@@ -37,7 +37,7 @@ public class AABB {
 	}
 	
 	public void glOrtho() {
-		GL11.glOrtho(corner1.x, corner2.x, corner1.y, corner2.y, -1, 1);
+		GL11.glOrtho(corner1.x, corner2.x, corner2.y, corner1.y, -1, 1);
 	}
 	
 	public void glViewport() {

@@ -26,4 +26,9 @@ public class SingleTexture implements Animation {
 		return new SingleTexture(texture);
 	}
 
+	@Override
+	public String toString() {
+		return "SingleTexture [texture=" + texture + "]";
+	}
+
 }
