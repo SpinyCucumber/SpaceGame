@@ -200,13 +200,6 @@ public final class Game {
 		info("Using default loaders");
 		loaders.addAll(defaultLoaders);
 	}
-	
-	/**
-	 * Release resources and do any other saving, etc.
-	 */
-	public static void cleanUp() {
-		
-	}
 
 	private static final String EXT_DELIM = Pattern.quote(".");
 	
