@@ -109,7 +109,7 @@ public abstract class ResourceLoader {
 				
 				for(Element shaderElem : root.getChildren()) {
 					
-					InputStream stream = Game.getSource().getStream(String.format(shaderElem.getAttributeValue("location"), File.separator));
+					InputStream stream = Game.getSource().getStream(shaderElem.getAttributeValue("location").replaceAll("\\", File.pathSeparator));
 					byte[] bytes = new byte[stream.available()];
 					stream.read(bytes);
 					String src = new String(bytes);
