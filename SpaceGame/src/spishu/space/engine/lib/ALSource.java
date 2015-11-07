@@ -54,5 +54,10 @@ public class ALSource {
 	public void stop() {
 		AL10.alSourceStop(handle);
 	}
+
+	@Override
+	public String toString() {
+		return "ALSource [handle=" + handle + ", alBuffer=" + alBuffer + "]";
+	}
 	
 }

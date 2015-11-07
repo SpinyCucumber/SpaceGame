@@ -152,7 +152,9 @@ public abstract class ResourceLoader implements Comparable<ResourceLoader> {
 		public Object loadResource(InputStream in) throws IOException {
 			byte[] bytes = new byte[in.available()];
 			in.read(bytes);
-			ByteBuffer buffer = ByteBuffer.wrap(bytes);
+			ByteBuffer buffer = ByteBuffer.allocateDirect(bytes.length);
+			buffer.put(bytes);
+			buffer.flip();
 			return ALSource.fromVorbis(buffer);
 		}
 		
