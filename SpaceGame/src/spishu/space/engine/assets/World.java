@@ -205,7 +205,7 @@ public class World {;
 						continue; //This isnt the collider we're looking for
 					}
 					if(result == null) continue;
-					Game.log(Level.FINE, "Collision between entity %d and entity %d %s", e1, e2, result);
+					Game.log(Level.FINE, "Collision between entity %s and entity %s %s", e1, e2, result);
 					resolveCollision(result, e1, e2);
 				}
 			}
