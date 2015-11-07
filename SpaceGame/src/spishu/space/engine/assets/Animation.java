@@ -11,7 +11,7 @@ public interface Animation {
 
 	Vec2d getTextureDim();
 	void bind();
-	Animation clone();
+	Animation copy();
 	
 	default void update(double delta) {}
 	default Vec2d getTexCoord(Vec2d texCoord) { return texCoord; }

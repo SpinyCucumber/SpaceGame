@@ -22,7 +22,7 @@ public class SingleTexture implements Animation {
 	}
 
 	@Override
-	public Animation clone() {
+	public Animation copy() {
 		return new SingleTexture(texture);
 	}
 

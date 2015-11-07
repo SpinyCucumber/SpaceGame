@@ -34,7 +34,7 @@ public class TextureLineup implements Animation {
 		textures.get((int) Math.floor(frame)).bind();
 	}
 
-	public Animation clone() {
+	public Animation copy() {
 		List<Texture> newList = new ArrayList<Texture>();
 		newList.addAll(textures);
 		return new TextureLineup(speed, newList);

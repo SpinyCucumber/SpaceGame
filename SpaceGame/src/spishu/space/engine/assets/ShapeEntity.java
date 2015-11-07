@@ -22,6 +22,23 @@ public class ShapeEntity extends Entity {
 	protected Shape bounds;
 	private AABB aabb;
 	
+	
+	
+	public ShapeEntity(World world, Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity, float restitution,
+			Animation texture, int list, Shape bounds, AABB aabb) {
+		world.super(velocity, position, mass, rotation, angVelocity, restitution);
+		this.texture = texture;
+		this.list = list;
+		this.bounds = bounds;
+		this.aabb = aabb;
+	}
+	
+	//TODO add more copy methods
+	public ShapeEntity copy(ShapeEntity o) {
+		return new ShapeEntity(o.getWorld(), o.velocity, o.position, o.mass, o.rotation, o.angVelocity, o.restitution,
+				o.texture.copy(), o.list, o.bounds.copy(), o.aabb);
+	}
+
 	/**
 	 * Creates ShapeEntity and adds it to world. Must call world.update() to register.
 	 * @param world World to add to

@@ -107,6 +107,10 @@ public class World {;
 			
 		}
 		
+		public World getWorld() {
+			return World.this;
+		}
+		
 		/**
 		 * Called when world is drawn; by default does nothing.
 		 */

@@ -302,6 +302,10 @@ public class Shape {
 			vertices.vertices.get(i).glVertex();
 		}
 	}
+	
+	public Shape copy() {
+		return new Shape(vertices);
+	}
 
 	public static void main(String[] args) {
 		Shape s = new Shape(new Vec2d(-1,1), new Vec2d(1,0), new Vec2d(-1,-1), new Vec2d(0,0));

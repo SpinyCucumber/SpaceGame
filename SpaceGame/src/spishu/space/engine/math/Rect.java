@@ -37,6 +37,11 @@ public class Rect extends Shape {
 		return new Rect(super.translate(d).vertices);
 	}
 	
+	@Override
+	public Rect copy() {
+		return new Rect(vertices);
+	}
+	
 	/**
 	 * Calls texCoords and vertices.
 	 */

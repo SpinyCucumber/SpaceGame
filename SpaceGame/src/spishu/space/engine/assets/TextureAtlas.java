@@ -33,7 +33,7 @@ public class TextureAtlas implements Animation {
 	}
 	
 	@Override
-	public TextureAtlas clone() {
+	public TextureAtlas copy() {
 		return new TextureAtlas(speed, texture, dimensions.clone());
 	}
 	
