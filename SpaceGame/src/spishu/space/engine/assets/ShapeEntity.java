@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 import spishu.space.engine.assets.World.Entity;
 import spishu.space.engine.math.AABB;
-import spishu.space.engine.math.Rect;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2d;
 
@@ -113,7 +112,7 @@ public class ShapeEntity extends Entity {
 		GL11.glPushMatrix();
 		
 		position.glTranslate();
-		Rect.fromAABB(aabb).glLineLoop(); //For debug purposes. Will probably be controlled through some static field.
+		//Rect.fromAABB(aabb).glLineLoop(); //For debug purposes. Will probably be controlled through some static field.
 		texture.bind();
 		GL11.glRotatef(rotation, 0, 0, 1);
 		GL11.glCallList(list);
