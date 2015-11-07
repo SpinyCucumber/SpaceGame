@@ -110,7 +110,7 @@ public class SpaceGame extends GameObject {
         ShipTile tile = new ShipTile((Animation) Game.getResource("texture\\test.anim"));
         ShipData data = new ShipData(new ShipTile[][]{{tile, tile},{tile, tile}});
         data.renderToBuffer();
-        new ShipEntity(data, world, new Vec2d(0, 0), new Vec2d(0, 0), 1, 0, 0, 1);
+        new ShipEntity(data, world, new Vec2d(0, 0), new Vec2d(0, 0), 1, 0, 0, 1).spawn();
 		
 	}
 

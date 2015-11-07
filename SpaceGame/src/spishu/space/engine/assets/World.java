@@ -79,6 +79,10 @@ public class World {;
 			oldEntities.add(this);
 		}
 		
+		public void spawn() {
+			newEntities.add(this);
+		}
+		
 		protected void update(double delta) {
 			//Move
 			position = position.add(velocity.scale((float) delta));
@@ -132,7 +136,6 @@ public class World {;
 			this.angVelocity = angVelocity;
 			this.restitution = restitution;
 			invMass = mass == 0 ? 0 : 1 / mass;
-			newEntities.add(this);
 		}
 		
 	}
