@@ -59,7 +59,7 @@ public class Rect extends Shape {
 	}
 	
 	public static Rect fromDim(Vec2d d) {
-		Vec2d hd = d.invScale(2), p = new Vec2d(-hd.x, hd.y);
+		Vec2d hd = d.div(2), p = new Vec2d(-hd.x, hd.y);
 		List<Vec2d> vertices = new ArrayList<Vec2d>();
 		vertices.add(hd.negate());
 		vertices.add(p.negate());

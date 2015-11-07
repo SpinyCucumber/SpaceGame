@@ -129,7 +129,7 @@ public class Vec2d {
 		return result;
 	}
 	
-	public Vec2d invScale(float s) {
+	public Vec2d div(float s) {
 		return new Vec2d(x / s, y / s);
 	}
 	
@@ -138,7 +138,7 @@ public class Vec2d {
 	}
 	
 	public Vec2d midpoint(Vec2d o) {
-		return add(o).invScale(2);
+		return add(o).div(2);
 	}
 	
 	public Vec2d mul(Matrix2d m) {
@@ -150,7 +150,7 @@ public class Vec2d {
 	}
 
 	public Vec2d normalize() {
-		return invScale(length());
+		return div(length());
 	}
 
 	public float overlap1D(Vec2d o) {

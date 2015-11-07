@@ -102,7 +102,7 @@ public class SpaceGame extends GameObject {
         Game.info("Using %d collision detectors", World.getColliders().size());
         
         //Get dimensions to be used in glOrtho
-        Vec2d d = window.getDim().invScale(2);
+        Vec2d d = window.getDim().div(2);
         worldOrtho = new AABB(new Vec2d(-d.x, d.y), new Vec2d(d.x, -d.y));
         screenOrtho = new AABB(Vec2d.ZERO, window.getDim());
         

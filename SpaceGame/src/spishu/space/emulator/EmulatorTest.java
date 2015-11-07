@@ -139,7 +139,7 @@ public class EmulatorTest {
  
         // Create the window
         window = new GLWindow(1000, 700);
-        window.setPosition(GLWindow.getScreenDimensions().sub(window.getDim()).invScale(2));
+        window.setPosition(GLWindow.getScreenDimensions().sub(window.getDim()).div(2));
         window.setTitle("Chip8 Emulator");
         window.makeContext();
         // Enable v-sync

@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import spishu.space.engine.assets.World.Entity;
 import spishu.space.engine.math.AABB;
+import spishu.space.engine.math.Rect;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2d;
 
@@ -68,13 +69,13 @@ public class ShapeEntity extends Entity {
 		aabb = new AABB(v.negate(), v);
 		
 		//Generate texcoord shape by scaling bounds down.
-		Shape origin = bounds.translate(bounds.min().negate()), texcoordShapes = origin.divDim(origin.max());
+		Shape origin = bounds.translate(bounds.min().negate()), texcoordShape = origin.divDim(origin.max());
 		
 		//Generate displaylist
 		list = GL11.glGenLists(1);
 		GL11.glNewList(list, GL11.GL_COMPILE);
 		GL11.glBegin(GL11.GL_POLYGON);
-		Shape.draw(origin, texcoordShapes);
+		Shape.draw(bounds, texcoordShape);
 		GL11.glEnd();
 		GL11.glEndList();
 		
@@ -112,7 +113,7 @@ public class ShapeEntity extends Entity {
 		GL11.glPushMatrix();
 		
 		position.glTranslate();
-		//Rectangle.fromAABB(aabb).glLineLoop(); //For debug purposes. Will probably be controlled through some static field.
+		Rect.fromAABB(aabb).glLineLoop(); //For debug purposes. Will probably be controlled through some static field.
 		texture.bind();
 		GL11.glRotatef(rotation, 0, 0, 1);
 		GL11.glCallList(list);

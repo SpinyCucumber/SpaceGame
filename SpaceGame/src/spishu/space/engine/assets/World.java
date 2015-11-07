@@ -125,7 +125,7 @@ public class World {;
 			//Modify speed
 			if(!velocity.equals(Vec2d.ZERO)) {
 				float speed = velocity.length();
-				Vec2d dir = velocity.invScale(speed);
+				Vec2d dir = velocity.div(speed);
 				speed = Math.max(0, speed - slowdown * (float) delta);
 				velocity = dir.scale(speed);
 			}
