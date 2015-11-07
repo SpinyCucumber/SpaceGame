@@ -83,6 +83,38 @@ public class World {;
 			newEntities.add(this);
 		}
 		
+		public Vec2d getVelocity() {
+			return velocity;
+		}
+
+		public void setVelocity(Vec2d velocity) {
+			this.velocity = velocity;
+		}
+
+		public Vec2d getPosition() {
+			return position;
+		}
+
+		public void setPosition(Vec2d position) {
+			this.position = position;
+		}
+
+		public float getRotation() {
+			return rotation;
+		}
+
+		public void setRotation(float rotation) {
+			this.rotation = rotation;
+		}
+
+		public float getAngVelocity() {
+			return angVelocity;
+		}
+
+		public void setAngVelocity(float angVelocity) {
+			this.angVelocity = angVelocity;
+		}
+
 		protected void update(double delta) {
 			//Move
 			position = position.add(velocity.scale((float) delta));

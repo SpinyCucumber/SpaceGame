@@ -34,9 +34,9 @@ public class ShapeEntity extends Entity {
 	}
 	
 	//TODO add more copy methods
-	public ShapeEntity copy(ShapeEntity o) {
-		return new ShapeEntity(o.getWorld(), o.velocity, o.position, o.mass, o.rotation, o.angVelocity, o.restitution,
-				o.texture.copy(), o.list, o.bounds.copy(), o.aabb);
+	public ShapeEntity copy() {
+		return new ShapeEntity(getWorld(), velocity, position, mass, rotation, angVelocity, restitution,
+				texture.copy(), list, bounds.copy(), aabb);
 	}
 
 	/**
