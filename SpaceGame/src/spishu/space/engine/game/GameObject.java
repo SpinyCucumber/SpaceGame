@@ -34,12 +34,19 @@ public abstract class GameObject {
 	private ALDevice alDevice;
 	private ALContext alContext;
 	private GLFWErrorCallback errorCallback;
+	private int g_frameSkip;
 	
 	/**
 	 * Runs every frame, along with window updates, etc.
 	 * @throws Exception
 	 */
-	protected abstract void mainLoop(double delta) throws Exception;
+	protected abstract void update(double delta) throws Exception;
+	
+	/**
+	 * Draws graphics, uses frame skip.
+	 * @throws Exception
+	 */
+	protected abstract void draw() throws Exception;
 	
 	/**
 	 * Called when game finishes.
@@ -80,7 +87,9 @@ public abstract class GameObject {
 			GLFW.glfwSetErrorCallback(errorCallback);
 			
 			initGraphics();
-			timer = new GameTimer((Double) config.get("timeScale"));
+			initAudio();
+			g_frameSkip = (int) config.get("frameSkip")+1;
+			timer = new GameTimer((double) config.get("timeScale"));
 			
 			//Log initialized components
 			Game.info("Initialized window %s", window);
@@ -93,9 +102,9 @@ public abstract class GameObject {
 				
 				while(!window.shouldClose()) { //Main loop
 					
-					mainLoop(timer.update()); //Abstract loop
+					update(timer.update()); //Abstract loop
+					if(timer.getFrames() % g_frameSkip == 0) graphics();
 					
-					window.swapBuffers();
 					GLFW.glfwPollEvents();
 					
 				}
@@ -156,6 +165,11 @@ public abstract class GameObject {
 	protected void initAudio() {
 		alDevice = ALDevice.create(null);
 		alContext = ALContext.create(alDevice);
+	}
+	
+	private void graphics() throws Exception {
+		window.swapBuffers();
+		draw();
 	}
 	
 	private void destroy() {

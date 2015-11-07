@@ -35,12 +35,20 @@ public class SpaceGame extends GameObject {
 	}
 
 	@Override
-	protected void mainLoop(double delta) throws Exception {
+	protected void update(double delta) throws Exception {
 		
 		world.update(delta);
     	camera.update(delta);
     	
-    	//Render to fbo
+    	window.setTitle("SWAG LEVEL: " + timer.getTime());
+    	
+	}
+
+	@Override
+	protected void draw() throws Exception {
+		
+		//TODO change PROJECTION_MATRIX switching code
+		//Render to fbo
     	mainFBO.bind(); {
     		
     		worldOrtho.glOrtho();
@@ -61,8 +69,6 @@ public class SpaceGame extends GameObject {
     	mainFBO.getColorTex().bind();
     	Rect.fromAABB(screenOrtho).texturedQuad();
     	GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-    	
-    	window.setTitle("SWAG LEVEL: " + timer.getTime());
     	
 	}
 
