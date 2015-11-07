@@ -94,11 +94,10 @@ public abstract class GameObject {
 			//Log initialized components
 			Game.info("Initialized window %s", window);
 			Game.info("Initialized timer %s", timer);
-			
-			onStart();
 			Game.log(Level.FINE, "Entering main loop");
 			
 			try {
+				onStart();
 				
 				while(!window.shouldClose()) { //Main loop
 					
