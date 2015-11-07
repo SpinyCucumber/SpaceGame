@@ -182,7 +182,7 @@ public final class Game {
 					InputStream in = source.getStream(entry);
 					Object obj = loader.loadResource(in);
 					resources.put(entry, obj);
-					info("Loaded resource %s from %s", obj, entry);
+					info("Loaded resource (%s) %s from %s", obj.getClass(), obj, entry);
 				} catch(IOException e) {
 					throw new IOException(String.format("Error loading from %s:", entry), e);
 				}
@@ -249,6 +249,7 @@ public final class Game {
 		defaultLoaders.add(ResourceLoader.FS_LOADER);
 		defaultLoaders.add(ResourceLoader.VS_LOADER);
 		defaultLoaders.add(ResourceLoader.YAML_LOADER);
+		defaultLoaders.add(ResourceLoader.OGG_LOADER);
 	}
 	
 	private static ResourceSource source;

@@ -23,6 +23,7 @@ import org.yaml.snakeyaml.Yaml;
 import spishu.space.engine.assets.SingleTexture;
 import spishu.space.engine.assets.TextureAtlas;
 import spishu.space.engine.assets.TextureLineup;
+import spishu.space.engine.lib.ALSource;
 import spishu.space.engine.lib.GLSLProgram;
 import spishu.space.engine.lib.Texture;
 import spishu.space.engine.math.Vec2d;
@@ -70,7 +71,7 @@ public abstract class ResourceLoader implements Comparable<ResourceLoader> {
 				}
 				
 			} catch (JDOMException e) {
-				throw new RuntimeException(e);
+				throw new IOException(e);
 			}
 		}
 		
@@ -114,7 +115,7 @@ public abstract class ResourceLoader implements Comparable<ResourceLoader> {
 				}
 				return new GLSLProgram(shaders.toArray(new Integer[shaders.size()]));
 			} catch (JDOMException e) {
-				throw new RuntimeException(e);
+				throw new IOException(e);
 			}
 		}
 		
@@ -143,6 +144,16 @@ public abstract class ResourceLoader implements Comparable<ResourceLoader> {
 		@Override
 		public Object loadResource(InputStream in) throws IOException {
 			return yaml.load(in);
+		}
+		
+	}, OGG_LOADER = new ResourceLoader(0, "ogg") {
+
+		@Override
+		public Object loadResource(InputStream in) throws IOException {
+			byte[] bytes = new byte[in.available()];
+			in.read(bytes);
+			ByteBuffer buffer = ByteBuffer.wrap(bytes);
+			return ALSource.fromVorbis(buffer);
 		}
 		
 	};

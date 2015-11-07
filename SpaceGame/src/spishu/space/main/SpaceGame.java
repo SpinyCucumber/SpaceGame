@@ -84,8 +84,8 @@ public class SpaceGame extends GameObject {
         
         //Generate objects
         mainFBO = new Framebuffer(window.getWidth(), window.getWidth());
-        primShader = (GLSLProgram) Game.getResource("shader%sprim.glsl");
-        fboShader = (GLSLProgram) Game.getResource("shader%sfbo.glsl");
+        primShader = (GLSLProgram) Game.getResource("shader\\prim.glsl");
+        fboShader = (GLSLProgram) Game.getResource("shader\\fbo.glsl");
         camera = new Camera2d(new Vec2d(0, 0), 1, (double) config.get("cameraMoveSpeed"), (double) config.get("cameraZoomSpeed"), window);
         useShaders = (Boolean) config.get("useShaders");
         world = new World(new Vec2d(0, 0), 50.0f, 10);
@@ -101,7 +101,7 @@ public class SpaceGame extends GameObject {
         screenOrtho = new AABB(Vec2d.ZERO, window.getDim());
         
         //Add entities. Testing ships.
-        ShipTile tile = new ShipTile((Animation) Game.getResource("texture%stest.anim"));
+        ShipTile tile = new ShipTile((Animation) Game.getResource("texture\\test.anim"));
         ShipData data = new ShipData(new ShipTile[][]{{tile, tile},{tile, tile}});
         data.renderToBuffer();
         new ShipEntity(data, world, new Vec2d(0, 0), new Vec2d(0, 0), 1, 0, 0, 1);

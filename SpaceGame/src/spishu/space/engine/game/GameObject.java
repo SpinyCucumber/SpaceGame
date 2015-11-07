@@ -10,6 +10,8 @@ import org.lwjgl.Sys;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.openal.ALContext;
+import org.lwjgl.openal.ALDevice;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.yaml.snakeyaml.Yaml;
@@ -28,6 +30,10 @@ public abstract class GameObject {
 	protected GameTimer timer;
 	protected GLWindow window;
 	protected Map<String, Object> config;
+	
+	private ALDevice alDevice;
+	private ALContext alContext;
+	private GLFWErrorCallback errorCallback;
 	
 	/**
 	 * Runs every frame, along with window updates, etc.
@@ -65,7 +71,7 @@ public abstract class GameObject {
 			Game.info("LWJGL Version %s (��� ���� ���� ����) ", Sys.getVersion());
 			
 			//Set glfw errorcallback to logger.
-			final GLFWErrorCallback errorCallback = new GLFWErrorCallback() {
+			errorCallback = new GLFWErrorCallback() {
 				public void invoke(int arg0, long arg1) {
 					String message = Callbacks.errorCallbackDescriptionString(arg1);
 					Game.getLogger().warning(String.format("GLFW error: %s", message));
@@ -107,9 +113,7 @@ public abstract class GameObject {
 		        Game.info("Exiting %s", exitStats);
 		        
 		        onExit();
-				window.destroy();
-				errorCallback.release();
-				GLFW.glfwTerminate();
+				destroy();
 				
 			}
 			
@@ -147,6 +151,19 @@ public abstract class GameObject {
         //Do opengl stuff (create glcontext from thread)
         GLContext.createFromCurrent();
         
+	}
+	
+	protected void initAudio() {
+		alDevice = ALDevice.create(null);
+		alContext = ALContext.create(alDevice);
+	}
+	
+	private void destroy() {
+		window.destroy();
+		errorCallback.release();
+		GLFW.glfwTerminate();
+		alContext.destroy();
+		alDevice.destroy();
 	}
 	
 }
