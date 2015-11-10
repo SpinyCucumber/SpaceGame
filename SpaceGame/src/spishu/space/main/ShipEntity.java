@@ -45,8 +45,8 @@ public class ShipEntity extends Entity {
 	 * @param restitution
 	 */
 	public ShipEntity(ShipData data, World world, Vec2d velocity, Vec2d position, float mass,
-			float rotation, float angVelocity, float restitution) {
-		world.super(velocity, position, mass, rotation, angVelocity, restitution);
+			float rotation, float angVelocity, float restitution, float friction) {
+		world.super(velocity, position, mass, rotation, angVelocity, restitution, friction);
 		texture = data.fbo.getColorTex();
 		bounds = Rect.fromDim(data.dimensions);
 	}

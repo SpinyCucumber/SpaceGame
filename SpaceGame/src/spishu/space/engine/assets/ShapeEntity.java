@@ -24,9 +24,9 @@ public class ShapeEntity extends Entity {
 	
 	
 	
-	public ShapeEntity(World world, Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity, float restitution,
+	public ShapeEntity(World world, Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity, float restitution, float friction,
 			Animation texture, int list, Shape bounds, AABB aabb) {
-		world.super(velocity, position, mass, rotation, angVelocity, restitution);
+		world.super(velocity, position, mass, rotation, angVelocity, restitution, friction);
 		this.texture = texture;
 		this.list = list;
 		this.bounds = bounds;
@@ -35,7 +35,7 @@ public class ShapeEntity extends Entity {
 	
 	//TODO add more copy methods
 	public ShapeEntity copy() {
-		return new ShapeEntity(getWorld(), velocity, position, mass, rotation, angVelocity, restitution,
+		return new ShapeEntity(getWorld(), velocity, position, mass, rotation, angVelocity, restitution, friction,
 				texture.copy(), list, bounds.copy(), aabb);
 	}
 
@@ -51,10 +51,10 @@ public class ShapeEntity extends Entity {
 	 * @param bounds
 	 * @param texture
 	 */
-	public ShapeEntity(World world, Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity,
+	public ShapeEntity(World world, Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity, float friction,
 			float restitution, Shape bounds, Animation texture) {
 		
-		world.super(velocity, position, mass, rotation, angVelocity, restitution);
+		world.super(velocity, position, mass, rotation, angVelocity, restitution, friction);
 		this.texture = texture;
 		this.bounds = bounds;
 		

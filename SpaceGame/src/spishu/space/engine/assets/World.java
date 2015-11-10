@@ -73,7 +73,7 @@ public class World {;
 	public class Entity {
 		
 		protected Vec2d velocity, position;
-		protected float mass, invMass, rotation, angVelocity, restitution;
+		protected float mass, invMass, rotation, angVelocity, restitution, friction;
 		
 		public void remove() {
 			oldEntities.add(this);
@@ -160,13 +160,14 @@ public class World {;
 					+ restitution + "]";
 		}
 
-		public Entity(Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity, float restitution) {
+		public Entity(Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity, float restitution, float friction) {
 			this.velocity = velocity;
 			this.position = position;
 			this.mass = mass;
 			this.rotation = rotation;
 			this.angVelocity = angVelocity;
 			this.restitution = restitution;
+			this.friction = friction;
 			invMass = mass == 0 ? 0 : 1 / mass;
 		}
 		
@@ -253,15 +254,31 @@ public class World {;
 	 */
 	public static void resolveCollision(CollisionResult result, Entity e1, Entity e2) {
 		
-		float rv = e2.velocity.sub(e1.velocity).dot(result.normal); //The difference in velocities, along the normal.
+		float rm = e2.velocity.sub(e1.velocity).dot(result.normal); //The relative velocity, along the normal.
 		
-		if(rv > 0) return; //Don't do anything if entities are travelling away from eachother.
+		if(rm > 0) return; //Don't do anything if entities are travelling away from eachother.
 		
 		float e = Math.min(e1.restitution, e2.restitution); //Get restitution coefficient. Basically the bounciness.
-		float j = -(1 + e) * rv; //Get impulse scalar... the impulse is the change in momemtum. Most complicated step.
+		float j = -(1 + e) * rm; //Get impulse scalar... the impulse is the change in momemtum.
 		j /= e1.invMass + e2.invMass; //Divide by total mass, to yield a ratio.
 		
 		Vec2d impulse = result.normal.scale(j); //Scale normal to get impulse vector
+		e1.velocity = e1.velocity.sub(impulse.scale(e1.invMass)); //Get parts and apply impulse.
+		e2.velocity = e2.velocity.add(impulse.scale(e2.invMass));
+		
+		// Re-calculate relative velocity after normal impulse
+		// is applied (impulse from first article, this code comes
+		// directly thereafter in the same resolve function)
+		Vec2d rv = e2.velocity.sub(e1.velocity);
+		 
+		// Solve for the tangent vector
+		Vec2d tangent = result.normal.perp().scale(rv.dot(result.normal) > 0 ? 1 : -1);
+		 
+		// Solve for magnitude to apply along the friction vector
+		j = -rv.dot(tangent) / (e1.invMass + e2.invMass);
+		float friction = (e1.friction+e2.friction)/2;
+		impulse = tangent.scale(j*friction);
+		
 		e1.velocity = e1.velocity.sub(impulse.scale(e1.invMass)); //Get parts and apply impulse.
 		e2.velocity = e2.velocity.add(impulse.scale(e2.invMass));
 		
