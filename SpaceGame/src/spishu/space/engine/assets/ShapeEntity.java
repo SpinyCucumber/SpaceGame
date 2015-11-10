@@ -123,7 +123,7 @@ public class ShapeEntity extends Entity {
 	}
 	
 	@Override
-	public void update(double delta) {
+	protected void update(double delta) {
 		super.update(delta);
 		texture.update(delta);
 	}
