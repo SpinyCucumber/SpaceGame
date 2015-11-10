@@ -51,8 +51,8 @@ public class ShapeEntity extends Entity {
 	 * @param bounds
 	 * @param texture
 	 */
-	public ShapeEntity(World world, Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity, float friction,
-			float restitution, Shape bounds, Animation texture) {
+	public ShapeEntity(World world, Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity, float restitution,
+			float friction, Shape bounds, Animation texture) {
 		
 		world.super(velocity, position, mass, rotation, angVelocity, restitution, friction);
 		this.texture = texture;
