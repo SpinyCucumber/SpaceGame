@@ -152,6 +152,8 @@ public class World {;
 		 */
 		protected void draw() {}
 		
+		protected void onCollision(Entity o, CollisionResult result) {}
+		
 		@Override
 		public String toString() {
 			return "Entity [velocity=" + velocity + ", position=" + position
@@ -257,6 +259,8 @@ public class World {;
 		float rm = e2.velocity.sub(e1.velocity).dot(result.normal); //The relative velocity, along the normal.
 		
 		if(rm > 0) return; //Don't do anything if entities are travelling away from eachother.
+		e1.onCollision(e2, result);
+		e2.onCollision(e1, result);
 		
 		float e = Math.min(e1.restitution, e2.restitution); //Get restitution coefficient. Basically the bounciness.
 		float j = -(1 + e) * rm; //Get impulse scalar... the impulse is the change in momemtum.
