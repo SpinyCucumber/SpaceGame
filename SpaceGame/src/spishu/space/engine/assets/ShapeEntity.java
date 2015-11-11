@@ -51,12 +51,8 @@ public class ShapeEntity extends Entity {
 	 * @param bounds
 	 * @param texture
 	 */
-	public ShapeEntity(World world, Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity, float restitution,
+	public static ShapeEntity simpleConstruct(World world, Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity, float restitution,
 			float friction, Shape bounds, Animation texture) {
-		
-		world.super(velocity, position, mass, rotation, angVelocity, restitution, friction);
-		this.texture = texture;
-		this.bounds = bounds;
 		
 		//Generate AABB for all possible rotations
 		float apoth = bounds.getVertices().get(0).length();
@@ -65,18 +61,20 @@ public class ShapeEntity extends Entity {
 			if(length > apoth) apoth = length;
 		}
 		Vec2d v = new Vec2d(apoth);
-		aabb = new AABB(v.negate(), v);
+		AABB aabb = new AABB(v.negate(), v);
 		
 		//Generate texcoord shape by scaling bounds down.
 		Shape origin = bounds.translate(bounds.min().negate()), texcoordShape = origin.divDim(origin.max());
 		
 		//Generate displaylist
-		list = GL11.glGenLists(1);
+		int list = GL11.glGenLists(1);
 		GL11.glNewList(list, GL11.GL_COMPILE);
 		GL11.glBegin(GL11.GL_POLYGON);
 		Shape.draw(bounds, texcoordShape);
 		GL11.glEnd();
 		GL11.glEndList();
+		
+		return new ShapeEntity(world, velocity, position, mass, rotation, angVelocity, restitution, friction, texture, list, bounds, aabb);
 		
 	}
 	
