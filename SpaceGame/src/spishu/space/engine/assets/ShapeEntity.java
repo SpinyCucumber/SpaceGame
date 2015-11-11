@@ -21,13 +21,13 @@ public class ShapeEntity extends Entity {
 	private int list;
 	protected Shape bounds;
 	private AABB aabb;
-	
-	
+	private boolean hasTexture;
 	
 	public ShapeEntity(World world, Vec2d velocity, Vec2d position, float mass, float rotation, float angVelocity, float restitution, float friction,
 			Animation texture, int list, Shape bounds, AABB aabb) {
 		world.super(velocity, position, mass, rotation, angVelocity, restitution, friction);
 		this.texture = texture;
+		hasTexture = texture != null;
 		this.list = list;
 		this.bounds = bounds;
 		this.aabb = aabb;
@@ -113,7 +113,7 @@ public class ShapeEntity extends Entity {
 		
 		position.glTranslate();
 		//Rect.fromAABB(aabb).glLineLoop(); //For debug purposes. Will probably be controlled through some static field.
-		texture.bind();
+		if(hasTexture) texture.bind();
 		GL11.glRotatef(rotation, 0, 0, 1);
 		GL11.glCallList(list);
 		
