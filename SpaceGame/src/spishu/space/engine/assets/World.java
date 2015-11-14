@@ -263,8 +263,9 @@ public class World {;
 		e1.onCollision(e2, result);
 		e2.onCollision(e1, result);
 		
+		float t = (e1.invMass+e2.invMass);
 		float e = Math.min(e1.restitution, e2.restitution); //Get restitution coefficient. Basically the bounciness.
-		float j = ((1 + e) * -r)/(e1.invMass+e2.invMass); //Get impulse scalar... the impulse is the change in momemtum.
+		float j = ((1 + e) * -r)/t; //Get impulse scalar... the impulse is the change in momemtum.
 		float j1 = -j*e1.invMass, j2 = j*e2.invMass;
 
 		e1.velocity = e1.velocity.add(result.getNormal().scale(j1)); //Get parts and apply impulse.
@@ -277,13 +278,20 @@ public class World {;
 		Vec2d tangent = result.getNormal().perp().scale(rv.dot(result.getNormal()) > 0 ? 1 : -1);
 		 
 		// Solve for magnitude to apply along the friction vector
-		j = -rv.dot(tangent)/(e1.invMass + e2.invMass);
+		j = -rv.dot(tangent)/t;
 		j *= (e1.friction+e2.friction)/2;
 		j1 = -j*e1.invMass;
 		j2 = j*e2.invMass;
 		
 		e1.velocity = e1.velocity.add(tangent.scale(j1)); //Get parts and apply impulse.
 		e2.velocity = e2.velocity.add(tangent.scale(j2));
+		
+		j = result.getDepth()/t;
+		j1 = -j*e1.invMass;
+		j2 = j*e2.invMass;
+		
+		e1.position = e1.position.add(result.getNormal().scale(j1));
+		e2.position = e2.position.add(result.getNormal().scale(j2));
 		
 	}
 	
