@@ -120,7 +120,7 @@ public class World {;
 			position = position.add(velocity.scale((float) delta));
 			
 			//Apply gravity
-			velocity = velocity.add(gravity.scale(mass));
+			velocity = velocity.add(gravity.scale(mass*(float)delta));
 			
 			//Modify speed
 			if(!velocity.equals(Vec2d.ZERO)) {
