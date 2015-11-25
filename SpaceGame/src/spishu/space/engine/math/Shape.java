@@ -51,9 +51,9 @@ public class Shape {
 	 * @param mat Matrix
 	 * @return Transformed shape
 	 */
-	public Shape transform(Matrix2d mat) {
+	public Shape transform(Transform trans) {
 		List<Vec2d> newVertices = new ArrayList<Vec2d>();
-		for(Vec2d vertex : vertices) newVertices.add(vertex.mul(mat));
+		for(Vec2d vertex : vertices) newVertices.add(trans.apply(vertex));
 		return new Shape(newVertices);
 	}
 	
@@ -64,7 +64,7 @@ public class Shape {
 	 * @return Rotated shape.
 	 */
 	public Shape rotate(float a) {
-		return transform(Matrix2d.fromVec(Vec2d.fromAngle(a)));
+		return transform(Transform.rotation(Vec2d.fromAngle(a)));
 	}
 	
 	/**

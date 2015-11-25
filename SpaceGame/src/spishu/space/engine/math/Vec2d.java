@@ -14,7 +14,7 @@ public class Vec2d {
 	public static final Vec2d ZERO = new Vec2d(0);
 	
 	public static Vec2d fromAngle(float angle) {
-		return new Vec2d((float) Math.sin(angle), (float) Math.cos(angle));
+		return new Vec2d((float) Math.cos(angle), (float) Math.sin(angle));
 	}
 	
 	public static Vec2d randomUnit() {
@@ -139,10 +139,6 @@ public class Vec2d {
 	
 	public Vec2d midpoint(Vec2d o) {
 		return add(o).div(2);
-	}
-	
-	public Vec2d mul(Matrix2d m) {
-		return new Vec2d(dot(m.x), dot(m.y));
 	}
 	
 	public Vec2d negate() {
