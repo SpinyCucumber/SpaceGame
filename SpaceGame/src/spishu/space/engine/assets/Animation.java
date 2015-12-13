@@ -7,13 +7,25 @@ import spishu.space.engine.math.Vec2d;
  * @author SpinyCucumber
  *
  */
-public interface Animation {
-
-	Vec2d getTextureDim();
-	void bind();
-	Animation copy();
+public abstract class Animation {
 	
-	default void update(double delta) {}
-	default Vec2d getTexCoord(Vec2d texCoord) { return texCoord; }
+	protected float frame;
+	private int length;
+	private float speed;
+	
+	public abstract Vec2d getTextureDim();
+	public abstract void bind();
+	public abstract Animation copy();
+	
+	public void update(double delta) {
+		frame = (frame+speed*(float)delta)%length;
+	}
+	
+	public void transformTexCoords() { }
+	
+	protected Animation(int length, float speed) {
+		this.length = length;
+		this.speed = speed;
+	}
 	
 }

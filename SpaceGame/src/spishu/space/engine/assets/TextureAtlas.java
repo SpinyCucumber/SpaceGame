@@ -1,6 +1,7 @@
 package spishu.space.engine.assets;
 
 import spishu.space.engine.lib.Texture;
+import spishu.space.engine.math.Transform;
 import spishu.space.engine.math.Vec2d;
 
 public class TextureAtlas implements Animation {
@@ -16,10 +17,10 @@ public class TextureAtlas implements Animation {
 		this.dimensions = dimensions;
 		length = (int) (dimensions.x * dimensions.y);
 	}
-	
+
 	@Override
-	public Vec2d getTexCoord(Vec2d texCoord) {
-		return texCoord.divDim(dimensions).add(point);
+	public Transform getTexTransform() {
+		return Transform.scaling(dimensions.inverse()).combine(Transform.translation(point));
 	}
 
 	@Override

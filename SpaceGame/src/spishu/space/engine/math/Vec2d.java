@@ -173,5 +173,9 @@ public class Vec2d {
 	public String toString() {
 		return "Vec2 [x=" + x + ", y=" + y + "]";
 	}
+
+	public Vec2d inverse() {
+		return new Vec2d(1/x,1/y);
+	}
 	
 }
