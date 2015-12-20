@@ -10,8 +10,7 @@ import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2d;
 
 public class GridEntity extends Entity {
-
-	private static Shape tileShape, texShape = Rect.fromAABB(new AABB(Vec2d.ZERO, new Vec2d(1)));
+	
 	private static final int proj;
 	
 	static {
@@ -55,7 +54,6 @@ public class GridEntity extends Entity {
 			for(int x = 0; x < width; x++) {
 				Tile tile = tiles[x][y];
 				
-				Shape vertices = tileShape.translate(new Vec2d(x,y)), tex = texShape.transform(tile)
 			}
 		}
 		Framebuffer.unbind();

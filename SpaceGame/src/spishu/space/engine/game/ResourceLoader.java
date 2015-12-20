@@ -20,7 +20,6 @@ import org.jdom2.input.SAXBuilder;
 import org.lwjgl.opengl.GL20;
 import org.yaml.snakeyaml.Yaml;
 
-import spishu.space.engine.assets.SingleTexture;
 import spishu.space.engine.assets.TextureAtlas;
 import spishu.space.engine.assets.TextureLineup;
 import spishu.space.engine.lib.ALSource;
@@ -63,9 +62,10 @@ public abstract class ResourceLoader implements Comparable<ResourceLoader> {
 						return new TextureAtlas(speed, texture, dim);
 					}
 					case "single" : {
+						List<Texture> textures = new ArrayList<Texture>();
 						String location = root.getAttributeValue("location").replace("\\\\", File.separator);
-						Texture texture = (Texture) Game.getResource(location);
-						return new SingleTexture(texture);
+						textures.add((Texture) Game.getResource(location));
+						return new TextureLineup(0, textures);
 					}
 					default : return null;
 				}

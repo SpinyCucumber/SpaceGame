@@ -21,7 +21,7 @@ public abstract class Animation {
 		frame = (frame+speed*(float)delta)%length;
 	}
 	
-	public void transformTexCoords() { }
+	public void transform() { }
 	
 	protected Animation(int length, float speed) {
 		this.length = length;
