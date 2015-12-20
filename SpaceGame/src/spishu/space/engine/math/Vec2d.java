@@ -95,6 +95,10 @@ public class Vec2d {
 		GL11.glTranslatef(x, y, 0);
 	}
 	
+	public void glScale() {
+		GL11.glScalef(x, y, 1);
+	}
+	
 	public void glVertex() {
 		GL11.glVertex2d(x, y);
 	}

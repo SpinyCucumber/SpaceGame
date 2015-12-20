@@ -1,31 +1,28 @@
 package spishu.space.engine.assets;
 
 import spishu.space.engine.lib.Texture;
-import spishu.space.engine.math.Transform;
 import spishu.space.engine.math.Vec2d;
 
-public class TextureAtlas implements Animation {
+public class TextureAtlas extends Animation {
 	
 	private Texture texture;
-	private Vec2d dimensions, point;
-	private float speed, frame;
-	private int length;
+	private Vec2d dim, point;
 	
-	public TextureAtlas(float speed, Texture texture, Vec2d dimensions) {
-		this.speed = speed;
+	public TextureAtlas(float speed, Texture texture, Vec2d dim) {
+		super((int) (dim.x * dim.y), speed);
 		this.texture = texture;
-		this.dimensions = dimensions;
-		length = (int) (dimensions.x * dimensions.y);
+		this.dim = dim.inverse();
 	}
 
 	@Override
-	public Transform getTexTransform() {
-		return Transform.scaling(dimensions.inverse()).combine(Transform.translation(point));
+	public void transform() {
+		point.glTranslate();
+		dim.glScale(); //Too simple to store in VRAM.
 	}
 
 	@Override
 	public Vec2d getTextureDim() {
-		return new Vec2d(texture.getWidth(), texture.getHeight()).divDim(dimensions);
+		return new Vec2d(texture.getWidth(), texture.getHeight()).divDim(dim);
 	}
 	
 	@Override
@@ -35,14 +32,14 @@ public class TextureAtlas implements Animation {
 	
 	@Override
 	public TextureAtlas copy() {
-		return new TextureAtlas(speed, texture, dimensions.clone());
+		return new TextureAtlas(speed, texture, dim.clone());
 	}
 	
 	@Override
 	public void update(double delta) {
-		frame = (frame+speed*(float)delta)%length;
-		int y = (int) Math.floor(frame / dimensions.x);
-		point = new Vec2d((int) Math.floor(frame) - y * dimensions.x, y).divDim(dimensions);
+		super.update(delta);
+		int y = (int) Math.floor(frame / dim.x);
+		point = new Vec2d((int) Math.floor(frame) - y * dim.x, y);
 	}
 
 }

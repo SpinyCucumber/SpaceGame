@@ -10,8 +10,8 @@ import spishu.space.engine.math.Vec2d;
 public abstract class Animation {
 	
 	protected float frame;
-	private int length;
-	private float speed;
+	protected int length;
+	protected float speed;
 	
 	public abstract Vec2d getTextureDim();
 	public abstract void bind();

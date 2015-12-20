@@ -12,16 +12,13 @@ import spishu.space.engine.math.Vec2d;
  * @author SpinyCucumber
  *
  */
-public class TextureLineup implements Animation {
+public class TextureLineup extends Animation {
 	
 	private List<Texture> textures;
-	private float speed, frame;
-	private int length;
 	
 	public TextureLineup(float speed, List<Texture> textures) {
-		this.speed = speed;
+		super(textures.size(), speed);
 		this.textures = textures;
-		this.length = textures.size();
 	}
 
 	public Vec2d getTextureDim() {
@@ -43,11 +40,6 @@ public class TextureLineup implements Animation {
 	@Override
 	public String toString() {
 		return "TextureLineup [textures=" + textures + "]";
-	}
-
-	@Override
-	public void update(double delta) {
-		frame = (frame+speed*(float)delta)%length;
 	}
 	
 }
