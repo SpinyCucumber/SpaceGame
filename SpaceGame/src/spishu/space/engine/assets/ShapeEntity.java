@@ -108,16 +108,27 @@ public class ShapeEntity extends Entity {
 	 * Binds texture, transforms matrix, and calls list.
 	 */
 	public void draw(){
+
+		if(hasTexture) texture.bind(); //Bind texture
 		
+		//Transform position
 		GL11.glPushMatrix();
-		
 		position.glTranslate();
-		//Rect.fromAABB(aabb).glLineLoop(); //For debug purposes. Will probably be controlled through some static field.
-		if(hasTexture) texture.bind();
 		GL11.glRotatef(rotation, 0, 0, 1);
+		
+		//Transform texture
+		GL11.glMatrixMode(GL11.GL_TEXTURE_MATRIX);
+		GL11.glPushMatrix();
+		texture.transform();
+		
+		//Rect.fromAABB(aabb).glLineLoop(); //For debug purposes. Will probably be controlled through some static field.
 		GL11.glCallList(list);
 		
+		//Revert matrices
 		GL11.glPopMatrix();
+		GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+		GL11.glPopMatrix();
+		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		
 	}
