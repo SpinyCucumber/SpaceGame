@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import spishu.space.engine.game.Game;
 import spishu.space.engine.math.Shape;
 import spishu.space.engine.math.Vec2d;
-import spishu.space.main.ShipEntity;
 /**
  * A container that lets entities interact with eachother.
  * Also has gravity and sort-of air-resistance.
@@ -42,19 +41,6 @@ public class World {;
 				ShapeEntity e1 = (ShapeEntity) ent1;
 				ShapeEntity e2 = (ShapeEntity) ent2;
 				if(!e1.getAABB().translate(e1.position).overlap(e2.getAABB().translate(e2.position))) return null;
-				Shape s1 = e1.getBounds().rotate((float) Math.toRadians(e1.rotation)).translate(e1.position);
-				Shape s2 = e2.getBounds().rotate((float) Math.toRadians(e2.rotation)).translate(e2.position);
-				return s1.checkCollision(s2);
-			}
-			
-		});
-		
-		colliders.add(new Collider() {
-
-			@Override
-			public CollisionResult collide(Entity ent1, Entity ent2) {
-				ShipEntity e1 = (ShipEntity) ent1;
-				ShipEntity e2 = (ShipEntity) ent2;
 				Shape s1 = e1.getBounds().rotate((float) Math.toRadians(e1.rotation)).translate(e1.position);
 				Shape s2 = e2.getBounds().rotate((float) Math.toRadians(e2.rotation)).translate(e2.position);
 				return s1.checkCollision(s2);

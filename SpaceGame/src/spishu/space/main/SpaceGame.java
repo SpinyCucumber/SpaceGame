@@ -2,7 +2,6 @@ package spishu.space.main;
 
 import org.lwjgl.opengl.GL11;
 
-import spishu.space.engine.assets.Animation;
 import spishu.space.engine.assets.Camera2d;
 import spishu.space.engine.assets.World;
 import spishu.space.engine.game.Game;
@@ -24,9 +23,9 @@ public class SpaceGame extends GameObject {
 	Camera2d camera;
 	Framebuffer mainFBO;
 	GLSLProgram primShader, fboShader;
-	AABB worldOrtho, screenOrtho;
 	
 	private boolean useShaders;
+	private int screenList;
 	
 	public static void main(String[] args) {
 		
@@ -47,11 +46,13 @@ public class SpaceGame extends GameObject {
 	@Override
 	protected void draw() throws Exception {
 		
-		//TODO change PROJECTION_MATRIX switching code
 		//Render to fbo
     	mainFBO.bind(); {
     		
-    		worldOrtho.glOrtho();
+    		GL11.glMatrixMode(GL11.GL_PROJECTION);
+    		GL11.glPopMatrix();
+    		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+    		
     		if(useShaders) primShader.use();
         	camera.transform();
         	
@@ -60,15 +61,8 @@ public class SpaceGame extends GameObject {
             
     	} Framebuffer.unbind();
     	
-    	GL11.glLoadIdentity();
-    	screenOrtho.glViewport();
-    	screenOrtho.glOrtho();
-    	
-    	//Render fbo to screen
-    	if(useShaders) fboShader.use();
-    	mainFBO.getColorTex().bind();
-    	Rect.fromAABB(screenOrtho).texturedQuad();
-    	GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+    	//Render fbo to screen.
+    	GL11.glCallList(screenList);
     	
 	}
 
@@ -103,15 +97,26 @@ public class SpaceGame extends GameObject {
         
         //Get dimensions to be used in glOrtho
         Vec2d d = window.getDim().div(2);
-        worldOrtho = new AABB(new Vec2d(-d.x, d.y), new Vec2d(d.x, -d.y));
-        screenOrtho = new AABB(Vec2d.ZERO, window.getDim());
+        AABB worldOrtho = new AABB(new Vec2d(-d.x, d.y), new Vec2d(d.x, -d.y)), screenOrtho = new AABB(Vec2d.ZERO, window.getDim());
         
-        //Add entities. Testing ships.
-        ShipTile tile = new ShipTile((Animation) Game.getResource("texture\\test.anim"));
-        ShipData data = new ShipData(new ShipTile[][]{{tile, tile},{tile, tile}});
-        data.renderToBuffer();
-        new ShipEntity(data, world, new Vec2d(0, 0), new Vec2d(0, 0), 1,0,0,1,0.5f).spawn();
+        //Add projection matrices to stack
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        worldOrtho.glOrtho();
+        GL11.glPushMatrix();
+        screenOrtho.glOrtho();
 		
+        //Generate fbo rendering code. Trying to get as many commands into lists as possible.
+        screenList = GL11.glGenLists(1);
+        GL11.glNewList(screenList, GL11.GL_COMPILE);
+        GL11.glLoadIdentity();
+    	GL11.glMatrixMode(GL11.GL_PROJECTION);
+    	GL11.glPushMatrix();
+    	GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        if(useShaders) fboShader.use();
+        mainFBO.getColorTex().bind();
+        Rect.fromAABB(screenOrtho).texturedQuad();
+        GL11.glEndList();
+        
 	}
 
 }

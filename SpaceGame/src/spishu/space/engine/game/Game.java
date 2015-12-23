@@ -197,7 +197,7 @@ public final class Game {
 	 * Use resource loaders defined in Game class.
 	 */
 	public static void useDefaultLoaders() {
-		info("Using default loaders");
+		info("Using default resource loaders");
 		loaders.addAll(defaultLoaders);
 	}
 
