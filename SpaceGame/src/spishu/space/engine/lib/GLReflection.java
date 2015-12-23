@@ -22,11 +22,11 @@ public final class GLReflection {
 			String name = field.getName().substring(9);
 			keys.put(name, field.getInt(null));
 		}
-		Game.info("Mapped %d keys", keys.size());
+		Game.info("Mapped %d key numbers to their names", keys.size());
 	}
-	
-	public static int getKey(String name) {
-		return keys.get(name);
-	}
+
+	public static Map<String, Integer> getKeymap() {
+		return keys;
+	}	
 	
 }
